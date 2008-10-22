@@ -2,20 +2,23 @@ class CreateReports < ActiveRecord::Migration
   def self.up
     create_table "reports" do |t|
       t.integer  "location_id"
-      t.string   "description"
+      t.string   "text"
       t.integer  "score"
-      t.integer  "twitter_statusid",  :limit => 20
       t.string   "callerid",       :limit => 20
       t.string   "uniqueid",       :limit => 20
       t.string   "zip",            :limit => 5
       t.integer  "input_source_id"
+      t.integer  "tid"                                # Twitter internal ID
+      t.integer  "twitter_user_id"
       t.timestamps
     end
 
     create_table "twitter_users" do |t|
-      t.integer "twitter_userid"
+      t.integer "tid"                                 # Twitter internal ID
+      t.string  "name", :limit => 80
       t.string  "screen_name", :limit => 80
-      t.string  "profile_image_url", :limit => 80
+      t.string  "profile_location", :limit => 200
+      t.string  "profile_image_url", :limit => 200
       t.integer "followers_count"
       t.integer "location_id"
       t.timestamps
@@ -84,5 +87,12 @@ class CreateReports < ActiveRecord::Migration
 
   def self.down
     drop_table :reports
+    drop_table :twitter_users
+    drop_table :report_attributes
+    drop_table :attributes
+    drop_table :location_aliases
+    drop_table :locations
+    drop_table :filters
+    drop_table :invalid_locations
   end
 end

@@ -70,21 +70,24 @@ ActiveRecord::Schema.define(:version => 20081019131013) do
 
   create_table "reports", :force => true do |t|
     t.column "location_id", :integer
-    t.column "description", :string
+    t.column "text", :string
     t.column "score", :integer
-    t.column "twitter_statusid", :integer
     t.column "callerid", :string, :limit => 20
     t.column "uniqueid", :string, :limit => 20
     t.column "zip", :string, :limit => 5
     t.column "input_source_id", :integer
+    t.column "tid", :integer
+    t.column "twitter_user_id", :integer
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
   end
 
   create_table "twitter_users", :force => true do |t|
-    t.column "twitter_userid", :integer
+    t.column "tid", :integer
+    t.column "name", :string, :limit => 80
     t.column "screen_name", :string, :limit => 80
-    t.column "profile_image_url", :string, :limit => 80
+    t.column "profile_location", :string, :limit => 200
+    t.column "profile_image_url", :string, :limit => 200
     t.column "followers_count", :integer
     t.column "location_id", :integer
     t.column "created_at", :datetime
