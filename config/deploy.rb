@@ -1,15 +1,38 @@
-set :application, "set your application name here"
-set :repository,  "set your repository location here"
+# Use Git for deployment - git-specific options
+default_run_options[:pty] = true
+set :scm, "git"
+set :repository,  "git@github.com:davetroy/votereport.git"
+set :branch, "master"
+set :deploy_via, :remote_cache
+set :git_shallow_clone, 1
 
-# If you aren't deploying to /u/apps/#{application} on the target
-# servers (which is the default), you can specify the actual location
-# via the :deploy_to variable:
-# set :deploy_to, "/var/www/#{application}"
+set :application, "votereport"
+set :keep_releases, 3
 
-# If you aren't using Subversion to manage your source code, specify
-# your SCM below:
-# set :scm, :subversion
+role :app, "74.63.9.148"
+role :daemons, "74.63.9.148"
+role :db, "74.63.9.148", :primary=>true
 
-role :app, "your app-server here"
-role :web, "your web-server here"
-role :db,  "your db-server here", :primary => true
+set :use_sudo, false
+set :user, application
+set :deploy_to, "/home/#{application}"
+
+namespace :deploy do
+  desc "Restart Application"
+  task :restart, :roles => :app do
+    run "touch #{current_path}/tmp/restart.txt"
+  end
+end
+
+namespace :daemons do
+  desc "Start Daemons"
+  task :start, :roles => :daemons do
+    run "#{deploy_to}/current/script/daemons start"
+  end
+
+  desc "Stop Daemons"
+  task :stop, :roles => :daemons do
+    run "#{deploy_to}/current/script/daemons stop"
+		run "sleep 5 && killall -9 ruby"
+  end
+end

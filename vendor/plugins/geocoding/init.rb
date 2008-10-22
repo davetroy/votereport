@@ -1,6 +1,5 @@
 # Initialization is not needed; everything will be loaded in the loadpath via lib/geo.rb
 require 'geo'
-require 'grid'
 
 class Hash
   # Returns hash that is a subset of the current hash, including only the requested keys

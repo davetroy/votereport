@@ -4,5 +4,6 @@ LOCATION_PATTERNS = [
   Regexp.new(/#(\d{5})/),                           # #00000
   Regexp.new(/^l:\s*([^:]+).*$/im),                 # L: at start of text
   Regexp.new(/[\s,]l:\s*([^:]+).*$/im),             # L: in text after space
-  Regexp.new(/\s(\d{5})\s?/)                        # 00000 anywhere in text
+  Regexp.new(/\s(\d{5})\s?/),                       # 00000 anywhere in text
+  Regexp.new(/(\d{5}-\d{4})/)
 ]

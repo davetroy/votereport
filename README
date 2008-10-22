@@ -1,7 +1,7 @@
 Twitter Vote Report
 https://votereport.pbwiki.com
 
-This is a set of applications desgined to pull polling place reports in from multiple sources, including:
+This application hosts a set of mechanisms desgined to pull polling place reports in from multiple sources, including:
 
 Twitter
   Polls http://twittervision.com/votereport.json for latest #votereport Tweets

@@ -16,8 +16,8 @@ module Geo
         :postal_code => 'Placemark AddressDetails Country AdministrativeArea Locality PostalCode PostalCodeNumber' )
       loc[:locality] = loc[:sub_administrative_area] unless loc[:locality]
       loc.merge(:point => point, :geo_source_id => 1)
-    # rescue
-    #   nil
+    rescue
+      nil
     end
   end
 end

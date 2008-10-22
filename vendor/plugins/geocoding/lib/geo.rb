@@ -5,7 +5,7 @@ require 'json'
 class Hash
   # Returns hash that is a subset of the current hash, including only the requested keys
   def subset(keys)
-    keys.split! if keys is_a?(String)
+    keys = keys.split if keys.is_a?(String)
     result = keys.inject({}) { |result, k| result[k.to_sym] = self[k.to_sym]; result }
   end
 end
