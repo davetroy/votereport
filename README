@@ -1,3 +1,17 @@
 Twitter Vote Report
 https://votereport.pbwiki.com
 
+This is a set of applications desgined to pull polling place reports in from multiple sources, including:
+
+Twitter
+  Polls http://twittervision.com/votereport.json for latest #votereport Tweets
+
+SMS
+  Accepts input from Mozes for SMS messages that contain #votereport
+
+Telephone
+  Accepts phone calls into an Asterisk system
+  
+iPhone
+  Accepts reports from the VoteReport dedicated iPhone application
+
