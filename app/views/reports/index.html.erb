@@ -1,0 +1,10 @@
+<h1>Reports</h1>
+<%=form_tag '/statuses', :method => :get %>
+  Find: <input name="searchstring" value="<%=@searchstring%>">
+  <%= submit_tag 'search' %>
+</form>
+<%=will_paginate @reports%>
+
+<div id="reports">
+  <%= render :partial => 'report' %>
+</div>
