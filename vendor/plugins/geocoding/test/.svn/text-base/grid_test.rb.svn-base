@@ -1,0 +1,67 @@
+require 'rubygems'
+require 'json'
+require 'test/unit'
+require "#{File.dirname(__FILE__)}/../init"
+include Geo::Grid
+
+class Float
+  def decimals(places)
+    n = (self * (10 ** places)).round
+    n.to_f/(10**places)
+  end
+end
+
+class GridTest < Test::Unit::TestCase
+  
+  def setup
+    @home = Point.new(:lat => 39.02474, :lon => -76.51100)
+    @berlin = Point.new(:lat => 52.52950, :lon => 13.41057)
+    @berkeley = Point.new(:lat => 37.85618, :lon => -122.25541)
+    @doncaster = Point.new(:lat => 39.41539, :lon => -76.36645)
+  end
+  
+  def test_point_to_utm
+    # why can't this be made to autodetect the array comparison and to_a itself??
+    assert_equal ['18S', 369202, 4320608], @home.to_utm.to_a
+    assert_equal ['33U', 392180, 5821120], @berlin.to_utm.to_a
+    assert_equal ['10S', 565501, 4190119], @berkeley.to_utm.to_a
+  end
+
+  def test_point_to_usng
+    assert_equal '18S UJ 69202 20608', @home.to_usng.to_s
+    assert_equal '18S UJ 82369 63765', @doncaster.to_usng.to_s
+    assert_equal '10S EG 65501 90119', @berkeley.to_usng.to_s
+  end
+  
+  def test_point_to_mgrs
+    assert_equal '18SUJ6920220608', @home.to_mgrs
+    assert_equal '18SUJ8236963765', @doncaster.to_mgrs
+    assert_equal '10SEG6550190119', @berkeley.to_mgrs
+    assert_equal '33UUU9218021120', @berlin.to_mgrs
+    assert_equal '33UUU92182112', @berlin.to_mgrs(4)
+    assert_equal '33UUU92', @berlin.to_mgrs(1)
+  end
+  
+  def test_get_box
+    assert_equal ["18SUJ5651", "18SUJ5652", "18SUJ5653", "18SUJ5654", "18SUJ5655", 
+                  "18SUJ5751", "18SUJ5752", "18SUJ5753", "18SUJ5754", "18SUJ5755",
+                  "18SUJ5851", "18SUJ5852", "18SUJ5853", "18SUJ5854", "18SUJ5855", 
+                  "18SUJ5951", "18SUJ5952", "18SUJ5953", "18SUJ5954", "18SUJ5955", 
+                  "18SUJ6051", "18SUJ6052", "18SUJ6053", "18SUJ6054", "18SUJ6055"], get_box("18S UJ 58533 53482", 2)
+  
+    assert_equal ["18SUJ5752", "18SUJ5753", "18SUJ5754",
+                  "18SUJ5852", "18SUJ5853", "18SUJ5854",
+                  "18SUJ5952", "18SUJ5953", "18SUJ5954"], get_box("18S UJ 58533 53482", 1)
+    # implement utm_to_ll et al,
+    # convert computed value backwards from grid value and be sure it is same as what we derived
+    # use randomly generated lat/lon test values
+    # build in a checksum for base-30(?) values
+  end
+  
+  def test_utm_to_ll
+    ll = utm_to_ll('10S', 565501, 4190119).map { |l| l.decimals(5) }
+    assert_equal [37.85618, -122.25541], ll
+    assert_equal @berkeley, Point.new(:utm => ['10S', 565501, 4190119])
+  end
+  
+end

@@ -1,0 +1,26 @@
+newyork:
+  id: 1
+  name: newyork
+  title: New York
+  center_location_id: 1
+  conditions: administrative_area=="NY"
+  zoom_level: 10
+  aliases: nyc|ny
+
+northamerica:
+  id: 2
+  name: northamerica
+  title: North America
+  center_location_id: 2
+  conditions: "%w(US CA MX).include?(country_code)"
+  zoom_level: 5
+
+unitedstates:
+  id: 3
+  name: unitedstates
+  title: United States
+  center_location_id: 3
+  conditions: country_code=='US'
+  zoom_level: 5
+  aliases: us
+

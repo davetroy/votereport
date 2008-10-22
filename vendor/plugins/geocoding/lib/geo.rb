@@ -1,0 +1,88 @@
+require 'open-uri'
+require 'json'
+
+# Extensions to Hash
+class Hash
+  # Returns hash that is a subset of the current hash, including only the requested keys
+  def subset(keys)
+    keys.split! if keys is_a?(String)
+    result = keys.inject({}) { |result, k| result[k.to_sym] = self[k.to_sym]; result }
+  end
+end
+
+class ExtractableHash < Hash
+  # Allows the extraction of fields from a nested hash with a key string:
+  # 'top next_key ... last_key'
+  def extract(args)
+    h = clone
+    args = args.split
+    args.each { |a| h=h[a]; h=h.first if (h.is_a?(Array) && h.first.is_a?(Hash)) }
+    h
+   rescue
+     nil
+  end
+  
+  # Generate a new hash with the passed keys => extracted values
+  # :new_value => 'top next_key ... last_key'
+  def transform(transformation)
+    fields = transformation.keys
+    fields.inject(ExtractableHash.new) do |result, f|
+      result[f] = extract(transformation[f])
+      result
+    end
+  end
+end
+
+# Extensions to String
+class String
+  def capitalize_words
+    split.map(&:capitalize_word).join " "
+  end
+  
+  def capitalize_words!
+    replace capitalize_words
+  end
+
+	def capitalize_word
+		self.size > 3 ? self.capitalize : self
+	end
+end
+
+# Geocoder service class - provides access to all available geocoder subclasses
+module Geo
+  class Geocoder
+
+    class << self
+      def inherited(klass)
+        subclasses << klass
+      end
+      
+      def geocode(location_text)
+        subclasses.each do |subclass|
+          result = subclass.geocode(location_text)
+          return result if result
+        end
+        nil
+      end
+      
+      private
+      def subclasses
+        @@subclasses ||= []
+      end
+
+    end
+  end
+end
+
+# Provide basic units conversion for geo purposes
+class Float
+  def to_km
+    self*1.609344
+  end
+
+  def to_miles
+    self/1.609344
+  end
+end
+
+Dir["#{File.dirname(__FILE__)}/geocoders/*"].sort.each { |geolib| require "#{File.expand_path(geolib)}/geocode" }

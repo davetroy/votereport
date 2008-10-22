@@ -1,0 +1,41 @@
+require 'open-uri'
+require 'json'
+
+# Geocoder service class - provides access to all available geocoder subclasses
+module Geo
+  class Geocoder
+
+    class << self
+      def inherited(klass)
+        subclasses << klass
+      end
+      
+      def geocode(location_text)
+        subclasses.each do |subclass|
+          result = subclass.geocode(location_text)
+          return result if result
+        end
+        nil
+      end
+      
+      private
+      def subclasses
+        @@subclasses ||= []
+      end
+
+    end
+  end
+end
+
+# Provide basic units conversion for geo purposes
+class Float
+  def to_km
+    self*1.609344
+  end
+
+  def to_miles
+    self/1.609344
+  end
+end
+
+Dir["#{File.dirname(__FILE__)}/geocoders/*"].sort.each { |geolib| require "#{File.expand_path(geolib)}/geocode" }

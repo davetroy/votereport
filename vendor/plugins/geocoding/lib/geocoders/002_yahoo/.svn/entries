@@ -1,0 +1,40 @@
+8
+
+dir
+77
+https://svn.popvox.com:4343/svn/openlocation/trunk/vendor/plugins/geocoding/lib/geocoders/002_yahoo
+https://svn.popvox.com:4343/svn/openlocation
+
+
+
+2008-04-27T18:17:07.324644Z
+70
+dtroy
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+35ee6f2b-60fc-47ca-a166-4307f5c1e4cf
+
+geocode.rb
+file
+82
+
+
+
+2008-10-09T23:05:57.000000Z
+2d1cac7f795a21e937ab7f487fabaedb
+2008-10-09T23:06:03.842383Z
+82
+davetroy
+
