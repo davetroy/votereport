@@ -1,16 +1,16 @@
 class CreateReports < ActiveRecord::Migration
   def self.up
     create_table "reports" do |t|
+      t.integer  "input_source_id"                    # 1 = twitter, 2 = sms, 3 = iPhone, 4 = SMS
       t.integer  "location_id"
-      t.string   "text"
-      t.integer  "score"
-      t.string   "callerid",       :limit => 20
-      t.string   "uniqueid",       :limit => 20
-      t.string   "zip",            :limit => 5
-      t.integer  "input_source_id"
-      t.integer  "tid"                                # Twitter internal ID
       t.integer  "twitter_user_id"
-      t.integer   "wait_time"
+      t.integer  "tid"                                # Twitter internal ID
+      t.string   "text"                               # Text of the report from Twitter, SMS or otherwise
+      t.integer  "score"                              # Overall "score" of this report (0=no problems)
+      t.string   "callerid",       :limit => 20       # Telephone Caller ID
+      t.string   "uniqueid",       :limit => 20       # Unique call identifier for Asterisk
+      t.string   "zip",            :limit => 5        # Extracted zip associated with report
+      t.integer  "wait_time"                          # Extracted wait time associated with report
       t.timestamps
     end
 
@@ -33,6 +33,9 @@ class CreateReports < ActiveRecord::Migration
       t.integer "report_id"
       t.integer "tag_id"
     end
+    
+    add_index "report_tags", ["report_id"], :name => "index_report_tags_on_report_id"
+    add_index "report_tags", ["tag_id"], :name => "index_report_tags_on_tag_id"
 
     create_table "tags" do |t|
       t.string "pattern", :limit => 30
@@ -60,9 +63,8 @@ class CreateReports < ActiveRecord::Migration
       t.column "postal_code", :string, :limit => 25
       t.column "point", :point, :null => false
       t.column "geo_source_id", :integer
-      t.column "created_at", :datetime
-      t.column "updated_at", :datetime
       t.column "filter_list", :string
+      t.timestamps
     end
 
     add_index "locations", ["point"], :name => "index_locations_on_point", :spatial=> true
@@ -77,9 +79,10 @@ class CreateReports < ActiveRecord::Migration
       t.column "zoom_level", :integer
       t.column "state", :string, :limit => 2
       t.column "country_code", :string, :limit => 2
-      t.column "created_at", :datetime
-      t.column "updated_at", :datetime
+      t.timestamps
     end
+
+    ActiveRecord::Base.connection.execute(File.read(File.dirname(__FILE__) + '/../filters.sql'))
 
     create_table "invalid_locations", :options=>'ENGINE=MyISAM', :force => true do |t|
       t.column "text", :string, :limit => 80
@@ -87,6 +90,14 @@ class CreateReports < ActiveRecord::Migration
     end
 
     add_index "invalid_locations", ["text"], :name => "index_invalid_locations_on_text", :unique => true
+
+    create_table "report_filters", :options => 'ENGINE=MyISAM' do |t|
+      t.column "report_id",   :integer
+      t.column "filter_id",   :integer
+    end
+
+    add_index "report_filters", ["report_id"], :name => "index_report_filters_on_report_id"
+    add_index "report_filters", ["filter_id"], :name => "index_report_filters_on_filter_id"
 
   end
 

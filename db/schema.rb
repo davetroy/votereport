@@ -32,6 +32,14 @@ ActiveRecord::Schema.define(:version => 20081023040000) do
 
   add_index "invalid_locations", ["text"], :name => "index_invalid_locations_on_text", :unique => true
 
+  create_table "local_filters", :options=>'ENGINE=MyISAM', :force => true do |t|
+    t.column "filter_id", :integer
+    t.column "status_id", :integer
+  end
+
+  add_index "local_filters", ["status_id"], :name => "index_local_filters_on_id"
+  add_index "local_filters", ["filter_id"], :name => "index_local_filters_on_filter_id"
+
   create_table "location_aliases", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "text", :string, :limit => 80
     t.column "location_id", :integer
@@ -50,9 +58,9 @@ ActiveRecord::Schema.define(:version => 20081023040000) do
     t.column "postal_code", :string, :limit => 25
     t.column "point", :point, :null => false
     t.column "geo_source_id", :integer
+    t.column "filter_list", :string
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
-    t.column "filter_list", :string
   end
 
   add_index "locations", ["point"], :name => "index_locations_on_point", :spatial=> true 
@@ -62,19 +70,22 @@ ActiveRecord::Schema.define(:version => 20081023040000) do
     t.column "tag_id", :integer
   end
 
+  add_index "report_tags", ["report_id"], :name => "index_report_tags_on_report_id"
+  add_index "report_tags", ["tag_id"], :name => "index_report_tags_on_tag_id"
+
   create_table "reports", :force => true do |t|
+    t.column "input_source_id", :integer
     t.column "location_id", :integer
+    t.column "twitter_user_id", :integer
+    t.column "tid", :integer
     t.column "text", :string
     t.column "score", :integer
     t.column "callerid", :string, :limit => 20
     t.column "uniqueid", :string, :limit => 20
     t.column "zip", :string, :limit => 5
-    t.column "input_source_id", :integer
-    t.column "tid", :integer
-    t.column "twitter_user_id", :integer
+    t.column "wait_time", :integer
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
-    t.column "wait_time", :integer
   end
 
   add_index "reports", ["tid"], :name => "index_reports_on_tid", :unique => true
