@@ -1,0 +1,21 @@
+<Placemark>
+	<name><%=h(report.name)%></name>
+	<Style>
+		<IconStyle>
+			<Icon>
+				<href><%=report.twitter_user.profile_image_url if report.twitter_user%></href>
+			</Icon>
+		</IconStyle>
+		<LabelStyle>
+			<color>ff00aaff</color>
+		</LabelStyle>
+		<BalloonStyle>
+			<text><%=h(report.text)%></text>
+			<textColor>ff000000</textColor>
+			<color>ff669999</color>
+		</BalloonStyle>
+	</Style>
+	<Point>
+		<coordinates><%=report.location.longitude%>,<%=report.location.latitude%>,0</coordinates>
+	</Point>
+</Placemark>

@@ -34,4 +34,9 @@ class ReportTest < ActiveSupport::TestCase
     ca_report = Report.create(:tid => 2, :text => 'all is well in 94107')
     assert_equal 4, (ca_report.filters & %w(sanfrancisco california northamerica unitedstates).map { |c| Filter.find_by_name(c) }).size
   end
+  
+  def test_misc_properties
+    md_report = Report.create(:tid => 1, :text => 'here in #21108')
+    assert_equal "#votereport #{md_report[:id]}", md_report.name
+  end
 end

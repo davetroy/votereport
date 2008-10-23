@@ -11,6 +11,10 @@ class Report < ActiveRecord::Base
   before_save :detect_location, :assign_tags
   after_save  :assign_filters
 
+  def name
+    "#votereport #{self[:id]}" + (self.twitter_user ? " - #{twitter_user.name}" : "")
+  end
+
   private
   def detect_location
     LOCATION_PATTERNS.find { |p| self.text[p] }
