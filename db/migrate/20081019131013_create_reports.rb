@@ -1,4 +1,7 @@
 class CreateReports < ActiveRecord::Migration
+
+  class Filter < ActiveRecord::Base; end
+
   def self.up
     create_table "reports" do |t|
       t.integer  "input_source_id"                    # 1 = twitter, 2 = sms, 3 = iPhone, 4 = SMS
@@ -20,7 +23,7 @@ class CreateReports < ActiveRecord::Migration
       t.integer "tid"                                 # Twitter internal ID
       t.string  "name", :limit => 80
       t.string  "screen_name", :limit => 80
-      t.string  "profile_location", :limit => 200
+      t.string  "profile_location", :limit => 80
       t.string  "profile_image_url", :limit => 200
       t.integer "followers_count"
       t.integer "location_id"
@@ -82,7 +85,9 @@ class CreateReports < ActiveRecord::Migration
       t.timestamps
     end
 
-    ActiveRecord::Base.connection.execute(File.read(File.dirname(__FILE__) + '/../filters.sql'))
+    # Import filter set and reset centers; this is touchy, beware!
+    Filter.connection.execute(File.read(File.dirname(__FILE__) + '/../filters.sql'))
+    Filter.find(:all).each { |f| f.update_attribute(:center_location_id, Location.geocode(f.title).id) }
 
     create_table "invalid_locations", :options=>'ENGINE=MyISAM', :force => true do |t|
       t.column "text", :string, :limit => 80
@@ -109,6 +114,7 @@ class CreateReports < ActiveRecord::Migration
     drop_table :location_aliases
     drop_table :locations
     drop_table :filters
+    drop_table :report_filters
     drop_table :invalid_locations
   end
 end

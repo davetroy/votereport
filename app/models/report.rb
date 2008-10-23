@@ -5,6 +5,8 @@ class Report < ActiveRecord::Base
   belongs_to :twitter_user
   has_many :report_tags, :dependent => :destroy
   has_many :tags, :through => :report_tags
+  has_many :report_filters, :dependent => :destroy
+  has_many :filters, :through => :report_filters
 
   before_save :detect_location, :assign_tags
   after_save  :assign_filters
@@ -33,7 +35,7 @@ class Report < ActiveRecord::Base
   def assign_filters
     if self.location_id
 			values = self.location.filter_list.split(',').map { |f| "(#{f},#{self.id})" }.join(',')
-      self.connection.execute("INSERT DELAYED INTO local_filters (filter_id, status_id) VALUES #{values}") if !values.blank?
+      self.connection.execute("INSERT DELAYED INTO report_filters (filter_id,report_id) VALUES #{values}") if !values.blank?
 		end
 		true
   end

@@ -2,6 +2,10 @@ class Filter < ActiveRecord::Base
   belongs_to :center,
              :class_name => 'Location',
              :foreign_key => 'center_location_id'
+
+  has_many :report_filters, :dependent => :destroy
+  has_many :reports, :through => :report_filters
+
 	validates_uniqueness_of :name, :title
 
   def self.get_list_for_location(location)

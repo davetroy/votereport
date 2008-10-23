@@ -32,14 +32,6 @@ ActiveRecord::Schema.define(:version => 20081023040000) do
 
   add_index "invalid_locations", ["text"], :name => "index_invalid_locations_on_text", :unique => true
 
-  create_table "local_filters", :options=>'ENGINE=MyISAM', :force => true do |t|
-    t.column "filter_id", :integer
-    t.column "status_id", :integer
-  end
-
-  add_index "local_filters", ["status_id"], :name => "index_local_filters_on_id"
-  add_index "local_filters", ["filter_id"], :name => "index_local_filters_on_filter_id"
-
   create_table "location_aliases", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "text", :string, :limit => 80
     t.column "location_id", :integer
@@ -64,6 +56,14 @@ ActiveRecord::Schema.define(:version => 20081023040000) do
   end
 
   add_index "locations", ["point"], :name => "index_locations_on_point", :spatial=> true 
+
+  create_table "report_filters", :options=>'ENGINE=MyISAM', :force => true do |t|
+    t.column "report_id", :integer
+    t.column "filter_id", :integer
+  end
+
+  add_index "report_filters", ["report_id"], :name => "index_report_filters_on_report_id"
+  add_index "report_filters", ["filter_id"], :name => "index_report_filters_on_filter_id"
 
   create_table "report_tags", :force => true do |t|
     t.column "report_id", :integer
@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(:version => 20081023040000) do
     t.column "tid", :integer
     t.column "name", :string, :limit => 80
     t.column "screen_name", :string, :limit => 80
-    t.column "profile_location", :string, :limit => 200
+    t.column "profile_location", :string, :limit => 80
     t.column "profile_image_url", :string, :limit => 200
     t.column "followers_count", :integer
     t.column "location_id", :integer
