@@ -9,13 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081019131013) do
-
-  create_table "attributes", :force => true do |t|
-    t.column "tag", :string, :limit => 30
-    t.column "description", :string, :limit => 80
-    t.column "score", :integer
-  end
+ActiveRecord::Schema.define(:version => 20081023040000) do
 
   create_table "filters", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "name", :string, :limit => 80
@@ -63,9 +57,9 @@ ActiveRecord::Schema.define(:version => 20081019131013) do
 
   add_index "locations", ["point"], :name => "index_locations_on_point", :spatial=> true 
 
-  create_table "report_attributes", :force => true do |t|
+  create_table "report_tags", :force => true do |t|
     t.column "report_id", :integer
-    t.column "attribute_id", :integer
+    t.column "tag_id", :integer
   end
 
   create_table "reports", :force => true do |t|
@@ -80,6 +74,15 @@ ActiveRecord::Schema.define(:version => 20081019131013) do
     t.column "twitter_user_id", :integer
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
+    t.column "wait_time", :integer
+  end
+
+  add_index "reports", ["tid"], :name => "index_reports_on_tid", :unique => true
+
+  create_table "tags", :force => true do |t|
+    t.column "pattern", :string, :limit => 30
+    t.column "description", :string, :limit => 80
+    t.column "score", :integer
   end
 
   create_table "twitter_users", :force => true do |t|
@@ -93,5 +96,7 @@ ActiveRecord::Schema.define(:version => 20081019131013) do
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
   end
+
+  add_index "twitter_users", ["tid"], :name => "index_twitter_users_on_tid", :unique => true
 
 end

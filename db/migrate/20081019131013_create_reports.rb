@@ -24,13 +24,13 @@ class CreateReports < ActiveRecord::Migration
       t.timestamps
     end
     
-    create_table "report_attributes" do |t|
+    create_table "report_tags" do |t|
       t.integer "report_id"
-      t.integer "attribute_id"
+      t.integer "tag_id"
     end
 
-    create_table "attributes" do |t|
-      t.string "tag", :limit => 30
+    create_table "tags" do |t|
+      t.string "pattern", :limit => 30
       t.string "description", :limit => 80
       t.integer "score"
     end
@@ -88,8 +88,8 @@ class CreateReports < ActiveRecord::Migration
   def self.down
     drop_table :reports
     drop_table :twitter_users
-    drop_table :report_attributes
-    drop_table :attributes
+    drop_table :report_tags
+    drop_table :tags
     drop_table :location_aliases
     drop_table :locations
     drop_table :filters

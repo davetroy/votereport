@@ -1,9 +1,7 @@
 # These regexes are used to extract location from text bodies no matter the input source
 LOCATION_PATTERNS = [
-  Regexp.new(/#zip[\s\:\-]?(\d{5})/i),              # #zip 00000
-  Regexp.new(/#(\d{5})/),                           # #00000
-  Regexp.new(/^l:\s*([^:]+).*$/im),                 # L: at start of text
-  Regexp.new(/[\s,]l:\s*([^:]+).*$/im),             # L: in text after space
-  Regexp.new(/\s(\d{5})\s?/),                       # 00000 anywhere in text
-  Regexp.new(/(\d{5}-\d{4})/)
+  Regexp.compile(/#?zip[\s\:\-]?(\d{5})/i),                   # #zip 00000
+  Regexp.compile(/[\s#]?(\d{5}-?\d{0,4})/),                   # #94107, 02130, 21012-2423
+  Regexp.compile(/^l:\s*([^:]+).*$/im),                       # L: at start
+  Regexp.compile(/[\s,]l:\s*([^:]+).*$/im)                    # L: in tweet
 ]
