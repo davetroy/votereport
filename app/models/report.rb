@@ -10,6 +10,8 @@ class Report < ActiveRecord::Base
 
   before_save :detect_location, :assign_tags
   after_save  :assign_filters
+  
+  named_scope :with_location, :conditions => 'location_id IS NOT NULL'
 
   def name
     "#votereport #{self[:id]}" + (self.twitter_user ? " - #{twitter_user.name}" : "")
