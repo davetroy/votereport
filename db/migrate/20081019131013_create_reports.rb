@@ -10,6 +10,7 @@ class CreateReports < ActiveRecord::Migration
       t.integer  "input_source_id"
       t.integer  "tid"                                # Twitter internal ID
       t.integer  "twitter_user_id"
+      t.integer   "wait_time"
       t.timestamps
     end
 
