@@ -1,4 +1,4 @@
-class AddTagsAndIndexes < ActiveRecord::Migration
+class AddTags < ActiveRecord::Migration
   def self.up
     [ { :pattern => 'machine',           :description => 'Problem with voting machine(s)', :score => 2 },
       { :pattern => 'registration',      :description => 'Problems with the registration process', :score => 3 },
@@ -9,11 +9,6 @@ class AddTagsAndIndexes < ActiveRecord::Migration
       { :pattern => 'good',              :description => 'Good overall experience', :score => 0 },
       { :pattern => 'bad',               :description => 'Bad overall experience', :score => 3 },
       { :pattern => '\sEP[A-Z]{2}\s?',   :description => 'Election Protection, with State', :score => 2 } ].each { |t| Tag.create(t) }
-    
-    add_column "reports", :wait_time, :integer
-    
-    add_index "twitter_users", ["tid"], :name => "index_twitter_users_on_tid", :unique => true
-    add_index "reports", ["tid"], :name => "index_reports_on_tid", :unique => true
   end
 
   def self.down

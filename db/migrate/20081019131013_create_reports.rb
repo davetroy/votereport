@@ -13,6 +13,8 @@ class CreateReports < ActiveRecord::Migration
       t.timestamps
     end
 
+    add_index "reports", ["tid"], :name => "index_reports_on_tid", :unique => true
+
     create_table "twitter_users" do |t|
       t.integer "tid"                                 # Twitter internal ID
       t.string  "name", :limit => 80
@@ -23,6 +25,8 @@ class CreateReports < ActiveRecord::Migration
       t.integer "location_id"
       t.timestamps
     end
+    
+    add_index "twitter_users", ["tid"], :name => "index_twitter_users_on_tid", :unique => true
     
     create_table "report_tags" do |t|
       t.integer "report_id"
