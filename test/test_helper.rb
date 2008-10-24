@@ -35,4 +35,8 @@ class Test::Unit::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  def assert_zero(value)
+    value == 0
+  end
+  
 end

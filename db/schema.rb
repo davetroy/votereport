@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081023040000) do
+ActiveRecord::Schema.define(:version => 20081023221200) do
 
   create_table "filters", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "name", :string, :limit => 80
@@ -109,5 +109,28 @@ ActiveRecord::Schema.define(:version => 20081023040000) do
   end
 
   add_index "twitter_users", ["tid"], :name => "index_twitter_users_on_tid", :unique => true
+
+  create_table "users", :options=>'ENGINE=MyISAM', :force => true do |t|
+    t.column "first_name", :string, :limit => 80
+    t.column "last_name", :string, :limit => 80
+    t.column "url", :string, :limit => 120
+    t.column "api_key", :string, :limit => 40
+    t.column "password_hash", :string, :limit => 40
+    t.column "email", :string, :limit => 80
+    t.column "verified", :boolean
+    t.column "authorized", :boolean
+    t.column "day_query_limit", :integer
+    t.column "day_update_limit", :integer
+    t.column "day_query_count", :integer, :default => 0
+    t.column "day_update_count", :integer, :default => 0
+    t.column "query_count", :integer, :default => 0
+    t.column "update_count", :integer, :default => 0
+    t.column "last_query_at", :datetime
+    t.column "last_update_at", :datetime
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "users", ["api_key"], :name => "index_users_on_api_key", :unique => true
 
 end
