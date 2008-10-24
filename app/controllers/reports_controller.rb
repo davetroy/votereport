@@ -23,4 +23,8 @@ class ReportsController < ApplicationController
       end
     end
   end
+  
+  def map  
+  end
+  
 end
