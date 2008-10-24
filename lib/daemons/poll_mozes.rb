@@ -1,6 +1,7 @@
 ENV["RAILS_ENV"] ||= 'production'
 
 FEED = 'http://www.mozes.com/_/rss?keyword_id=1031894'
+DEBUG = true
 
 require File.dirname(__FILE__) + "/../../config/environment"
 require 'hpricot'
@@ -11,8 +12,14 @@ Signal.trap("TERM") do
   $running = false
 end
 
+$stdout.sync=true
+
 # for chucking errors about bad data
 class PollMozesException < StandardError
+end
+
+def debug(msg) 
+  puts "[poll_mozes] [debug] #{msg}"
 end
 
 while($running) do
@@ -22,33 +29,40 @@ while($running) do
     # report.tid = nil                      (twitter ONLY)
     # report.twitter_user_id = nil          (twitter ONLY)
     
+    debug "Pulling XML feed..."
     doc = Hpricot.XML(open(FEED))
     
     (doc/:item).each do |item|
       begin
-        user = MozesUser.find_or_create_by_mozes_id( (item/'mozes:mozesUserId').inner_html.strip )
+        # pull an identifier
+        item_id = (item/:pubDate).inner_text
+        debug "found item: #{item_id}"
         
-        throw PollMozesException.new("No Mozes User ID for this item, pubDate: #{(item/:pubDate)}") if user.new_record?
+        # create a user if not already extant
+        mozes_id = (item/'mozes:mozesUserId').inner_text.strip
+        debug "JIT user creation for #{mozes_id}"
+        user = MozesUser.find_or_create_by_mozes_id( mozes_id )
+        unless user.valid?
+          raise PollMozesException.new("[poll mozes] No Mozes User ID for item: #{item_id}")
+        end
         
-        # Populate these fields ONLY
-        # report.text = description body (exclude <a><img>*</a>)
-        # report.callerid = mozes:mozesUserId
-        # report.input_source_id = 2
-        user.reports.create! { 
+        # create the report
+        debug "creating report..."
+        user.reports.create!({ 
           :text => (item/:description).inner_text, 
           :mozes_user_id => user.id, 
           :mozes_feed_id => nil,
           :input_source_id => REPORT::SOURCE_MOZES 
-        }
+        })
         
-      rescue ActiveRecord::InvalidRecord => e
-        puts "Error while creating report from Mozes feed: #{e.class}: #{e.message}"
+      #rescue ActiveRecord::RecordInvalid => e
+        puts "[poll_mozes] Error while creating report from feed item: #{item_id} : #{e.class}: #{e.message}"
       end
     end
-  rescue Exception => e
-    puts "Uncaught exception during loop: \n#{e.class}: #{e.message}\n\t#{e.backtrace.join("\n")} "
+  #rescue Exception => e
+    puts "[poll_mozes] Uncaught exception during loop: \n#{e.class}: #{e.message}\n\t#{e.backtrace.join("\n")} "
+    return
   end
-  #messages = open(FEED).read
-  sleep 10
+  #sleep 10
 end
 
