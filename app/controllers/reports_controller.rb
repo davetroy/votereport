@@ -27,4 +27,9 @@ class ReportsController < ApplicationController
   def map  
   end
   
+  # POST /reports
+  # Used by iPhone app and API users
+  def create
+  end
+  
 end
