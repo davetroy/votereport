@@ -21,9 +21,10 @@ class ReportTest < ActiveSupport::TestCase
   def test_tag_assignment
     assert_equal 2, Report.create(:tid => 1, :text => 'my #machine is #good').tags.size
     assert_equal 7, Report.create(:tid => 2, :text => 'many #challenges here, #bad').score
-    goodreport = Report.create(:tid => 3, :text => 'no problems #good overall, #wait:12')
+    goodreport = Report.create(:tid => 3, :text => 'no problems #good overall, #wait12')
     assert_equal 12, goodreport.wait_time
     assert_equal 0, goodreport.score
+    assert_equal 2, goodreport.tags.size
   end
   
   # Tests to be sure that a report made in a particular location

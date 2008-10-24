@@ -2,7 +2,7 @@ class AddTags < ActiveRecord::Migration
   def self.up
     [ { :pattern => 'machine',           :description => 'Problem with voting machine(s)', :score => 2 },
       { :pattern => 'registration',      :description => 'Problems with the registration process', :score => 3 },
-      { :pattern => 'wait:(\d+)',        :description => 'Indicates wait time', :score => 0 },
+      { :pattern => 'wait:?(\d+)',       :description => 'Indicates wait time', :score => 0 },
       { :pattern => 'challenges',        :description => 'Widespread challenges occurring at the location', :score => 4 },
       { :pattern => 'hava',              :description => 'Accessibility issues', :score => 2 },
       { :pattern => 'ballots',           :description => 'Out or running out of paper ballots', :score => 3 },
