@@ -5,3 +5,7 @@ LOCATION_PATTERNS = [
   Regexp.compile(/^l:\s*([^:]+).*$/im),                       # L: at start
   Regexp.compile(/[\s,]l:\s*([^:]+).*$/im)                    # L: in tweet
 ]
+
+# Default limits for API usage; can be overridden case-by-case
+DEFAULT_QUERY_LIMIT = 50_000
+DEFAULT_UPDATE_LIMIT = 50_000
