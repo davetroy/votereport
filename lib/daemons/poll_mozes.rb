@@ -69,7 +69,7 @@ while($running) do
         # create the report
         debug "creating report..."
         user.reports.create!({ 
-          :text => (item/:description).inner_text.gsub(/<a.*?\/a>/).strip,
+          :text => (item/:description).inner_text.gsub(/<a.*?\/a>/, '').strip,
           :mozes_user_id => user.id, 
           :mozes_feed_id => item_id,
           :input_source_id => Report::SOURCE_MOZES 
@@ -81,7 +81,6 @@ while($running) do
     end
   rescue Exception => e
     puts "[poll_mozes] Uncaught exception during loop: \n#{e.class}: #{e.message}\n\t#{e.backtrace.join("\n")} "
-    return
   end
   write_tstamp
   sleep 10
