@@ -22,7 +22,7 @@ def debug(msg)
   puts "[poll_mozes] [debug] #{msg}" if RAILS_ENV == 'development'
 end
 
-def write_tstamp(time = Time.now.utc)
+def write_tstamp(time = Time.now)
   file = File.new(STAMPFILE, "w")
   file.print time.to_s
   file.close
@@ -31,7 +31,7 @@ end
 def read_tstamp
   stamps = []
   stamps = IO.readlines(STAMPFILE) if File.exists? STAMPFILE
-  stamps[0].nil? ? (Time.now.utc - 1.hour) : Time.parse(stamps[0])
+  stamps[0].nil? ? (Time.now - 1.hour) : Time.parse(stamps[0])
 end
 
 while($running) do
@@ -48,7 +48,7 @@ while($running) do
     (doc/:item).each do |item|
       begin
         # pull an identifier
-        item_id = (item/:guid).inner_text
+        item_id = (item/:guid).inner_text.strip
         debug "found item: #{item_id}"
         
         # only process items posted after our last check...
@@ -69,7 +69,7 @@ while($running) do
         # create the report
         debug "creating report..."
         user.reports.create!({ 
-          :text => (item/:description).inner_text, 
+          :text => (item/:description).inner_text.gsub(/<a.*?\/a>/).strip,
           :mozes_user_id => user.id, 
           :mozes_feed_id => item_id,
           :input_source_id => Report::SOURCE_MOZES 
