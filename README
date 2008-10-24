@@ -11,7 +11,8 @@ SMS
 
 Telephone
   Accepts phone calls into an Asterisk system
-  
+  See adhearsion/components/vote_report/lib/votereport.rb
+    
 iPhone
   Accepts reports from the VoteReport dedicated iPhone application
 
