@@ -8,6 +8,7 @@ require "#{File.dirname(__FILE__)}/../init"
 
 include GeoRuby::SimpleFeatures
 
+# localhost API key
 GMAPS_API_KEY = "ABQIAAAAzMUFFnT9uH0xq39J0Y4kbhTJQa0g3IQ9GZqIMmInSLzwtGDKaBR6j135zrztfTGVOm2QlWnkaidDIQ"
 
 class GeocoderTest < Test::Unit::TestCase

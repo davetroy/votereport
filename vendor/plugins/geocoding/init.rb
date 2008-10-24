@@ -1,3 +1,6 @@
+# Basic multi-source geocoding library
+# (C) 2007-2008 David Troy, dave@roundhousetech.com
+
 # Initialization is not needed; everything will be loaded in the loadpath via lib/geo.rb
 require 'geo'
 
