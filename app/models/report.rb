@@ -12,6 +12,9 @@ class Report < ActiveRecord::Base
   after_save  :assign_filters
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
+  
+  SOURCE_TWITTER = 1
+  SOURCE_MOZES = 2
 
   def name
     "#votereport #{self[:id]}" + (self.twitter_user ? " - #{twitter_user.name}" : "")
