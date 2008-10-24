@@ -1,0 +1,34 @@
+Backend Tasks
+
+Twitter:
+  No open tasks
+
+Asterisk/Adhearsion Interface:
+  Finalize call flow
+  Record new sound files
+  Standardize daemonization
+  Allow for callers to record audio message
+  
+Mozes (SMS):
+  Finish lib/daemons/poll_mozes.rb to read SMS XML and store in Report model
+
+iPhone:
+  Write REST report controller (POST only) to receive new reports
+
+---
+
+Frontend Tasks (Visualizations, API, Sweeper)
+
+Build interface for sweepers to use to inspect and clean data
+Build interface for transcription of audio files from asterisk
+Build interface for users to register with the system
+  (Twitter screen_name, caller ID, etc)
+
+API
+  Determine list of available calls and formats
+  Determine available parameters (last x minutes vs. whole set)
+
+---
+
+iPhone Client
+  Design & implement w/Dave Troy (deadline Monday)
