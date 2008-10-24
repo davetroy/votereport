@@ -3,7 +3,7 @@ ENV["RAILS_ENV"] ||= 'production'
 FEED = 'http://www.mozes.com/_/rss?keyword_id=1031894'
 STAMPFILE = '/tmp/poll_mozes_tstamp'
 
-require "#{RAILS_ROOT}/config/environment"
+require File.dirname(__FILE__) + "/../../config/environment"
 require 'hpricot'
 require 'open-uri'
 
