@@ -28,6 +28,8 @@ while($running) do
       begin
         user = MozesUser.find_or_create_by_mozes_id( (item/'mozes:mozesUserId').inner_html.strip )
         
+        throw PollMozesException.new("No Mozes User ID for this item, pubDate: #{(item/:pubDate)}") if user.new_record?
+        
         # Populate these fields ONLY
         # report.text = description body (exclude <a><img>*</a>)
         # report.callerid = mozes:mozesUserId
