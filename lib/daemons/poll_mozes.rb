@@ -1,9 +1,8 @@
 ENV["RAILS_ENV"] ||= 'production'
 
 FEED = 'http://www.mozes.com/_/rss?keyword_id=1031894'
-DEBUG = true
 
-require File.dirname(__FILE__) + "/../../config/environment"
+require "#{RAILS_ROOT}/config/environment"
 require 'hpricot'
 require 'open-uri'
 
@@ -19,7 +18,7 @@ class PollMozesException < StandardError
 end
 
 def debug(msg) 
-  puts "[poll_mozes] [debug] #{msg}"
+  puts "[poll_mozes] [debug] #{msg}" if RAILS_ENV == 'development'
 end
 
 while($running) do
@@ -35,7 +34,7 @@ while($running) do
     (doc/:item).each do |item|
       begin
         # pull an identifier
-        item_id = (item/:pubDate).inner_text
+        item_id = (item/:guid).inner_text
         debug "found item: #{item_id}"
         
         # create a user if not already extant
@@ -51,18 +50,18 @@ while($running) do
         user.reports.create!({ 
           :text => (item/:description).inner_text, 
           :mozes_user_id => user.id, 
-          :mozes_feed_id => nil,
-          :input_source_id => REPORT::SOURCE_MOZES 
+          :mozes_feed_id => item_id,
+          :input_source_id => Report::SOURCE_MOZES 
         })
         
-      #rescue ActiveRecord::RecordInvalid => e
+      rescue ActiveRecord::RecordInvalid => e
         puts "[poll_mozes] Error while creating report from feed item: #{item_id} : #{e.class}: #{e.message}"
       end
     end
-  #rescue Exception => e
+  rescue Exception => e
     puts "[poll_mozes] Uncaught exception during loop: \n#{e.class}: #{e.message}\n\t#{e.backtrace.join("\n")} "
     return
   end
-  #sleep 10
+  sleep 10
 end
 
