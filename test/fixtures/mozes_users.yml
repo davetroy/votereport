@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  id: 1
+  mozes_id: 3216502430
+
+two:
+  id: 2
+  mozes_id: 302574403185

@@ -1,5 +1,6 @@
 class Report < ActiveRecord::Base
-  validates_uniqueness_of :tid
+  validates_uniqueness_of :tid, :allow_blank => true, :message => 'Twitter feed item already processed'
+  validates_uniqueness_of :mozes_feed_id, :allow_blank => true, :message => 'Mozes feed item already processed'
 
   belongs_to :location
   belongs_to :twitter_user
@@ -12,6 +13,9 @@ class Report < ActiveRecord::Base
   after_save  :assign_filters
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
+  
+  SOURCE_TWITTER = 1
+  SOURCE_MOZES = 2
 
   def name
     "#votereport #{self[:id]}" + (self.twitter_user ? " - #{twitter_user.name}" : "")

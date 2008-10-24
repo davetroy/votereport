@@ -1,1 +1,3 @@
 config/database.yml
+log/*
+.DS_Store

@@ -68,3 +68,5 @@ Rails::Initializer.run do |config|
   
   config.gem 'mislav-will_paginate', :version => '~> 2.3.2', :lib => 'will_paginate', :source => 'http://gems.github.com'
 end
+
+ENV['TZ'] = 'UTC'

@@ -2,7 +2,7 @@
   <channel>
     <link>http://www.mozes.com/_/rss?keyword_id=1031894</link>
     <docs>http://blogs.law.harvard.edu/tech/rss</docs>
-    <pubDate>Thu, 23 Oct 2008 18:44:57 -0700</pubDate>
+    <pubDate>Fri, 24 Oct 2008 12:11:03 -0700</pubDate>
     <atom:link href="http://www.mozes.com/_/rss?keyword_id=1031894" rel="self" type="application/rss+xml" />
     <description>Nationwide VoteReport</description>
     <title>Messages for votereport on Mozes.com</title>
@@ -14,6 +14,7 @@
       ]]></description>
       <pubDate>Thu, 23 Oct 2008 18:44:20 -0700</pubDate>
       <link><![CDATA[http://www.mozes.com/302574403185/]]></link>
+      <guid>13810601</guid>
       <mozes:mozesUserId>302574403185</mozes:mozesUserId>
     </item>
     <item>
@@ -24,6 +25,7 @@
       ]]></description>
       <pubDate>Thu, 23 Oct 2008 14:11:24 -0700</pubDate>
       <link><![CDATA[http://www.mozes.com/3216502430/yotowoti]]></link>
+      <guid>13783488</guid>
       <mozes:mozesUserId>3216502430</mozes:mozesUserId>
     </item>
   </channel>
