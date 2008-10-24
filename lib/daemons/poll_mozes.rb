@@ -4,7 +4,6 @@ ENV["RAILS_ENV"] ||= 'production'
 # See mozes_sample.xml for contents of feed
 
 FEED = "http://www.mozes.com/_/rss?keyword_id=1031894"
-EXTRACTOR = Regexp.new(/^(\w+?):\s(.*)$/m)
 
 require File.dirname(__FILE__) + "/../../config/environment"
 require 'json'
