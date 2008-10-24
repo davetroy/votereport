@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
   require 'digest/sha1'
 
-  validates_presence_of :name, :url, :api_key, :password_hash, :email
-  validates_uniqueness_of :api_key, :email, :url, :name
+  validates_presence_of :first_name, :last_name, :url, :api_key, :password_hash, :email
+  validates_uniqueness_of :api_key, :email, :url
 
   attr_accessor(:password)
   
