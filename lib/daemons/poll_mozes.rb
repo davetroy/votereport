@@ -1,6 +1,7 @@
 ENV["RAILS_ENV"] ||= 'production'
 
 FEED = 'http://www.mozes.com/_/rss?keyword_id=1031894'
+STAMPFILE = '/tmp/poll_mozes_tstamp'
 
 require "#{RAILS_ROOT}/config/environment"
 require 'hpricot'
@@ -21,7 +22,20 @@ def debug(msg)
   puts "[poll_mozes] [debug] #{msg}" if RAILS_ENV == 'development'
 end
 
+def write_tstamp(time = Time.now.utc)
+  file = File.new(STAMPFILE, "w")
+  file.print time.to_s
+  file.close
+end
+
+def read_tstamp
+  stamps = []
+  stamps = IO.readlines(STAMPFILE) if File.exists? STAMPFILE
+  stamps[0].nil? ? (Time.now.utc - 1.hour) : Time.parse(stamps[0])
+end
+
 while($running) do
+  since = read_tstamp
   begin
   # DO NOT populate these fields for this dataset
     # report.uniqueid = nil                 (asterisk ONLY)
@@ -36,6 +50,13 @@ while($running) do
         # pull an identifier
         item_id = (item/:guid).inner_text
         debug "found item: #{item_id}"
+        
+        # only process items posted after our last check...
+        item_tstamp = Time.parse((item/:pubDate).inner_text)
+        if item_tstamp < since
+          #debug "skipping item #{item_id}, #{item_tstamp} before #{since}"
+          next
+        end
         
         # create a user if not already extant
         mozes_id = (item/'mozes:mozesUserId').inner_text.strip
@@ -62,6 +83,7 @@ while($running) do
     puts "[poll_mozes] Uncaught exception during loop: \n#{e.class}: #{e.message}\n\t#{e.backtrace.join("\n")} "
     return
   end
+  write_tstamp
   sleep 10
 end
 
