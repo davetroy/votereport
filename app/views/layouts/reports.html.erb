@@ -3,6 +3,11 @@
   <%= stylesheet_link_tag 'search' %>
   <%= yield :head %>
   <title>VoteReport</title>
+	<link rel="search" type="application/opensearchdescription+xml" title="#votereport" href="http://votereport.us/opensearch.xml" />
+	<%- [:atom, :kml].each do |format| -%>
+	<%=  auto_discovery_link_tag(format, {:controller => :reports, :action => :index, :format => format}, {:title => "#votereport #{format} feed"}) %>
+	<%- end -%>
+
 </head>
 <body>
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:geo="http://a9.com/-/opensearch/extensions/geo/1.0/">
+   <ShortName>#votereport</ShortName>
+   <Description>Election 2008 vote reporting</Description>
+   <Tags>election voting votereport democracy</Tags>
+   <Contact>robot@votereport.us</Contact>
+   <Image width="16" height="16" type="image/x-icon">http://votereport.us/favicon.ico</Image>
+   <Url type="text/html" template="http://votereport.us/reports?count={count?}&amp;page={startPage?}"/>
+   <Url type="application/atom+xml" template="http://votereport.us/reports.atom?count={count?}&amp;page={startPage?}"/>
+   <Url type="application/vnd.google-earth.kml+xml" template="http://votereport.us/reports.kml?count={count?}&amp;page={startPage?}"/>
+ </OpenSearchDescription>

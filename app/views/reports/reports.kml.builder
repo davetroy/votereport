@@ -29,7 +29,7 @@ xml.kml("xmlns" => "http://earth.google.com/kml/2.2",
         end if report.twitter_user
         xml.atom( :link, :href => report_url(:id => report, :only_path => false ), :rel => "alternate", :type => "text/html")
         xml.tag! "ExtendedData" do
-          %w{wait_time}.each do |attribute|
+          %w{wait_time score}.each do |attribute|
             xml.tag! "Data", :name => attribute do
               xml.value report.send(attribute) 
             end

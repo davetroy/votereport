@@ -2,6 +2,9 @@ class ReportsController < ApplicationController
 
   # GET /reports
   def index
+    @per_page = params[:count] || 4
+    @page = params[:page] || 1
+    
     respond_to do |format|
       format.kml do
         @reports = Report.with_location.find(:all)
@@ -13,11 +16,10 @@ class ReportsController < ApplicationController
         end
       end
       format.atom do
-        @reports = Report.with_location.find(:all)
+        @reports = Report.with_location.find(:all).paginate :page => @page, :per_page => @per_page
       end
       format.html do
-        @page = params[:page] || 1
-        @reports = Report.find(:all).paginate :page => @page, :per_page => 20
+        @reports = Report.find(:all).paginate :page => @page, :per_page => @per_page
       end
     end
   end
