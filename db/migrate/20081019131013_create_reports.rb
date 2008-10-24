@@ -10,7 +10,7 @@ class CreateReports < ActiveRecord::Migration
       t.integer  "tid"                                # Twitter internal ID
       t.string   "text"                               # Text of the report from Twitter, SMS or otherwise
       t.integer  "score"                              # Overall "score" of this report (0=no problems)
-      t.string   "callerid",       :limit => 20       # Telephone Caller ID
+      t.string   "callerid",       :limit => 20       # Telephone Caller ID or Mozes Unique User ID
       t.string   "uniqueid",       :limit => 20       # Unique call identifier for Asterisk
       t.string   "zip",            :limit => 5        # Extracted zip associated with report
       t.integer  "wait_time"                          # Extracted wait time associated with report
