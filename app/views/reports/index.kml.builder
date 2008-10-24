@@ -12,7 +12,7 @@ xml.kml("xmlns" => "http://earth.google.com/kml/2.2",
       xml.name "#votereport live updating"
       xml.tag! "Link" do
         xml.href url_for(:controller => :reports, :action => :index, :only_path => false, :live => 1  )
-        xml.viewRefreshModeI'll' "onStop"
+        xml.viewRefreshMode "onStop"
       end
     end
   end
