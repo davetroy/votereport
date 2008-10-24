@@ -24,11 +24,21 @@ Build interface for transcription of audio files from asterisk
 Build interface for users to register with the system
   (Twitter screen_name, caller ID, etc)
 
+Maps and Visualizations
+  Openlayers (underway)
+  Google Maps
+  Microsoft Virtual Earth (Heatmaps)
+  Heatmaps in general
+  FreeEarth
+  State-by-State and City views
+
 API
   Determine list of available calls and formats
   Determine available parameters (last x minutes vs. whole set)
+  Finalize API key format
 
 ---
 
 iPhone Client
   Design & implement w/Dave Troy (deadline Monday)
+  Need data on Google's polling place API (pls get to Dave)
