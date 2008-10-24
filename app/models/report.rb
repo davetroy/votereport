@@ -16,6 +16,8 @@ class Report < ActiveRecord::Base
   
   SOURCE_TWITTER = 1
   SOURCE_MOZES = 2
+  SOURCE_IPHONE = 3
+  SOURCE_VOICE = 4
 
   def name
     "#votereport #{self[:id]}" + (self.twitter_user ? " - #{twitter_user.name}" : "")

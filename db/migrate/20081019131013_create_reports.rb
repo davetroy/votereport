@@ -4,7 +4,7 @@ class CreateReports < ActiveRecord::Migration
 
   def self.up
     create_table "reports" do |t|
-      t.integer  "input_source_id"                    # 1 = twitter, 2 = sms, 3 = iPhone, 4 = SMS
+      t.integer  "input_source_id"                    # 1 = twitter, 2 = sms, 3 = iPhone, 4 = asterisk
       t.integer  "location_id"
       t.integer  "twitter_user_id"
       t.integer  "tid"                                # Twitter internal ID
