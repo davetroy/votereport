@@ -1,5 +1,6 @@
 class ReportsController < ApplicationController
-
+  protect_from_forgery :except => :create
+  
   # GET /reports
   def index
     @per_page = params[:count] || 10
@@ -30,6 +31,22 @@ class ReportsController < ApplicationController
   # POST /reports
   # Used by iPhone app and API users
   def create
+    respond_to do |format|
+      format.iphone do
+        if params[:reporter][:udid][/^[\d\-A-F]{36}$/]
+          result = save_iphone_report(params)
+          render :text => result and return true
+        end
+      end
+    end
   end
   
+  private
+  def save_iphone_report(info)
+    reporter = IphoneReporter.create(info[:reporter])
+    reporter.reports.create(info[:report])
+    "OK"
+  rescue
+    "ERROR"
+  end
 end
