@@ -32,10 +32,17 @@ while($running) do
         #   debug "skipping item: #{item_tstamp} before #{since}"
         #   next
         # end
-        
-        if reporter = SmsReporter.update_or_create('uniqueid' => (item/:guid).inner_text.strip)
+        text = (item/:description).inner_html.gsub!(/(<a.*?\/a>)/, '')
+        image_link = Hpricot.parse($1)
+        image = (image_link/:a/:img)
+        screen_name = image.first[:title]
+        image_src = image.first[:src]
+
+        if reporter = SmsReporter.update_or_create('uniqueid' => (item/:guid).inner_text.strip, 
+                                                   'profile_image_url' => image_src,
+                                                   'screen_name' => screen_name)
           debug "creating report..."
-          reporter.reports.create!(:text => (item/:description).inner_text.gsub(/<a.*?\/a>/, '').strip,
+          reporter.reports.create!(:text => text,
                          :uniqueid => (item/:guid).inner_text.strip,
                          :created_at => item_tstamp)
         end

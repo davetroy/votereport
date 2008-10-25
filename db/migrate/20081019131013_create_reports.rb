@@ -18,7 +18,7 @@ class CreateReports < ActiveRecord::Migration
 
     create_table "reporters" do |t|
       t.integer "location_id"
-      t.string  "type", :limit => 30                  # TwitterReporter, IPhoneReporter, SMSReporter, PhoneReporter
+      t.string  "type", :limit => 30                  # TwitterReporter, IPhoneReporter, SmsReporter, PhoneReporter
       t.string  "uniqueid", :limit => 80
       t.string  "name", :limit => 80
       t.string  "screen_name", :limit => 80
