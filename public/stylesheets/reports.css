@@ -38,6 +38,7 @@ img.profile {
 }
 
 span.whenwhere {
-	font-color: #444;
+	color: #444;
+	font-size: 10px;
 	font-style: italic;
 }

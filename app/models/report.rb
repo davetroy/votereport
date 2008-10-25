@@ -39,8 +39,8 @@ class Report < ActiveRecord::Base
   
   def source_name
     { SOURCE_TWITTER => 'Twitter',
-      SOURCE_MOZES   => 'Mozes',
-      SOURCE_IPHONE  => 'iPhone',
+      SOURCE_MOZES   => 'SMS',
+      SOURCE_IPHONE  => 'iPhone Vote Report App',
       SOURCE_VOICE   => 'Telephone' }[input_source_id]
   end
 
