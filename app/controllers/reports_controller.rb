@@ -43,10 +43,11 @@ class ReportsController < ApplicationController
   
   private
   def save_iphone_report(info)
-    reporter = IphoneReporter.create(info[:reporter])
+    reporter = IphoneReporter.update_or_create(info[:reporter])
     reporter.reports.create(info[:report])
     "OK"
-  rescue
+  rescue => e
+    logger.info "*** ERROR: #{e.class}: #{e.message}"
     "ERROR"
   end
 end

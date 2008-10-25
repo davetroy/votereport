@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 1) do
+ActiveRecord::Schema.define(:version => 20081023221200) do
 
   create_table "filters", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "name", :string, :limit => 80
@@ -56,5 +56,92 @@ ActiveRecord::Schema.define(:version => 1) do
   end
 
   add_index "locations", ["point"], :name => "index_locations_on_point", :spatial=> true 
+
+  create_table "polling_places", :force => true do |t|
+    t.column "location_id", :integer
+    t.column "name", :string, :limit => 80
+    t.column "address", :string, :limit => 80
+    t.column "city", :string, :limit => 80
+    t.column "state", :string, :limit => 2
+    t.column "zip", :string, :limit => 10
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  create_table "report_filters", :options=>'ENGINE=MyISAM', :force => true do |t|
+    t.column "report_id", :integer
+    t.column "filter_id", :integer
+  end
+
+  add_index "report_filters", ["report_id"], :name => "index_report_filters_on_report_id"
+  add_index "report_filters", ["filter_id"], :name => "index_report_filters_on_filter_id"
+
+  create_table "report_tags", :force => true do |t|
+    t.column "report_id", :integer
+    t.column "tag_id", :integer
+  end
+
+  add_index "report_tags", ["report_id"], :name => "index_report_tags_on_report_id"
+  add_index "report_tags", ["tag_id"], :name => "index_report_tags_on_tag_id"
+
+  create_table "reporters", :force => true do |t|
+    t.column "location_id", :integer
+    t.column "type", :string, :limit => 30
+    t.column "uniqueid", :string, :limit => 80
+    t.column "name", :string, :limit => 80
+    t.column "screen_name", :string, :limit => 80
+    t.column "profile_location", :string, :limit => 80
+    t.column "profile_image_url", :string, :limit => 200
+    t.column "followers_count", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "reporters", ["uniqueid", "type"], :name => "index_reports_on_uniqueid_and_type", :unique => true
+
+  create_table "reports", :force => true do |t|
+    t.column "source", :string, :limit => 3
+    t.column "reporter_id", :integer
+    t.column "location_id", :integer
+    t.column "uniqueid", :string, :limit => 20
+    t.column "text", :string
+    t.column "score", :integer
+    t.column "zip", :string, :limit => 5
+    t.column "wait_time", :integer
+    t.column "polling_place_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "reports", ["created_at"], :name => "index_reports_on_created_at"
+
+  create_table "tags", :force => true do |t|
+    t.column "pattern", :string, :limit => 30
+    t.column "description", :string, :limit => 80
+    t.column "score", :integer
+  end
+
+  create_table "users", :options=>'ENGINE=MyISAM', :force => true do |t|
+    t.column "first_name", :string, :limit => 80
+    t.column "last_name", :string, :limit => 80
+    t.column "url", :string, :limit => 120
+    t.column "api_key", :string, :limit => 40
+    t.column "password_hash", :string, :limit => 40
+    t.column "email", :string, :limit => 80
+    t.column "verified", :boolean
+    t.column "authorized", :boolean
+    t.column "day_query_limit", :integer
+    t.column "day_update_limit", :integer
+    t.column "day_query_count", :integer, :default => 0
+    t.column "day_update_count", :integer, :default => 0
+    t.column "query_count", :integer, :default => 0
+    t.column "update_count", :integer, :default => 0
+    t.column "last_query_at", :datetime
+    t.column "last_update_at", :datetime
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "users", ["api_key"], :name => "index_users_on_api_key", :unique => true
 
 end

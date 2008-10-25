@@ -11,13 +11,17 @@ class Report < ActiveRecord::Base
 
   before_validation :set_source
   before_save :detect_location, :assign_tags
-  after_save  :assign_filters
+  after_save  :assign_filters, :check_uniqueid
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
 
   private
   def set_source
     self.source = self.reporter.source
+  end
+
+  def check_uniqueid
+    update_attribute(:uniqueid, "#{Time.now.to_i}.#{self.id}") if self.uniqueid.nil?
   end
   
   def detect_location
