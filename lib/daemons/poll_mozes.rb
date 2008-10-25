@@ -43,12 +43,12 @@ while($running) do
     
     (doc/:item).each do |item|
       begin        
-        # only process items posted after our last check...
-        # item_tstamp = Time.parse((item/:pubDate).inner_text)
-        # if item_tstamp < since
-        #   debug "skipping item #{item_id}, #{item_tstamp} before #{since}"
-        #   next
-        # end
+        only process items posted after our last check...
+        item_tstamp = Time.parse((item/:pubDate).inner_text)
+        if item_tstamp < since
+          debug "skipping item #{item_id}, #{item_tstamp} before #{since}"
+          next
+        end
                 
         # create the report
         debug "creating report..."
