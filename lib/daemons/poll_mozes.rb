@@ -14,7 +14,7 @@ end
 
 $stdout.sync=true
 
-def debug(msg) 
+def debug(msg)
   puts "[poll_mozes] [debug] #{msg}" if RAILS_ENV == 'development'
 end
 
@@ -35,15 +35,13 @@ while($running) do
                 
         # create the report
         debug "creating report..."
-        Report.create!({ 
-          :text => (item/:description).inner_text.gsub(/<a.*?\/a>/, '').strip,
-          :callerid => (item/'mozes:mozesUserId').inner_text.strip, 
-          :uniqueid => (item/:guid).inner_text.strip,
-          :input_source_id => Report::SOURCE_MOZES 
-        })
+        Report.create!(:text => (item/:description).inner_text.gsub(/<a.*?\/a>/, '').strip,
+                       :callerid => (item/'mozes:mozesUserId').inner_text.strip, 
+                       :uniqueid => (item/:guid).inner_text.strip,
+                       :input_source_id => Report::SOURCE_MOZES)
         
       rescue ActiveRecord::RecordInvalid => e
-        puts "[poll_mozes] Error while creating report from feed item: #{item_id} : #{e.class}: #{e.message}"
+        puts "[poll_mozes] Error while creating report from feed item: #{e.class}: #{e.message}"
       end
     end
   rescue Exception => e

@@ -1,7 +1,7 @@
 class Report < ActiveRecord::Base
   validates_presence_of :input_source_id
-  validates_uniqueness_of :tid, :allow_blank => true, :message => 'Twitter feed item already processed'
-  validates_uniqueness_of :uniqueid, :allow_blank => true, :message => 'Report already processed'
+  validates_uniqueness_of :tid, :allow_blank => true, :message => 'already processed'
+  validates_uniqueness_of :uniqueid, :allow_blank => true, :message => 'already processed'
 
   belongs_to :location
   belongs_to :twitter_user
