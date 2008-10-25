@@ -7,17 +7,16 @@ class CreateReports < ActiveRecord::Migration
       t.integer  "input_source_id"                    # 1 = twitter, 2 = sms, 3 = iPhone, 4 = asterisk
       t.integer  "location_id"
       t.integer  "twitter_user_id"
-      t.integer  "tid"                                # Twitter internal ID
       t.string   "text"                               # Text of the report from Twitter, SMS or otherwise
       t.integer  "score"                              # Overall "score" of this report (0=no problems)
       t.string   "callerid",       :limit => 20       # Telephone Caller ID or Mozes Unique User ID
-      t.string   "uniqueid",       :limit => 20       # Unique call identifier for Asterisk
+      t.string   "uniqueid",       :limit => 20       # Unique identifier for Twitter, SMS, Asterisk
       t.string   "zip",            :limit => 5        # Extracted zip associated with report
       t.integer  "wait_time"                          # Extracted wait time associated with report
       t.timestamps
     end
 
-    add_index "reports", ["tid"], :name => "index_reports_on_tid", :unique => true
+    add_index "reports", ["uniqueid","input_source_id"], :name => "index_reports_on_uniqueid_and_input_source_id", :unique => true
 
     create_table "twitter_users" do |t|
       t.integer "tid"                                 # Twitter internal ID

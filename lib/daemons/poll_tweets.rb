@@ -23,7 +23,7 @@ while($running) do
     
     screen_name, text = entry['title'].match(EXTRACTOR).captures
     user.reports.create(:text => text,
-                        :tid => entry['status_id'],
+                        :uniqueid => entry['status_id'],
                         :input_source_id => Report::SOURCE_TWITTER,
                         :created_at => entry['published'])
   end
