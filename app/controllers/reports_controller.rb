@@ -19,7 +19,7 @@ class ReportsController < ApplicationController
         @reports = Report.with_location.find(:all).paginate :page => @page, :per_page => @per_page
       end
       format.html do
-        @reports = Report.find(:all).paginate :page => @page, :per_page => @per_page
+        @reports = Report.find(:all).paginate :page => @page, :per_page => @per_page, :order => 'id DESC'
       end
     end
   end

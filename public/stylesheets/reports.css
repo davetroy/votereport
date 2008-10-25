@@ -1,0 +1,43 @@
+body { background-color: white; color: #333; }
+
+body, ol, ul {
+  font-family: 'Helvetica';
+  font-size:   13px;
+  line-height: 18px;
+}
+
+h1 {
+	text-decoration: underline;
+}
+
+#reports {
+	text-align: left;
+}
+
+#report {
+	width: 600px;
+	background-color: eee;
+	padding: 5px;
+	margin: 3px;
+	height: 60px;
+}
+
+#screen_name {
+	border: 0;
+}
+
+#text {
+	width: 600px;
+}
+
+img.profile {
+	width: 48px;
+	height: 48px;
+	float: left;
+	margin: 5 15 5 10;
+}
+
+span.whenwhere {
+	font-color: #444;
+	font-style: italic;
+}

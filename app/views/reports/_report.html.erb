@@ -1,4 +1,8 @@
-<div id="result">
+<div id="report">
     <img src="<%=report.icon%>" class="profile">
-    <%=report.name%>: <%=report.text%>
+    <%=report.name%>: <%=report.text%><br/>
+    <span class="whenwhere">
+      <%=time_ago_in_words(report.created_at)%> ago
+      <%="in #{report.location.address}" if report.location%>
+    </span>
 </div>
