@@ -15,6 +15,7 @@ class CreateReports < ActiveRecord::Migration
     end
 
     add_index "reports", ["uniqueid","input_source_id"], :name => "index_reports_on_uniqueid_and_input_source_id", :unique => true
+    add_index "reports", ["created_at"], :name => "index_reports_on_created_at"
 
     create_table "twitter_users" do |t|
       t.integer "tid"                                 # Twitter internal ID
