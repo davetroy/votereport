@@ -2,7 +2,7 @@ class ReportsController < ApplicationController
 
   # GET /reports
   def index
-    @per_page = params[:count] || 4
+    @per_page = params[:count] || 10
     @page = params[:page] || 1
     
     respond_to do |format|

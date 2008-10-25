@@ -1,6 +1,7 @@
 class Report < ActiveRecord::Base
+  validates_presence_of :input_source_id
   validates_uniqueness_of :tid, :allow_blank => true, :message => 'Twitter feed item already processed'
-  validates_uniqueness_of :mozes_feed_id, :allow_blank => true, :message => 'Mozes feed item already processed'
+  validates_uniqueness_of :uniqueid, :allow_blank => true, :message => 'Report already processed'
 
   belongs_to :location
   belongs_to :twitter_user
@@ -15,12 +16,27 @@ class Report < ActiveRecord::Base
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
   
   SOURCE_TWITTER = 1
-  SOURCE_MOZES = 2
-  SOURCE_IPHONE = 3
-  SOURCE_VOICE = 4
+  SOURCE_MOZES   = 2
+  SOURCE_IPHONE  = 3
+  SOURCE_VOICE   = 4
 
   def name
-    "#votereport #{self[:id]}" + (self.twitter_user ? " - #{twitter_user.name}" : "")
+    "#votereport #{self.id} - " +
+    case input_source_id
+      when SOURCE_TWITTER : twitter_user.name
+      when SOURCE_MOZES   : "SMS"
+      when SOURCE_IPHONE  : iphone_user.name
+      when SOURCE_VOICE   : "Caller"
+    end
+  end
+  
+  def icon
+    case input_source_id
+      when SOURCE_TWITTER : self.twitter_user.profile_image_url
+      when SOURCE_MOZES   : "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+      when SOURCE_IPHONE  : "/images/iphone_icon.png"
+      when SOURCE_VOICE   : "/images/voice_icon.png"
+    end
   end
 
   private

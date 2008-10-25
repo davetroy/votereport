@@ -1,4 +1,4 @@
-ENV["RAILS_ENV"] ||= 'production'
+ENV["RAILS_ENV"] ||= defined?(Daemons) ? 'production' : 'development'
 
 FEED = 'http://www.mozes.com/_/rss?keyword_id=1031894'
 STAMPFILE = '/tmp/poll_mozes_tstamp'
@@ -37,41 +37,25 @@ end
 while($running) do
   since = read_tstamp
   begin
-  # DO NOT populate these fields for this dataset
-    # report.uniqueid = nil                 (asterisk ONLY)
-    # report.tid = nil                      (twitter ONLY)
-    # report.twitter_user_id = nil          (twitter ONLY)
     
     debug "Pulling XML feed..."
     doc = Hpricot.XML(open(FEED))
     
     (doc/:item).each do |item|
-      begin
-        # pull an identifier
-        item_id = (item/:guid).inner_text.strip
-        debug "found item: #{item_id}"
-        
+      begin        
         # only process items posted after our last check...
-        item_tstamp = Time.parse((item/:pubDate).inner_text)
-        if item_tstamp < since
-          #debug "skipping item #{item_id}, #{item_tstamp} before #{since}"
-          next
-        end
-        
-        # create a user if not already extant
-        mozes_id = (item/'mozes:mozesUserId').inner_text.strip
-        debug "JIT user creation for #{mozes_id}"
-        user = MozesUser.find_or_create_by_mozes_id( mozes_id )
-        unless user.valid?
-          raise PollMozesException.new("[poll mozes] No Mozes User ID for item: #{item_id}")
-        end
-        
+        # item_tstamp = Time.parse((item/:pubDate).inner_text)
+        # if item_tstamp < since
+        #   debug "skipping item #{item_id}, #{item_tstamp} before #{since}"
+        #   next
+        # end
+                
         # create the report
         debug "creating report..."
-        user.reports.create!({ 
+        Report.create!({ 
           :text => (item/:description).inner_text.gsub(/<a.*?\/a>/, '').strip,
-          :mozes_user_id => user.id, 
-          :mozes_feed_id => item_id,
+          :callerid => (item/'mozes:mozesUserId').inner_text.strip, 
+          :uniqueid => (item/:guid).inner_text.strip,
           :input_source_id => Report::SOURCE_MOZES 
         })
         

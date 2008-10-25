@@ -22,7 +22,7 @@ xml.feed "xmlns" => "http://www.w3.org/2005/Atom",
       xml.link    :rel => "alternate", :href => report_url( report ), :type => "text/html"
       xml.id      url_for(:only_path => false, :controller => :reports, :action => :show, :id => report.id)
       xml.updated report.updated_at.strftime "%Y-%m-%dT%H:%M:%SZ" unless report.updated_at.nil?
-      xml.author  { xml.name report.twitter_user.name } unless report.twitter_user.name.blank?
+      xml.author  { xml.name report.name }
       xml.summary report.text unless report.text.nil?
       xml << report.location.point.as_georss unless report.location.nil?
       xml.content :type => "html" do

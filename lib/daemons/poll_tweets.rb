@@ -1,4 +1,4 @@
-ENV["RAILS_ENV"] ||= 'production'
+ENV["RAILS_ENV"] ||= defined?(Daemons) ? 'production' : 'development'
 
 FEED = "http://twittervision.com/votereport.json"
 EXTRACTOR = Regexp.new(/^(\w+?):\s(.*)$/m)
