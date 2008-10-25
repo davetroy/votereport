@@ -42,7 +42,7 @@ while($running) do
                        :created_at => item_tstamp)
         
       rescue ActiveRecord::RecordInvalid => e
-        puts "[poll_mozes] Error while creating report from feed item: #{e.class}: #{e.message}"
+        #puts "[poll_mozes] Error while creating report from feed item: #{e.class}: #{e.message}"
       end
     end
   rescue Exception => e

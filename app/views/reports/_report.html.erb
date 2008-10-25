@@ -4,5 +4,6 @@
     <span class="whenwhere">
       <%=time_ago_in_words(report.created_at)%> ago
       <%="in #{report.location.address}" if report.location%>
+      via <%=report.source_name%>
     </span>
 </div>

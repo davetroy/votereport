@@ -20,12 +20,11 @@ class Report < ActiveRecord::Base
   SOURCE_VOICE   = 4
 
   def name
-    "#votereport #{self.id} - " +
     case input_source_id
       when SOURCE_TWITTER : twitter_user.name
-      when SOURCE_MOZES   : "SMS"
+      when SOURCE_MOZES   : "Vote Reporter"
       when SOURCE_IPHONE  : iphone_user.name
-      when SOURCE_VOICE   : "Caller"
+      when SOURCE_VOICE   : "Vote Reporter"
     end
   end
   
@@ -36,6 +35,13 @@ class Report < ActiveRecord::Base
       when SOURCE_IPHONE  : "/images/iphone_icon.png"
       when SOURCE_VOICE   : "/images/voice_icon.png"
     end
+  end
+  
+  def source_name
+    { :SOURCE_TWITTER => 'Twitter',
+      :SOURCE_MOZES   => 'Mozes',
+      :SOURCE_IPHONE  => 'iPhone',
+      :SOURCE_VOICE   => 'Telephone' }[input_source_id]
   end
 
   private
