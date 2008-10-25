@@ -27,7 +27,7 @@ def write_tstamp(time = Time.now)
 end
 
 while($running) do
-  since = Time.parse(File.read(STAMPFILE)) rescue 0
+  since = Time.parse(File.read(STAMPFILE)) rescue 1.hour.ago
   begin
     
     debug "Pulling XML feed..."
