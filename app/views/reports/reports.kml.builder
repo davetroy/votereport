@@ -7,12 +7,12 @@ xml.kml("xmlns" => "http://earth.google.com/kml/2.2",
     xml.atom :link, :href => url_for(:controller => :reports, :only_path => false ), :rel => "alternate", :type => "text/html"
     @reports.each do |report| # render :partial => @reports - doesn't work in builder?
       xml.tag! "Placemark", :id => "votereport:report:#{report.id}" do
-        xml.name report.name
+        xml.name report.reporter.name
         xml.description "#{h(report.text)} in #{h(report.location.address)}"
         xml.tag! "Style" do
           xml.tag! "IconStyle" do
             xml.tag! "Icon" do
-              xml.href report.icon
+              xml.href report.reporter.icon
             end
           end
           xml.tag! "LabelStyle" do
@@ -25,7 +25,7 @@ xml.kml("xmlns" => "http://earth.google.com/kml/2.2",
           end
         end
         xml.atom :author do
-          xml.atom :name, report.name
+          xml.atom :name, report.reporter.name
         end
         xml.atom( :link, :href => report_url(:id => report, :only_path => false ), :rel => "alternate", :type => "text/html")
         xml.tag! "ExtendedData" do

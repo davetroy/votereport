@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081024170120) do
+ActiveRecord::Schema.define(:version => 20081023221200) do
 
   create_table "filters", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "name", :string, :limit => 80
@@ -57,13 +57,16 @@ ActiveRecord::Schema.define(:version => 20081024170120) do
 
   add_index "locations", ["point"], :name => "index_locations_on_point", :spatial=> true 
 
-  create_table "mozes_users", :force => true do |t|
-    t.column "mozes_id", :integer, :null => false
+  create_table "polling_places", :force => true do |t|
+    t.column "location_id", :integer
+    t.column "name", :string, :limit => 80
+    t.column "address", :string, :limit => 80
+    t.column "city", :string, :limit => 80
+    t.column "state", :string, :limit => 2
+    t.column "zip", :string, :limit => 10
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
   end
-
-  add_index "mozes_users", ["mozes_id"], :name => "index_mozes_users_on_mozes_id"
 
   create_table "report_filters", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "report_id", :integer
@@ -81,46 +84,42 @@ ActiveRecord::Schema.define(:version => 20081024170120) do
   add_index "report_tags", ["report_id"], :name => "index_report_tags_on_report_id"
   add_index "report_tags", ["tag_id"], :name => "index_report_tags_on_tag_id"
 
-  create_table "reports", :force => true do |t|
-    t.column "input_source_id", :integer
+  create_table "reporters", :force => true do |t|
     t.column "location_id", :integer
-    t.column "twitter_user_id", :integer
-    t.column "tid", :integer
-    t.column "text", :string
-    t.column "score", :integer
-    t.column "callerid", :string, :limit => 20
-    t.column "uniqueid", :string, :limit => 20
-    t.column "zip", :string, :limit => 5
-    t.column "wait_time", :integer
+    t.column "type", :string, :limit => 30
+    t.column "uniqueid", :string, :limit => 80
+    t.column "name", :string, :limit => 80
+    t.column "screen_name", :string, :limit => 80
+    t.column "profile_location", :string, :limit => 80
+    t.column "profile_image_url", :string, :limit => 200
+    t.column "followers_count", :integer
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
-    t.column "mozes_user_id", :integer
-    t.column "mozes_feed_id", :integer
   end
 
-  add_index "reports", ["tid"], :name => "index_reports_on_tid", :unique => true
-  add_index "reports", ["mozes_user_id"], :name => "index_reports_on_mozes_user_id"
-  add_index "reports", ["mozes_feed_id"], :name => "index_reports_on_mozes_feed_id"
+  add_index "reporters", ["uniqueid", "type"], :name => "index_reports_on_uniqueid_and_type", :unique => true
+
+  create_table "reports", :force => true do |t|
+    t.column "source", :string, :limit => 3
+    t.column "reporter_id", :integer
+    t.column "location_id", :integer
+    t.column "uniqueid", :string, :limit => 20
+    t.column "text", :string
+    t.column "score", :integer
+    t.column "zip", :string, :limit => 5
+    t.column "wait_time", :integer
+    t.column "polling_place_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "reports", ["created_at"], :name => "index_reports_on_created_at"
 
   create_table "tags", :force => true do |t|
     t.column "pattern", :string, :limit => 30
     t.column "description", :string, :limit => 80
     t.column "score", :integer
   end
-
-  create_table "twitter_users", :force => true do |t|
-    t.column "tid", :integer
-    t.column "name", :string, :limit => 80
-    t.column "screen_name", :string, :limit => 80
-    t.column "profile_location", :string, :limit => 80
-    t.column "profile_image_url", :string, :limit => 200
-    t.column "followers_count", :integer
-    t.column "location_id", :integer
-    t.column "created_at", :datetime
-    t.column "updated_at", :datetime
-  end
-
-  add_index "twitter_users", ["tid"], :name => "index_twitter_users_on_tid", :unique => true
 
   create_table "users", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "first_name", :string, :limit => 80

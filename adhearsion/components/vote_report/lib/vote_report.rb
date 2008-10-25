@@ -10,7 +10,7 @@ class VoteReport
     collect_zip
     get_report_type
     Report.create(:zip => @zip, :report_type_id => @report_type_id,
-                  :callerid => call.callerid,
+                  :reporterid => call.callerid,
                   :uniqueid => call.uniqueid)
     record_audio_message?
     call.play('vm-goodbye')

@@ -32,14 +32,13 @@ while($running) do
         #   debug "skipping item: #{item_tstamp} before #{since}"
         #   next
         # end
-                
-        # create the report
-        debug "creating report..."
-        Report.create!(:text => (item/:description).inner_text.gsub(/<a.*?\/a>/, '').strip,
-                       :callerid => (item/'mozes:mozesUserId').inner_text.strip, 
-                       :uniqueid => (item/:guid).inner_text.strip,
-                       :input_source_id => Report::SOURCE_MOZES,
-                       :created_at => item_tstamp)
+        
+        if reporter = SmsReporter.update_or_create('uniqueid' => (item/:guid).inner_text.strip)
+          debug "creating report..."
+          reporter.reports.create!(:text => (item/:description).inner_text.gsub(/<a.*?\/a>/, '').strip,
+                         :uniqueid => (item/:guid).inner_text.strip,
+                         :created_at => item_tstamp)
+        end
         
       rescue ActiveRecord::RecordInvalid => e
         #puts "[poll_mozes] Error while creating report from feed item: #{e.class}: #{e.message}"
