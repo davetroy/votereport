@@ -38,10 +38,10 @@ class Report < ActiveRecord::Base
   end
   
   def source_name
-    { :SOURCE_TWITTER => 'Twitter',
-      :SOURCE_MOZES   => 'Mozes',
-      :SOURCE_IPHONE  => 'iPhone',
-      :SOURCE_VOICE   => 'Telephone' }[input_source_id]
+    { SOURCE_TWITTER => 'Twitter',
+      SOURCE_MOZES   => 'Mozes',
+      SOURCE_IPHONE  => 'iPhone',
+      SOURCE_VOICE   => 'Telephone' }[input_source_id]
   end
 
   private
