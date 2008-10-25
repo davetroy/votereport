@@ -22,8 +22,10 @@ while($running) do
     next unless user = TwitterUser.add(user_info)
     
     screen_name, text = entry['title'].match(EXTRACTOR).captures
-    report_info = { :text => text, :tid => entry['status_id'], :input_source_id => Report::SOURCE_TWITTER }
-    user.reports.create(report_info)
+    user.reports.create(:text => text,
+                        :tid => entry['status_id'],
+                        :input_source_id => Report::SOURCE_TWITTER,
+                        :created_at => entry['published'])
   end
   sleep 10
 end

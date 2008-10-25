@@ -27,7 +27,7 @@ while($running) do
     (doc/:item).each do |item|
       begin        
         # only process items posted after our last check...
-        # item_tstamp = Time.parse((item/:pubDate).inner_text)
+        item_tstamp = Time.parse((item/:pubDate).inner_text)
         # if item_tstamp < since
         #   debug "skipping item: #{item_tstamp} before #{since}"
         #   next
@@ -38,7 +38,8 @@ while($running) do
         Report.create!(:text => (item/:description).inner_text.gsub(/<a.*?\/a>/, '').strip,
                        :callerid => (item/'mozes:mozesUserId').inner_text.strip, 
                        :uniqueid => (item/:guid).inner_text.strip,
-                       :input_source_id => Report::SOURCE_MOZES)
+                       :input_source_id => Report::SOURCE_MOZES,
+                       :created_at => item_tstamp)
         
       rescue ActiveRecord::RecordInvalid => e
         puts "[poll_mozes] Error while creating report from feed item: #{e.class}: #{e.message}"
