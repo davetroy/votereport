@@ -16,10 +16,10 @@ class ReportsController < ApplicationController
         end
       end
       format.atom do
-        @reports = Report.with_location.find(:all).paginate :page => @page, :per_page => @per_page
+        @reports = Report.with_location.paginate :page => @page, :per_page => @per_page
       end
       format.html do
-        @reports = Report.find(:all).paginate :page => @page, :per_page => @per_page, :order => 'created_at DESC'
+        @reports = Report.paginate :page => @page, :per_page => @per_page, :order => 'created_at DESC'
       end
     end
   end
