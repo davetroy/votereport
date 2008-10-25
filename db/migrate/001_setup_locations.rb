@@ -41,7 +41,8 @@ class SetupLocations < ActiveRecord::Migration
 
     # Import filter set and reset centers; this is touchy, beware!
     Filter.connection.execute(File.read(File.dirname(__FILE__) + '/../filters.sql'))
-    Filter.find(:all).each { |f| f.update_attribute(:center_location_id, Location.geocode(f.title).id) }
+    Filter.connection.execute(File.read(File.dirname(__FILE__) + '/../locations.sql'))
+    #Filter.find(:all).each { |f| f.update_attribute(:center_location_id, Location.geocode(f.title).id) }
 
     create_table "invalid_locations", :options=>'ENGINE=MyISAM', :force => true do |t|
       t.column "text", :string, :limit => 80
