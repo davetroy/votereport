@@ -32,7 +32,8 @@ while($running) do
         #   debug "skipping item: #{item_tstamp} before #{since}"
         #   next
         # end
-        text = (item/:description).inner_html.gsub!(/(<a.*?\/a>)/, '')
+        text = (item/:description).inner_text
+        text = text.gsub(/(<a.*?\/a>)/, '').strip
         image_link = Hpricot.parse($1)
         image = (image_link/:a/:img)
         screen_name = image.first[:title]
@@ -42,7 +43,7 @@ while($running) do
                                                    'profile_image_url' => image_src,
                                                    'screen_name' => screen_name)
           debug "creating report..."
-          reporter.reports.create!(:text => text,
+          reporter.reports.create!(:text => text.strip,
                          :uniqueid => (item/:guid).inner_text.strip,
                          :created_at => item_tstamp)
         end
