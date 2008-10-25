@@ -47,7 +47,7 @@ while($running) do
   rescue Exception => e
     puts "[poll_mozes] Uncaught exception during loop: \n#{e.class}: #{e.message}\n\t#{e.backtrace.join("\n")} "
   end
-  File.open(STAMPFILE, "w") { |f| f.print time.to_s }
+  File.open(STAMPFILE, "w") { |f| f.print Time.now.to_s }
   sleep 10
 end
 
