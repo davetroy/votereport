@@ -23,19 +23,11 @@ def debug(msg)
 end
 
 def write_tstamp(time = Time.now)
-  file = File.new(STAMPFILE, "w")
-  file.print time.to_s
-  file.close
-end
-
-def read_tstamp
-  stamps = []
-  stamps = IO.readlines(STAMPFILE) if File.exists? STAMPFILE
-  stamps[0].nil? ? (Time.now - 1.hour) : Time.parse(stamps[0])
+  File.open(STAMPFILE, "w") { |f| f.print time.to_s }
 end
 
 while($running) do
-  since = read_tstamp
+  since = Time.parse(File.read(STAMPFILE)) rescue 0
   begin
     
     debug "Pulling XML feed..."
@@ -46,7 +38,7 @@ while($running) do
         # only process items posted after our last check...
         item_tstamp = Time.parse((item/:pubDate).inner_text)
         if item_tstamp < since
-          debug "skipping item #{item_id}, #{item_tstamp} before #{since}"
+          debug "skipping item: #{item_tstamp} before #{since}"
           next
         end
                 
