@@ -14,10 +14,6 @@ end
 
 $stdout.sync=true
 
-# for chucking errors about bad data
-class PollMozesException < StandardError
-end
-
 def debug(msg) 
   puts "[poll_mozes] [debug] #{msg}" if RAILS_ENV == 'development'
 end
