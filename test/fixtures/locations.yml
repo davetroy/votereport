@@ -1,0 +1,38 @@
+annapolis:
+  point: !ruby/object:GeoRuby::SimpleFeatures::Point 
+    m: 0.0
+    srid: -1
+    with_m: false
+    with_z: false
+    x: -76.519687
+    y: 38.96934
+    z: 0.0
+  locality: Annapolis
+  administrative_area: MD
+  country_code: US
+
+baltimore:
+  point: !ruby/object:GeoRuby::SimpleFeatures::Point 
+    m: 0.0
+    srid: -1
+    with_m: false
+    with_z: false
+    x: -76.614275
+    y: 39.294255
+    z: 0.0
+  locality: Baltimore
+  administrative_area: MD
+  country_code: US
+
+sanfrancisco:
+  point: !ruby/object:GeoRuby::SimpleFeatures::Point 
+    m: 0.0
+    srid: -1
+    with_m: false
+    with_z: false
+    x: -122.419204
+    y: 37.775196
+    z: 0.0
+  locality: San Francisco
+  administrative_area: CA
+  country_code: US

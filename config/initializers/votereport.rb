@@ -1,10 +1,16 @@
 # These regexes are used to extract location from text bodies no matter the input source
 LOCATION_PATTERNS = [
-  [Regexp.compile(/#?zip[\s\:\-]?(\d{5})/i), 1],                   # #zip 00000
-  [Regexp.compile(/[\s#]?(\d{5}-?\d{0,4})/), 1],                   # #94107, 02130, 21012-2423
-  [Regexp.compile(/^l:\s*([^:]+).*$/im), 1],                       # L: at start
-  [Regexp.compile(/[\s,]l:\s*([^:]+).*$/im), 1],                   # L: in tweet
-  [Regexp.compile(/.+((at|in)(.*)$)/), 3]                          # makes an attempt at catching the last "in/at <some place>"
+  Regexp.compile(/#?zip[\s\:\-]?(\d{5})/i),                   # #zip 00000
+  Regexp.compile(/[\s#]?(\d{5}-?\d{0,4})/),                   # #94107, 02130, 21012-2423
+  Regexp.compile(/^l:\s*([^:]+).*$/im),                       # L: at start
+  Regexp.compile(/[\s,]l:\s*([^:]+).*$/im),                   # L: in tweet
+]
+
+# Natural lanaguage location patterns; used by sweeper interface
+# to take a stab at deriving location
+# See ReportHelper#suggest_location
+NL_LOCATION_PATTERNS = [
+  [Regexp.compile(/.+((at|in)(.*)$)/), 3]                     # makes an attempt at catching the last "in/at <some place>"
 ]
 
 # Default limits for API usage; can be overridden case-by-case

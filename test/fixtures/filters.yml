@@ -1,26 +1,55 @@
+# These fixtures should be as small and manageable as possible for testing
+
 newyork:
-  id: 1
   name: newyork
   title: New York
-  center_location_id: 1
   conditions: administrative_area=="NY"
   zoom_level: 10
   aliases: nyc|ny
 
 northamerica:
-  id: 2
   name: northamerica
   title: North America
-  center_location_id: 2
   conditions: "%w(US CA MX).include?(country_code)"
   zoom_level: 5
 
 unitedstates:
-  id: 3
   name: unitedstates
   title: United States
-  center_location_id: 3
   conditions: country_code=='US'
   zoom_level: 5
   aliases: us
+  
+california:
+  name: california
+  title: California
+  conditions: administrative_area=='CA'
+  zoom_level: 5
+
+maryland:
+  name: maryland
+  title: Maryland
+  conditions: administrative_area=='MD'
+  zoom_level: 5
+
+annapolis:
+  name: annapolis
+  title: Annapolis
+  center: annapolis
+  radius: 40
+  zoom_level: 10
+
+baltimore:
+  name: baltimore
+  title: Baltimore
+  center: baltimore
+  radius: 40
+  zoom_level: 10
+
+sanfrancisco:
+  name: sanfrancisco
+  title: San Francisco
+  center: sanfrancisco
+  radius: 40
+  zoom_level: 10
 
