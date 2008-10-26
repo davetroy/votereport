@@ -13,8 +13,10 @@ h1 {
 #reports {
 	text-align: left;
 }
-
-#report {
+#syndication {
+    float: right;
+}
+.report {
 	width: 600px;
 	background-color: eee;
 	padding: 5px;
