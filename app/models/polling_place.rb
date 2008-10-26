@@ -11,8 +11,11 @@ class PollingPlace < ActiveRecord::Base
     return place if place && place.location.distance_to(loc) < 10
     
     # Then try to find by proximity (get id's within ~5 km)
-    if nearby_locations = loc.find_within_box(5, :id)
+    nearby_locations = loc.find_within_box(5, :id)
+    if nearby_locations.any?
       place = self.find(:first, :conditions => "location_id IN (#{nearby_locations.join(',')})" )
+    else
+      place = self.create(:name => name, :location => loc)
     end
     place
   end
