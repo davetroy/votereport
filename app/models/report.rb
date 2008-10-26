@@ -10,9 +10,9 @@ class Report < ActiveRecord::Base
   has_many :filters, :through => :report_filters
 
   before_validation :set_source
-  before_create :assign_tags # fixed problem with pulling same tags more than once
-  before_save :detect_location #, :assign_tags
-  after_save  :assign_filters, :check_uniqueid
+  before_save :detect_location
+  after_save :check_uniqueid
+  after_create :assign_tags, :assign_filters
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
 
