@@ -3,7 +3,7 @@ module ReportHelper
   # Use natural language scan to suggest intended location names
   # Here are some test cases to use against this method
   def suggest_location(text)
-    # Use NL_LOCATION_PATTERNS
+    # Use NL_LOCATION_PATTERNS for this (see config/initializers/votereport.rb)
     # assert_equal "Boulder, CO, USA", @twitter_reporter.reports.create(:text => 'taking forever in Boulder CO').location.address
     # assert_equal "Boulder, CO, USA", @twitter_reporter.reports.create(:text => 'long lines in courthouse at Boulder, CO').location.address
     # false positive matches - these cases need addressed:

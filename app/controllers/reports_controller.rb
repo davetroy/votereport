@@ -33,25 +33,27 @@ class ReportsController < ApplicationController
   def create
     respond_to do |format|
       format.iphone do
-        if params[:reporter][:udid][/^[\d\-A-F]{36}$/]
-          result = save_iphone_report(params)
-          render :text => result and return true
-        end
+        result = save_iphone_report(params)
+        render :text => result and return true
       end
     end
   end
   
   private
+  # Store an iPhone-generated report given a hash of parameters
+  # Check for a valid iPhone UDID
   def save_iphone_report(info)
+    raise unless info[:reporter][:uniqueid][/^[\d\-A-F]{36}$/]
     if loc = Location.geocode(info[:location][:latlon])
-      loc.update_attribute(:address,info[:reporter][:profile_location]) if loc.address.nil? && info[:reporter][:profile_location]
+      location_name = loc.address || info[:reporter][:profile_location]
+      loc.update_attribute(:address,location_name) if location_name
     end
     location_id = loc ? loc.id : nil
     reporter = IphoneReporter.update_or_create(info[:reporter].merge(:location_id => location_id))
     reporter.reports.create(info[:report].merge(:location_id => location_id))
     "OK"
   rescue => e
-    logger.info "*** ERROR: #{e.class}: #{e.message} #{e.backtrace.first}"
+    logger.info "*** ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"
     "ERROR"
   end
 end
