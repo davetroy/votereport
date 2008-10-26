@@ -4,13 +4,15 @@ class Report < ActiveRecord::Base
 
   belongs_to :location
   belongs_to :reporter
+  belongs_to :polling_place
+  
   has_many :report_tags, :dependent => :destroy
   has_many :tags, :through => :report_tags
   has_many :report_filters, :dependent => :destroy
   has_many :filters, :through => :report_filters
 
   before_validation :set_source
-  before_save :detect_location
+  before_create :detect_location
   after_save :check_uniqueid
   after_create :assign_tags, :assign_filters
   
@@ -30,8 +32,8 @@ class Report < ActiveRecord::Base
       LOCATION_PATTERNS.find { |p| self.text[p] }
       self.location = Location.geocode($1) if $1
       self.zip = location.postal_code if self.location && location.postal_code
-      self.location = reporter.location if !self.location && reporter && reporter.location
     end
+    self.location = reporter.location if !self.location && self.reporter && reporter.location
     true
   end
   
@@ -52,7 +54,7 @@ class Report < ActiveRecord::Base
   
   # What location filters apply to this report?  US, MD, etc?
   def assign_filters
-    if self.location_id
+    if self.location_id && self.location.filter_list
 			values = self.location.filter_list.split(',').map { |f| "(#{f},#{self.id})" }.join(',')
       self.connection.execute("INSERT DELAYED INTO report_filters (filter_id,report_id) VALUES #{values}") if !values.blank?
 		end

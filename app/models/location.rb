@@ -1,7 +1,7 @@
 class Location < ActiveRecord::Base
   has_many :aliases, :class_name => 'LocationAlias'
   before_validation :review_address
-  before_save :set_filters
+  after_create :set_filters
   validates_presence_of :address
   #validate that point really does not exist on create; we are already sort of doing this
 

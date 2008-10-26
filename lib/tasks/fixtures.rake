@@ -6,7 +6,7 @@ namespace :db do
     require 'Ya2YAML'
     task :extract => :environment do
       sql  = "SELECT * FROM %s"
-      skip_tables = %w(schema_info filters locations location_aliases schema_migrations)
+      skip_tables = %w(schema_info filters locations location_aliases polling_places schema_migrations)
       ActiveRecord::Base.establish_connection
       (ActiveRecord::Base.connection.tables - skip_tables).each do |table_name|
         i = "000"

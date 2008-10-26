@@ -36,3 +36,16 @@ sanfrancisco:
   locality: San Francisco
   administrative_area: CA
   country_code: US
+
+arnold:
+  point: !ruby/object:GeoRuby::SimpleFeatures::Point 
+    m: 0.0
+    srid: -1
+    with_m: false
+    with_z: false
+    x: -76.49603
+    y: 39.04231
+    z: 0.0
+  locality: Arnold
+  administrative_area: MD
+  country_code: US

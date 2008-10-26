@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ReportTest < ActiveSupport::TestCase
-  fixtures :reporters
   
   def setup
     @twitter_reporter = reporters(:reporters_001)

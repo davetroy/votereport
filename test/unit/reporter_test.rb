@@ -13,7 +13,8 @@ class ReporterTest < ActiveSupport::TestCase
   end
   
   def test_iphone_reporter_creation
-    reporter = IphoneReporter.create(:uniqueid => '00000000-0000-1000-8000-0017F20429CC', :name => "Fred J")
+    reporter = IphoneReporter.create(:uniqueid => '00000000-0000-1000-8000-0017F20429CC', :name => "Fred J", :latlon => '39.024,-76.511')
+    assert_match /Arnold/, reporter.profile_location
     assert_nil reporter.followers_count
     assert_equal "VoteReport iPhone App", reporter.source_name
     report = reporter.reports.create(:uniqueid => '829388202.292', :text => 'all is well in l:New York')

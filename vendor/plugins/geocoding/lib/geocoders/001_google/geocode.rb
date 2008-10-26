@@ -33,7 +33,7 @@ module Geo
         end.uniq
         loc = results.first
         point = latlon.split(',')
-        loc.merge(:point => Point.from_x_y(point[0].to_f, point[1].to_f), :geo_source_id => 1)
+        loc.merge(:point => Point.from_x_y(point[1].to_f, point[0].to_f), :geo_source_id => 1)
       rescue
         tries += 1
         retry if tries<3
