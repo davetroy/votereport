@@ -92,5 +92,5 @@ function initMap(){
           extractAttributes: true
         }
        }));
-	map.zoomToExtent(new OpenLayers.Bounds(-120,30,-80,60));
+	map.zoomToExtent(new OpenLayers.Bounds(-160,20,-80,60));
 }
