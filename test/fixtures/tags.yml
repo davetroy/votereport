@@ -1,0 +1,46 @@
+--- 
+tags_001: 
+  description: "Problem with voting machine(s)"
+  id: "1"
+  pattern: machine
+  score: "2"
+tags_002: 
+  description: "Problems with the registration process"
+  id: "2"
+  pattern: registration
+  score: "3"
+tags_003: 
+  description: "Indicates wait time"
+  id: "3"
+  pattern: "wait:?(\\d+)"
+  score: "0"
+tags_004: 
+  description: "Widespread challenges occurring at the location"
+  id: "4"
+  pattern: challenges
+  score: "4"
+tags_005: 
+  description: "Accessibility issues"
+  id: "5"
+  pattern: hava
+  score: "2"
+tags_006: 
+  description: "Out or running out of paper ballots"
+  id: "6"
+  pattern: ballots
+  score: "3"
+tags_007: 
+  description: "Good overall experience"
+  id: "7"
+  pattern: good
+  score: "0"
+tags_008: 
+  description: "Bad overall experience"
+  id: "8"
+  pattern: bad
+  score: "3"
+tags_009: 
+  description: "Election Protection, with State"
+  id: "9"
+  pattern: "\\sEP[A-Z]{2}\\s?"
+  score: "2"

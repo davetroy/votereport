@@ -1,0 +1,300 @@
+--- 
+reports_001: 
+  created_at: "2008-10-24 14:18:03"
+  id: "1"
+  location_id: "388"
+  polling_place_id: ~
+  reporter_id: "1"
+  score: "0"
+  source: TWT
+  text: "RT @acarvin: Does anyone know anyone who works at Threadless? Trying to help someone connect with them about the #votereport project."
+  uniqueid: "973634898"
+  updated_at: "2008-10-25 23:15:56"
+  wait_time: ~
+  zip: ~
+reports_002: 
+  created_at: "2008-10-24 17:19:09"
+  id: "2"
+  location_id: ~
+  polling_place_id: ~
+  reporter_id: "2"
+  score: "0"
+  source: TWT
+  text: "RT @socialdevcamp: Calling all civic-minded U.S. developer ninjas for twitter #votereport, help code if you are interested: http://voter ..."
+  uniqueid: "973902334"
+  updated_at: "2008-10-25 23:15:59"
+  wait_time: ~
+  zip: ~
+reports_003: 
+  created_at: "2008-10-24 17:27:16"
+  id: "3"
+  location_id: "166"
+  polling_place_id: ~
+  reporter_id: "3"
+  score: "0"
+  source: TWT
+  text: "@afamiglietti have you seen #votereport? could be invaluable for election day/night problems like that."
+  uniqueid: "973913712"
+  updated_at: "2008-10-25 23:15:59"
+  wait_time: ~
+  zip: ~
+reports_004: 
+  created_at: "2008-10-24 19:06:18"
+  id: "4"
+  location_id: "390"
+  polling_place_id: ~
+  reporter_id: "4"
+  score: "0"
+  source: TWT
+  text: "Just missing @nancyscola at jelly, ah well. Running errands, then headed home to @izzylouise and more #votereport work"
+  uniqueid: "974050846"
+  updated_at: "2008-10-25 23:16:02"
+  wait_time: ~
+  zip: ~
+reports_005: 
+  created_at: "2008-10-24 19:33:15"
+  id: "5"
+  location_id: "392"
+  polling_place_id: ~
+  reporter_id: "5"
+  score: "0"
+  source: TWT
+  text: "I and other Jellyers just got interviewed by Rocketboom about #votereport"
+  uniqueid: "974086714"
+  updated_at: "2008-10-25 23:16:05"
+  wait_time: ~
+  zip: ~
+reports_006: 
+  created_at: "2008-10-24 19:55:36"
+  id: "6"
+  location_id: "393"
+  polling_place_id: ~
+  reporter_id: "6"
+  score: "0"
+  source: TWT
+  text: "thank you @jenniferdaniel for this awesome t-shirt logo for #VoteReport! http://votereport.pbwiki.com/T-Shirts"
+  uniqueid: "974115780"
+  updated_at: "2008-10-25 23:16:06"
+  wait_time: ~
+  zip: ~
+reports_007: 
+  created_at: "2008-10-25 19:04:12"
+  id: "7"
+  location_id: "394"
+  polling_place_id: ~
+  reporter_id: "8"
+  score: "0"
+  source: SMS
+  text: "test zip90210"
+  uniqueid: "13989261"
+  updated_at: "2008-10-25 23:16:38"
+  wait_time: ~
+  zip: "90210"
+reports_008: 
+  created_at: "2008-10-25 13:10:25"
+  id: "8"
+  location_id: "395"
+  polling_place_id: ~
+  reporter_id: "9"
+  score: "0"
+  source: SMS
+  text: "#wait45 at l:Disneyland"
+  uniqueid: "13982017"
+  updated_at: "2008-10-25 23:16:39"
+  wait_time: "45"
+  zip: ~
+reports_009: 
+  created_at: "2008-10-24 23:43:48"
+  id: "9"
+  location_id: "396"
+  polling_place_id: ~
+  reporter_id: "10"
+  score: "0"
+  source: SMS
+  text: "TEST. To sign up 4 daily polling updates, text 538 to shortcode 30644!"
+  uniqueid: "13908762"
+  updated_at: "2008-10-25 23:16:39"
+  wait_time: ~
+  zip: ~
+reports_010: 
+  created_at: "2008-10-24 23:16:44"
+  id: "10"
+  location_id: "397"
+  polling_place_id: ~
+  reporter_id: "11"
+  score: "0"
+  source: SMS
+  text: "Beka testing, y'all kick a@@ :)"
+  uniqueid: "13879462"
+  updated_at: "2008-10-25 23:16:41"
+  wait_time: ~
+  zip: "65742"
+reports_011: 
+  created_at: "2008-10-24 22:23:44"
+  id: "11"
+  location_id: ~
+  polling_place_id: ~
+  reporter_id: "12"
+  score: "0"
+  source: SMS
+  text: "hello dave, from HAL"
+  uniqueid: "13862828"
+  updated_at: "2008-10-25 23:16:41"
+  wait_time: ~
+  zip: ~
+reports_012: 
+  created_at: "2008-10-24 22:19:11"
+  id: "12"
+  location_id: "398"
+  polling_place_id: ~
+  reporter_id: "13"
+  score: "0"
+  source: SMS
+  text: "wait75 in Bergen county #11215 waldwick highschool"
+  uniqueid: "13862706"
+  updated_at: "2008-10-25 23:16:41"
+  wait_time: "75"
+  zip: ~
+reports_013: 
+  created_at: "2008-10-24 22:12:08"
+  id: "13"
+  location_id: "399"
+  polling_place_id: ~
+  reporter_id: "14"
+  score: "0"
+  source: SMS
+  text: testing...
+  uniqueid: "13862497"
+  updated_at: "2008-10-25 23:16:42"
+  wait_time: ~
+  zip: ~
+reports_014: 
+  created_at: "2008-10-24 22:11:09"
+  id: "14"
+  location_id: "400"
+  polling_place_id: ~
+  reporter_id: "15"
+  score: "0"
+  source: SMS
+  text: "mattcoop here"
+  uniqueid: "13862242"
+  updated_at: "2008-10-25 23:16:43"
+  wait_time: ~
+  zip: ~
+reports_015: 
+  created_at: "2008-10-24 22:10:18"
+  id: "15"
+  location_id: "140"
+  polling_place_id: ~
+  reporter_id: "16"
+  score: "0"
+  source: SMS
+  text: "Hell its hot here in Austin - long line L:austin, TX"
+  uniqueid: "13861504"
+  updated_at: "2008-10-25 23:16:43"
+  wait_time: ~
+  zip: ~
+reports_016: 
+  created_at: "2008-10-24 22:03:20"
+  id: "16"
+  location_id: "401"
+  polling_place_id: ~
+  reporter_id: "17"
+  score: "0"
+  source: SMS
+  text: "#good #wait:40 in l:Arnold,ms"
+  uniqueid: "13861337"
+  updated_at: "2008-10-25 23:16:44"
+  wait_time: "40"
+  zip: ~
+reports_017: 
+  created_at: "2008-10-24 21:56:35"
+  id: "17"
+  location_id: "402"
+  polling_place_id: ~
+  reporter_id: "18"
+  score: "0"
+  source: SMS
+  text: "you rock! zip80303"
+  uniqueid: "13861060"
+  updated_at: "2008-10-25 23:16:44"
+  wait_time: ~
+  zip: "80303"
+reports_018: 
+  created_at: "2008-10-24 21:49:50"
+  id: "18"
+  location_id: "402"
+  polling_place_id: ~
+  reporter_id: "19"
+  score: "0"
+  source: SMS
+  text: "very awesome in 80303"
+  uniqueid: "13860410"
+  updated_at: "2008-10-25 23:16:44"
+  wait_time: ~
+  zip: "80303"
+reports_019: 
+  created_at: "2008-10-24 21:33:20"
+  id: "19"
+  location_id: "403"
+  polling_place_id: ~
+  reporter_id: "20"
+  score: "0"
+  source: SMS
+  text: "test to see what is the time delay to receive l:21012"
+  uniqueid: "13843781"
+  updated_at: "2008-10-25 23:16:46"
+  wait_time: ~
+  zip: "21012"
+reports_020: 
+  created_at: "2008-10-24 20:52:13"
+  id: "20"
+  location_id: "404"
+  polling_place_id: ~
+  reporter_id: "21"
+  score: "0"
+  source: SMS
+  text: "here we go! L: Reno, hb"
+  uniqueid: "13834559"
+  updated_at: "2008-10-25 23:16:47"
+  wait_time: ~
+  zip: ~
+reports_021: 
+  created_at: "2008-10-24 20:28:07"
+  id: "21"
+  location_id: "405"
+  polling_place_id: ~
+  reporter_id: "22"
+  score: "0"
+  source: SMS
+  text: "hello world l:11222"
+  uniqueid: "13829793"
+  updated_at: "2008-10-25 23:16:48"
+  wait_time: ~
+  zip: ~
+reports_022: 
+  created_at: "2008-10-24 01:44:20"
+  id: "22"
+  location_id: "406"
+  polling_place_id: ~
+  reporter_id: "23"
+  score: "0"
+  source: SMS
+  text: "long lines at l:02130"
+  uniqueid: "13810601"
+  updated_at: "2008-10-25 23:16:50"
+  wait_time: ~
+  zip: "02130"
+reports_023: 
+  created_at: "2008-10-23 21:11:24"
+  id: "23"
+  location_id: ~
+  polling_place_id: ~
+  reporter_id: "24"
+  score: "0"
+  source: SMS
+  text: test
+  uniqueid: "13783488"
+  updated_at: "2008-10-25 23:16:50"
+  wait_time: ~
+  zip: ~

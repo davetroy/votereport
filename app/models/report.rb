@@ -10,7 +10,8 @@ class Report < ActiveRecord::Base
   has_many :filters, :through => :report_filters
 
   before_validation :set_source
-  before_save :detect_location, :assign_tags
+  before_create :assign_tags # fixed problem with pulling same tags more than once
+  before_save :detect_location #, :assign_tags
   after_save  :assign_filters, :check_uniqueid
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
@@ -26,8 +27,12 @@ class Report < ActiveRecord::Base
   
   def detect_location
     if self.text
-      LOCATION_PATTERNS.find { |p| self.text[p] }
-      self.location = Location.geocode($1) if $1
+      LOCATION_PATTERNS.each do |p,idx| 
+        if self.text[p] 
+          self.location = Location.geocode($~.to_a[idx])
+          break
+        end
+      end
       self.zip = location.postal_code if location && location.postal_code
       self.location = reporter.location if !self.location && reporter && reporter.location
     end

@@ -1,0 +1,289 @@
+--- 
+reporters_001: 
+  created_at: "2008-10-25 23:15:55"
+  followers_count: "50"
+  id: "1"
+  location_id: "387"
+  name: "Bradley Holt"
+  profile_image_url: "http://s3.amazonaws.com/twitter_production/profile_images/52063599/bradley_normal.jpg"
+  profile_location: "Burlington, VT USA"
+  screen_name: BradleyHolt
+  type: TwitterReporter
+  uniqueid: "10909812"
+  updated_at: "2008-10-25 23:15:55"
+reporters_002: 
+  created_at: "2008-10-25 23:15:57"
+  followers_count: "82"
+  id: "2"
+  location_id: ~
+  name: GeeCee
+  profile_image_url: "http://s3.amazonaws.com/twitter_production/profile_images/58598000/goreyg_normal.png"
+  profile_location: ~
+  screen_name: geekchick
+  type: TwitterReporter
+  uniqueid: "7139782"
+  updated_at: "2008-10-25 23:15:57"
+reporters_003: 
+  created_at: "2008-10-25 23:15:59"
+  followers_count: "145"
+  id: "3"
+  location_id: "2"
+  name: "cscan (carlo, irl)"
+  profile_image_url: "http://s3.amazonaws.com/twitter_production/profile_images/22691282/cscan_photo_small_normal.jpg"
+  profile_location: nyc
+  screen_name: cscan
+  type: TwitterReporter
+  uniqueid: "7440862"
+  updated_at: "2008-10-25 23:15:59"
+reporters_004: 
+  created_at: "2008-10-25 23:16:00"
+  followers_count: "361"
+  id: "4"
+  location_id: "389"
+  name: "Deanna Zandt"
+  profile_image_url: "http://s3.amazonaws.com/twitter_production/profile_images/60324330/grrlfriday_shadow_large_pink_normal.jpg"
+  profile_location: "Brooklyn, NY 11218"
+  screen_name: randomdeanna
+  type: TwitterReporter
+  uniqueid: "782010"
+  updated_at: "2008-10-25 23:16:00"
+reporters_005: 
+  created_at: "2008-10-25 23:16:04"
+  followers_count: "73"
+  id: "5"
+  location_id: "391"
+  name: mattcoop
+  profile_image_url: "http://s3.amazonaws.com/twitter_production/profile_images/56076470/Photo_54_normal.jpg"
+  profile_location: "Long Island City, NY"
+  screen_name: mattcoop
+  type: TwitterReporter
+  uniqueid: "9924592"
+  updated_at: "2008-10-25 23:16:04"
+reporters_006: 
+  created_at: "2008-10-25 23:16:06"
+  followers_count: "1230"
+  id: "6"
+  location_id: "393"
+  name: noneck
+  profile_image_url: "http://s3.amazonaws.com/twitter_production/profile_images/62130345/IMG_5045_2_normal.jpg"
+  profile_location: "East Village, New York"
+  screen_name: noneck
+  type: TwitterReporter
+  uniqueid: "686993"
+  updated_at: "2008-10-25 23:16:06"
+reporters_007: 
+  created_at: "2008-10-25 23:16:06"
+  followers_count: "3470"
+  id: "7"
+  location_id: "26"
+  name: "Andy Carvin"
+  profile_image_url: "http://s3.amazonaws.com/twitter_production/profile_images/62441304/andy.redsoxhat_normal.jpg"
+  profile_location: "Washington DC"
+  screen_name: acarvin
+  type: TwitterReporter
+  uniqueid: "778057"
+  updated_at: "2008-10-25 23:16:06"
+reporters_008: 
+  created_at: "2008-10-25 23:16:37"
+  followers_count: ~
+  id: "8"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: ~
+  type: SmsReporter
+  uniqueid: "13989261"
+  updated_at: "2008-10-25 23:16:37"
+reporters_009: 
+  created_at: "2008-10-25 23:16:38"
+  followers_count: ~
+  id: "9"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: ~
+  type: SmsReporter
+  uniqueid: "13982017"
+  updated_at: "2008-10-25 23:16:38"
+reporters_010: 
+  created_at: "2008-10-25 23:16:39"
+  followers_count: ~
+  id: "10"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: ~
+  type: SmsReporter
+  uniqueid: "13908762"
+  updated_at: "2008-10-25 23:16:39"
+reporters_011: 
+  created_at: "2008-10-25 23:16:39"
+  followers_count: ~
+  id: "11"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_7.jpg"
+  profile_location: ~
+  screen_name: bekaecomop
+  type: SmsReporter
+  uniqueid: "13879462"
+  updated_at: "2008-10-25 23:16:39"
+reporters_012: 
+  created_at: "2008-10-25 23:16:41"
+  followers_count: ~
+  id: "12"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: ~
+  type: SmsReporter
+  uniqueid: "13862828"
+  updated_at: "2008-10-25 23:16:41"
+reporters_013: 
+  created_at: "2008-10-25 23:16:41"
+  followers_count: ~
+  id: "13"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: ~
+  type: SmsReporter
+  uniqueid: "13862706"
+  updated_at: "2008-10-25 23:16:41"
+reporters_014: 
+  created_at: "2008-10-25 23:16:41"
+  followers_count: ~
+  id: "14"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: ~
+  type: SmsReporter
+  uniqueid: "13862497"
+  updated_at: "2008-10-25 23:16:41"
+reporters_015: 
+  created_at: "2008-10-25 23:16:42"
+  followers_count: ~
+  id: "15"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: ~
+  type: SmsReporter
+  uniqueid: "13862242"
+  updated_at: "2008-10-25 23:16:42"
+reporters_016: 
+  created_at: "2008-10-25 23:16:43"
+  followers_count: ~
+  id: "16"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: sanford
+  type: SmsReporter
+  uniqueid: "13861504"
+  updated_at: "2008-10-25 23:16:43"
+reporters_017: 
+  created_at: "2008-10-25 23:16:43"
+  followers_count: ~
+  id: "17"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: ~
+  type: SmsReporter
+  uniqueid: "13861337"
+  updated_at: "2008-10-25 23:16:43"
+reporters_018: 
+  created_at: "2008-10-25 23:16:44"
+  followers_count: ~
+  id: "18"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: ~
+  type: SmsReporter
+  uniqueid: "13861060"
+  updated_at: "2008-10-25 23:16:44"
+reporters_019: 
+  created_at: "2008-10-25 23:16:44"
+  followers_count: ~
+  id: "19"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: ~
+  type: SmsReporter
+  uniqueid: "13860410"
+  updated_at: "2008-10-25 23:16:44"
+reporters_020: 
+  created_at: "2008-10-25 23:16:44"
+  followers_count: ~
+  id: "20"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: ~
+  type: SmsReporter
+  uniqueid: "13843781"
+  updated_at: "2008-10-25 23:16:44"
+reporters_021: 
+  created_at: "2008-10-25 23:16:46"
+  followers_count: ~
+  id: "21"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: ~
+  type: SmsReporter
+  uniqueid: "13834559"
+  updated_at: "2008-10-25 23:16:46"
+reporters_022: 
+  created_at: "2008-10-25 23:16:47"
+  followers_count: ~
+  id: "22"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: ~
+  type: SmsReporter
+  uniqueid: "13829793"
+  updated_at: "2008-10-25 23:16:47"
+reporters_023: 
+  created_at: "2008-10-25 23:16:48"
+  followers_count: ~
+  id: "23"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: ~
+  type: SmsReporter
+  uniqueid: "13810601"
+  updated_at: "2008-10-25 23:16:48"
+reporters_024: 
+  created_at: "2008-10-25 23:16:50"
+  followers_count: ~
+  id: "24"
+  location_id: ~
+  name: ~
+  profile_image_url: "http://www.mozes.com/_common/images/default_avatars/phone_default_0.jpg"
+  profile_location: ~
+  screen_name: yotowoti
+  type: SmsReporter
+  uniqueid: "13783488"
+  updated_at: "2008-10-25 23:16:50"

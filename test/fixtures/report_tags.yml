@@ -1,0 +1,17 @@
+--- 
+report_tags_001: 
+  id: "1"
+  report_id: "8"
+  tag_id: "3"
+report_tags_002: 
+  id: "2"
+  report_id: "12"
+  tag_id: "3"
+report_tags_003: 
+  id: "3"
+  report_id: "16"
+  tag_id: "3"
+report_tags_004: 
+  id: "4"
+  report_id: "16"
+  tag_id: "7"
