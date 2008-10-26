@@ -23,13 +23,13 @@ class LocationTest < ActiveSupport::TestCase
   
   def test_find_within_radius
     places = @l[:annapolis].find_within_radius(40)
-    assert_equal 5, places.size
+    assert_equal 2, places.size
     assert places.include?(@l[:annapolis])
   end
   
   def test_find_within_box
     places = @l[:annapolis].find_within_box(80)
-    assert_equal 6, places.size
+    assert_equal 3, places.size
     assert_equal 3, (places & [@l[:annapolis], @l[:balt], @l[:dc]]).size
   end
   
