@@ -27,12 +27,9 @@ class Report < ActiveRecord::Base
   
   def detect_location
     if self.text
-      LOCATION_PATTERNS.each do |p,idx| 
-        if self.text[p] 
-          self.location = Location.geocode($~.to_a[idx])
-          break
-        end
-      end
+      idx = 0
+      LOCATION_PATTERNS.find { |p,idx| self.text[p] }
+      self.location = Location.geocode($~.to_a[idx])
       self.zip = location.postal_code if location && location.postal_code
       self.location = reporter.location if !self.location && reporter && reporter.location
     end
