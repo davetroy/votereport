@@ -9,7 +9,7 @@ class Location < ActiveRecord::Base
     return nil if location_text.blank?
     LocationAlias.locate(location_text)
   end
-  
+    
   def latitude
     point.y.to_f
   end

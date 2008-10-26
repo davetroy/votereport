@@ -59,7 +59,11 @@ module Geo
       
       def geocode(location_text)
         subclasses.each do |subclass|
-          result = subclass.geocode(location_text)
+          if location_text[/([\-\d\.]+),\s*([\-\d\.]+)/] && subclass.respond_to?(:reverse_geocode)
+            result = subclass.reverse_geocode(location_text)
+          else
+            result = subclass.geocode(location_text)
+          end
           return result if result
         end
         nil

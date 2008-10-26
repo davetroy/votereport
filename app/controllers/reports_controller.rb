@@ -43,11 +43,15 @@ class ReportsController < ApplicationController
   
   private
   def save_iphone_report(info)
-    reporter = IphoneReporter.update_or_create(info[:reporter])
-    reporter.reports.create(info[:report])
+    if loc = Location.geocode(info[:location][:latlon])
+      loc.update_attribute(:address,info[:reporter][:profile_location]) if loc.address.nil? && info[:reporter][:profile_location]
+    end
+    location_id = loc ? loc.id : nil
+    reporter = IphoneReporter.update_or_create(info[:reporter].merge(:location_id => location_id))
+    reporter.reports.create(info[:report].merge(:location_id => location_id))
     "OK"
   rescue => e
-    logger.info "*** ERROR: #{e.class}: #{e.message}"
+    logger.info "*** ERROR: #{e.class}: #{e.message} #{e.backtrace.first}"
     "ERROR"
   end
 end

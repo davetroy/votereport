@@ -19,49 +19,28 @@ module Geo
     rescue
       nil
     end
+  
+    # Hacks google local search to find stuff near latlon
+    def self.reverse_geocode(latlon)
+      begin
+        tries = 0
+        latlon.gsub!(/ /, '')
+        url = "http://ajax.googleapis.com/ajax/services/search/local?v=1.0&q=a%7c1&near=#{latlon}"
+        results = JSON.parse(open(url).read)['responseData']['results']
+        results = results.map do |r|
+          country_code = r['country']=='United States' ? 'US' : nil
+          { :locality => r['city'], :administrative_area => r['region'], :country_code => country_code }
+        end.uniq
+        loc = results.first
+        point = latlon.split(',')
+        loc.merge(:point => Point.from_x_y(point[0].to_f, point[1].to_f), :geo_source_id => 1)
+      rescue
+        tries += 1
+        retry if tries<3
+        loc = nil
+      end
+    end
+
   end
+
 end
-
-# name: 2551 Riva Rd, Annapolis, MD
-# Status: 
-#   code: "200"
-#   request: geocode
-# Placemark: 
-#   AddressDetails: 
-#     Country: 
-#       AdministrativeArea: 
-#         Locality: 
-#           LocalityName: Annapolis
-#           Thoroughfare: 
-#             ThoroughfareName: 2551 Riva Rd
-#           PostalCode: 
-#             PostalCodeNumber: "21401"
-#         AdministrativeAreaName: MD
-#       CountryNameCode: US
-#     Accuracy: "8"
-#   id: p1
-#   Point: 
-#     coordinates: -76.550921,38.977724,0
-#   address: 2551 Riva Rd, Annapolis, MD 21401, USA
-
-#{"AddressDetails"=>{"Country"=>{"AdministrativeArea"=>{"SubAdministrativeArea"=>{"Locality"=>{"LocalityName"=>"Arnold", "Thoroughfare"=>{"ThoroughfareName"=>"1424 Ridgeway E"}, 
-# "PostalCode"=>{"PostalCodeNumber"=>"21012"}}, "SubAdministrativeAreaName"=>"Anne Arundel"}, "AdministrativeAreaName"=>"MD"}, "CountryNameCode"=>"US"}, 
-# "Accuracy"=>"8", "xmlns"=>"urn:oasis:names:tc:ciq:xsdschema:xAL:2.0"}, "id"=>"p1", "Point"=>{"coordinates"=>"-76.511004,39.024739,0"}, "address"=>"1424 Ridgeway E, Arnold, MD 21012, USA"}
-
-
-# create_table "locations", :options=>'ENGINE=MyISAM', :force => true do |t|
-#   t.column "address", :string
-#   t.column "country_code", :string, :limit => 10
-#   t.column "administrative_area", :string, :limit => 80
-#   t.column "sub_administrative_area", :string, :limit => 80
-#   t.column "locality", :string, :limit => 80
-#   t.column "dependent_locality", :string, :limit => 80
-#   t.column "thoroughfare", :string, :limit => 80
-#   t.column "postal_code", :string, :limit => 25
-#   t.column "point", :point, :null => false
-#   t.column "geo_source_id", :integer
-#   t.column "created_at", :datetime
-#   t.column "updated_at", :datetime
-# end
-
-#http://maps.google.com/maps/geo?q=Munich&key=ABQIAAAAzMUFFnT9uH0xq39J0Y4kbhTJQa0g3IQ9GZqIMmInSLzwtGDKaBR6j135zrztfTGVOm2QlWnkaidDIQ&output=json

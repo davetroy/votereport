@@ -3,7 +3,6 @@ require 'json'
 require 'geo_ruby'
 require 'test/unit'
 require 'active_support'
-require 'geohash'
 require "#{File.dirname(__FILE__)}/../init"
 
 include GeoRuby::SimpleFeatures
@@ -81,6 +80,13 @@ class GeocoderTest < Test::Unit::TestCase
   def test_unicode_characters
     loc = Geo::Google.geocode('Munich, Germany')
     assert_equal 'Munich', loc[:locality]
+  end
+  
+  def test_reverse_geocoding
+    loc = Geo::Geocoder.geocode('39.024,-76.511')
+    assert_equal ['Arnold', 'MD', 'US'], [loc[:locality], loc[:administrative_area], loc[:country_code]]
+    loc = Geo::Geocoder.geocode('37.332,-122.031')
+    assert_equal ['Cupertino', 'CA', 'US'], [loc[:locality], loc[:administrative_area], loc[:country_code]]
   end
   
 end

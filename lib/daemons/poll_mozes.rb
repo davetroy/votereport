@@ -37,7 +37,7 @@ while($running) do
         image_link = Hpricot.parse($1)
         image = (image_link/:a/:img).first
         screen_name = image[:title].blank? ? nil : image[:title]
-        image_src = image[:src].blank? nil : image[:src]
+        image_src = image[:src].blank? ? nil : image[:src]
 
         if reporter = SmsReporter.update_or_create('uniqueid' => (item/:guid).inner_text.strip, 
                                                    'profile_image_url' => image_src,

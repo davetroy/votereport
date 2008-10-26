@@ -67,6 +67,7 @@ Rails::Initializer.run do |config|
   # config.active_record.observers = :cacher, :garbage_collector
   
   config.gem 'mislav-will_paginate', :version => '~> 2.3.2', :lib => 'will_paginate', :source => 'http://gems.github.com'
+  config.gem 'ya2yaml'
 end
 
 ENV['TZ'] = 'UTC'
