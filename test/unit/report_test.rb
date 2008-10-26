@@ -20,7 +20,9 @@ class ReportTest < ActiveSupport::TestCase
     assert_equal "Severna Park, 21146 US", Report.create(:reporter => @twitter_reporter, :text => 'Long lines at l:severna park senior HS').location.address
     assert_equal "New York 11215, USA", Report.create(:reporter => @twitter_reporter, :text => 'wait:105 in Park Slope, Brooklyn zip11215 #votereport').location.address
     assert_equal "Courthouse, Virginia, USA", Report.create(:reporter => @twitter_reporter, :text => 'no joy and long wait in l:courthouse, va').location.address
-    assert_equal "Boulder, CO, USA", Report.create(:reporter => @twitter_reporter, :text => 'long lines in courthouse at Bolder CO').location.address
+    assert_equal "Boulder, CO, USA", Report.create(:reporter => @twitter_reporter, :text => 'taking forever in Boulder CO').location.address
+    assert_equal "Boulder, CO, USA", Report.create(:reporter => @twitter_reporter, :text => 'long lines in courthouse at Boulder, CO').location.address
+    # with mis-spelling:
     assert_equal "Boulder, CO, USA", Report.create(:reporter => @twitter_reporter, :text => 'long lines at courthouse in Bolder CO').location.address
   end
   
