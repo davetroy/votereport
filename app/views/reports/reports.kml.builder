@@ -7,7 +7,7 @@ xml.kml("xmlns" => "http://earth.google.com/kml/2.2",
     xml.atom :link, :href => url_for(:controller => :reports, :only_path => false ), :rel => "alternate", :type => "text/html"
     @reports.each do |report| # render :partial => @reports - doesn't work in builder?
       xml.tag! "Placemark", :id => "votereport:report:#{report.id}" do
-        xml.name report.reporter.name  unless report.reporter.nil?
+        xml.name report.reporter.name if report.reporter.name
         xml.description "#{h(report.text)} in #{h(report.location.address)}"
         xml.tag! "Style" do
           xml.tag! "IconStyle" do
