@@ -6,6 +6,7 @@ class PollingPlace < ActiveRecord::Base
   # Attempts to match to a known polling place given
   # a name and a location
   def self.match_or_create(name, loc = nil)
+    return nil if name.blank?
     # First try to find by name match and distance
     place = self.find_by_name(name)
     return place if place && place.location.distance_to(loc) < 10

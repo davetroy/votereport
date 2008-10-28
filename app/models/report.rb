@@ -2,6 +2,9 @@ class Report < ActiveRecord::Base
   validates_presence_of :reporter_id
   validates_uniqueness_of :uniqueid, :scope => :source, :allow_blank => true, :message => 'already processed'
 
+  # TODO: grok these extra attributes provided by iphone
+  attr_accessor :rating, :tag_string
+  
   belongs_to :location
   belongs_to :reporter
   belongs_to :polling_place
