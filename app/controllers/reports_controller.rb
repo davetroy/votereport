@@ -43,13 +43,13 @@ class ReportsController < ApplicationController
   # Store an iPhone-generated report given a hash of parameters
   # Check for a valid iPhone UDID
   def save_iphone_report(info)
-    raise unless info[:reporter][:uniqueid][/^[\d\-A-F]{36,40}$/]
+    raise "Invalid UDID" unless info[:reporter][:uniqueid][/^[\d\-A-F]{36,40}$/i]
     reporter = IphoneReporter.update_or_create(info[:reporter])
     polling_place = PollingPlace.match_or_create(info[:polling_place][:name], reporter.location)
     report = reporter.reports.create(info[:report].merge(:polling_place => polling_place))
     "OK"
-  # rescue => e
-  #   logger.info "*** ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"
-  #   "ERROR"
+  rescue => e
+    logger.info "*** ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"
+    "ERROR"
   end
 end
