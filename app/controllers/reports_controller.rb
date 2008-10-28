@@ -48,8 +48,8 @@ class ReportsController < ApplicationController
     polling_place = PollingPlace.match_or_create(info[:polling_place][:name], reporter.location)
     report = reporter.reports.create(info[:report].merge(:polling_place => polling_place))
     "OK"
-  rescue => e
-    logger.info "*** ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"
-    "ERROR"
+  # rescue => e
+  #   logger.info "*** ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"
+  #   "ERROR"
   end
 end
