@@ -9,9 +9,10 @@ set :git_shallow_clone, 1
 set :application, "votereport"
 set :keep_releases, 3
 
-role :app, "74.63.9.148"
-role :daemons, "74.63.9.148"
-role :db, "74.63.9.148", :primary=>true
+role :app, "votereport.us"
+role :daemons, "votereport.us"
+role :voip, "voip.votereport.us"
+role :db, "votereport.us", :primary=>true
 
 set :use_sudo, false
 set :user, application
