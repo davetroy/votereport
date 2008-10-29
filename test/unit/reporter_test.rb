@@ -21,6 +21,16 @@ class ReporterTest < ActiveSupport::TestCase
     assert_equal 1, reporter.reports.size
     assert_equal "New York, NY, USA", report.location.address
   end
+
+  def test_android_reporter_creation
+    reporter = AndroidReporter.create(:uniqueid => '8282737364648989', :name => "Bob Android", :latlon => '43.024,-76.411')
+    assert_match /Elbridge/, reporter.profile_location
+    assert_nil reporter.followers_count
+    assert_equal "VoteReport Android App", reporter.source_name
+    report = reporter.reports.create(:uniqueid => nil, :text => 'all is well in l:Birmingham, AL')
+    assert_equal 1, reporter.reports.size
+    assert_equal "Birmingham, AL, USA", report.location.address
+  end
   
   def test_sms_reporter_creation
     reporter = SmsReporter.create(:uniqueid => '59849943976')
