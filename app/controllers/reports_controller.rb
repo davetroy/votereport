@@ -23,7 +23,6 @@ class ReportsController < ApplicationController
         @reports = Report.with_location.paginate :page => @page, :per_page => @per_page, :order => 'created_at DESC'
       end
       format.html do
-
         @reports = Report.find_with_filters(@filters)
       end
     end
@@ -44,6 +43,10 @@ class ReportsController < ApplicationController
         result = save_iphone_report(params)
         render :text => result and return true
       end
+      format.android do
+        result = save_android_report(params)
+        render :text => result and return true
+      end
     end
   end
   
@@ -57,7 +60,20 @@ class ReportsController < ApplicationController
     report = reporter.reports.create(info[:report].merge(:polling_place => polling_place))
     "OK"
   rescue => e
-    logger.info "*** ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"
+    logger.info "*** IPHONE ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"
+    "ERROR"
+  end
+  
+  # Store an Android-generated report given a hash of parameters
+  # Check for a valid Android IMEI
+  def save_iphone_report(info)
+    raise "Invalid IMEI" unless info[:reporter][:uniqueid][/^\d{16}/]
+    reporter = AndroidReporter.update_or_create(info[:reporter])
+    polling_place = PollingPlace.match_or_create(info[:polling_place][:name], reporter.location)
+    report = reporter.reports.create(info[:report].merge(:polling_place => polling_place))
+    "OK"
+  rescue => e
+    logger.info "*** ANDROID ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"
     "ERROR"
   end
 end

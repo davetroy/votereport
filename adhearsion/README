@@ -17,6 +17,7 @@ enter polling place rating -- 1 = worst, 9 = best
   get and confirm single digit rating
 
 enter special conditions -- 1 digit between 1 and 6 to indicate a specific type of problem
+    (1 for challenges, 2 for accessibility issues, 3 for problems with machines, 4 for problems with registration)
   get and confirm single digit special conditions code
 
 record an audio message "please say the full name of your polling place along with a brief audio report about that site"
