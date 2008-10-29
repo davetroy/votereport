@@ -3,6 +3,7 @@ class Location < ActiveRecord::Base
   before_validation :review_address
   after_create :set_filters
   validates_presence_of :address
+  has_many :reports
   #validate that point really does not exist on create; we are already sort of doing this
 
   def self.geocode(location_text)

@@ -8,6 +8,15 @@ class ApplicationController < ActionController::Base
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => 'd5feb8525b287ec306f7d88ee9a9af83'
   
+  def filter_from_params
+    @per_page = params[:count] || 10
+    @page = params[:page] || 1
+    
+    @filters = {:page => @page, :per_page => @per_page}
+    [:filter, :zip, :postal, :city, :state].each do |p|
+      @filters[p] = params[p] if params[p]
+    end
+  end
   # See ActionController::Base for details 
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password"). 

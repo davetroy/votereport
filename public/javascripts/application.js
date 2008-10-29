@@ -1,6 +1,16 @@
 var map, drawControls;
 
 function initMap(){
+    // initialise the map with your choice of API
+      var mapstraction = new Mapstraction('map','google');
+      
+      var myPoint = new LatLonPoint(50, -110);
+      // display the map centered on a latitude and longitude (Google zoom levels)
+      mapstraction.setCenterAndZoom(myPoint, 3);
+      mapstraction.addControls({zoom: 'large'});
+      mapstraction.addOverlay("http://votereport.us/reports.kml");
+}
+function initOLMap(){
     map = new OpenLayers.Map('map', {maxResolution: 360/512,  controls: []});
     var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS", 
         "http://labs.metacarta.com/wms-c/Basic.py", {'layers':'basic'}); 

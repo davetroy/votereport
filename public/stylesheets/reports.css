@@ -44,3 +44,52 @@ span.whenwhere {
 	font-size: 10px;
 	font-style: italic;
 }
+
+/* charts */
+.verticalBarGraph {
+    border-bottom: 1px solid #FFF;
+    height: 200px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    }
+    
+.verticalBarGraph li {
+    border: 1px solid #555;
+    border-bottom: none;
+    bottom: 0;
+    list-style:none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    text-align: center;
+    width: 39px;
+    }
+.barGraph {
+    background: url(images/horizontal_grid_line_50_pixel.png) bottom left;
+    border-bottom: 3px solid #333;
+    font: 9px Helvetica, Geneva, sans-serif;
+    height: 200px;
+    margin: 1em 0;
+    padding: 0;
+    position: relative;
+    }
+    
+.barGraph li {
+    background: #666 url(images/bar_50_percent_highlight.png) repeat-y top right;
+    border: 1px solid #555;
+    border-bottom: none;
+    bottom: 0; 
+    color: #FFF;
+    margin: 0; 
+    padding: 0 0 0 0;
+    position: absolute;
+    list-style: none;
+    text-align: center;
+    width: 39px;
+    }
+    
+.barGraph li.p1{ background-color:#666666 }
+.barGraph li.p2{ background-color:#888888 }
+.barGraph li.p3{ background-color:#AAAAAA } 
+

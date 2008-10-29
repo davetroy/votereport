@@ -20,7 +20,27 @@ class Report < ActiveRecord::Base
   after_create :assign_tags, :assign_filters
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
+  named_scope :with_wait_time, :conditions => 'wait_time IS NOT NULL'
 
+  cattr_accessor :public_fields
+  @@public_fields = [:id,:source,:text,:score,:zip,:wait_time,:created_at,:updated_at]
+
+  alias_method :ar_to_json, :to_json
+  def to_json(options = {})
+    options[:only] = @@public_fields
+    # options[:include] = [ :reporter, :polling_place ]
+    # options[:except] = [ ]
+    options[:methods] = [ :reporter, :polling_place  ].concat(options[:methods]||[]) #lets us include current_items from feeds_controller#show
+    # options[:additional] = {:page => options[:page] }
+    ar_to_json(options)
+  end    
+
+    
+  def self.find_with_filters(filters = {})
+    # TODO put in logic here for doing filtering by appropriate parameters
+    Report.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, :order => 'created_at DESC')
+  end
+    
   private
   def set_source
     self.source = self.reporter.source

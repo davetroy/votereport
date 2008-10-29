@@ -1,0 +1,9 @@
+<ul class="barGraph">
+	<%- @reports.each_with_index do |report, i| -%>
+	<li style="height: <%= report.wait_time * 4 %>px; left:<%= 40*i %>px;"><%= report.wait_time %></li>
+	<%- end -%>
+</ul>
+
+<%= tag(:img,
+      :src => build_data_url("image/bmp",bumpspark(@reports.collect(&:wait_time))), 
+		:alt => '', :title => "bumpspark!")%>
