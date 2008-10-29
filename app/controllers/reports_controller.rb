@@ -6,7 +6,8 @@ class ReportsController < ApplicationController
   def index
     respond_to do |format|
       format.kml do
-        @reports = Report.with_location.paginate :page => @page, :per_page => @per_page
+        @per_page = params[:count] || 20
+        @reports = Report.with_location.paginate :page => @page, :per_page => @per_page, :order => 'created_at DESC'
         case params[:live]
         when /1/
           render :template => "reports/reports.kml.builder"
