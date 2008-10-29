@@ -1,3 +1,4 @@
+require 'georuby_json'
 class Location < ActiveRecord::Base
   has_many :aliases, :class_name => 'LocationAlias'
   before_validation :review_address
