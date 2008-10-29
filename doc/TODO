@@ -1,19 +1,12 @@
 Backend Tasks
 
-Twitter:
-  No open tasks
-
 Asterisk/Adhearsion Interface:
   Finalize call flow
   Record new sound files
   Standardize daemonization
   Allow for callers to record audio message
   
-Mozes (SMS):
-  Finish lib/daemons/poll_mozes.rb to read SMS XML and store in Report model
-
-iPhone:
-  Write REST report controller (POST only) to receive new reports
+delete daemon logs on restart
 
 ---
 
@@ -42,3 +35,10 @@ API
 iPhone Client
   Design & implement w/Dave Troy (deadline Monday)
   Need data on Google's polling place API (pls get to Dave)
+  
+Done:
+Mozes (SMS):
+  Finish lib/daemons/poll_mozes.rb to read SMS XML and store in Report model
+
+iPhone:
+  Write REST report controller (POST only) to receive new reports

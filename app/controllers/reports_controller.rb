@@ -19,7 +19,7 @@ class ReportsController < ApplicationController
         render :json => @reports.to_json, :callback => params[:callback]
       end      
       format.atom do
-        @reports = Report.with_location.paginate :page => @page, :per_page => @per_page
+        @reports = Report.with_location.paginate :page => @page, :per_page => @per_page, :order => 'created_at DESC'
       end
       format.html do
 
@@ -30,6 +30,7 @@ class ReportsController < ApplicationController
   
   def map  
   end
+  
   def chart 
     @reports = Report.with_wait_time.find_with_filters(@filters)     
   end

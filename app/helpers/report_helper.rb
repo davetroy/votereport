@@ -1,5 +1,6 @@
 module ReportHelper
 
+  # TODO: DCT - commented this out because object cannot be found; need a gem or a lib?
   #include BumpsparkHelper 
 
   # Use natural language scan to suggest intended location names
