@@ -22,10 +22,14 @@ class Reporter < ActiveRecord::Base
   # Adds to database if it's new to us, otherwise finds record and returns it
   def self.update_or_create(fields)
     fields = fields.delete_if { |k,v| !self.column_names.include?(k) }
-    if reporter = find_by_uniqueid(fields['uniqueid'])
+    if reporter = self.find_by_uniqueid(fields['uniqueid'])
+      p "updating attributes"
       reporter.update_attributes(fields)
     else
-      reporter = create(fields)
+      p "creating reporter"
+      p fields
+      reporter = self.create(fields)
+      p "done creating"
     end
     reporter
   end

@@ -65,6 +65,7 @@ class GeocoderTest < Test::Unit::TestCase
   def test_detailed_street_addresses
 		['10114 Boxing Pass, San Antonio, TX 78251', '307 Knights Cross, San Antonio, TX 78258'].each do |l|
 			loc = Geo::Geocoder.geocode(l)
+			p loc
 			assert_equal 'TX', loc[:administrative_area]
 		end
 		

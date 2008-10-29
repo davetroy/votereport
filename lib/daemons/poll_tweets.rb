@@ -20,7 +20,7 @@ while($running) do
       user_info[v] = user_info.delete(k)
     end
     next unless reporter = TwitterReporter.update_or_create(user_info)
-    
+
     screen_name, text = entry['title'].match(EXTRACTOR).captures
     reporter.reports.create(:text => text,
                         :uniqueid => entry['status_id'],
