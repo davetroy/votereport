@@ -5,6 +5,11 @@ xml.kml("xmlns" => "http://earth.google.com/kml/2.2",
     xml.description "Voting Reports for the 2008 election"
     xml.atom :link, :href => formatted_reports_path(:format => "atom", :only_path => false ), :rel => "alternate", :type => "application/atom+xml"
     xml.atom :link, :href => url_for(:controller => :reports, :only_path => false ), :rel => "alternate", :type => "text/html"
+    xml.tag! "LookAt" do # look at the bounds of the US (approximately)
+      xml.longitude -98
+      xml.latitude 39
+      xml.altitude 8900000
+    end
     @reports.each do |report| # render :partial => @reports - doesn't work in builder?
       xml.tag! "Placemark", :id => "votereport:report:#{report.id}" do
         xml.name report.reporter.name if report.reporter.name
