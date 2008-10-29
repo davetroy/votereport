@@ -1,106 +1,74 @@
-var map, drawControls;
+var mapstraction, drawControls;
+var last_updated = null;
+
+Date.prototype.toISO8601String = function (format, offset) {
+    /* accepted values for the format [1-6]:
+     1 Year:
+       YYYY (eg 1997)
+     2 Year and month:
+       YYYY-MM (eg 1997-07)
+     3 Complete date:
+       YYYY-MM-DD (eg 1997-07-16)
+     4 Complete date plus hours and minutes:
+       YYYY-MM-DDThh:mmTZD (eg 1997-07-16T19:20+01:00)
+     5 Complete date plus hours, minutes and seconds:
+       YYYY-MM-DDThh:mm:ssTZD (eg 1997-07-16T19:20:30+01:00)
+     6 Complete date plus hours, minutes, seconds and a decimal
+       fraction of a second
+       YYYY-MM-DDThh:mm:ss.sTZD (eg 1997-07-16T19:20:30.45+01:00)
+    */
+    if (!format) { var format = 6; }
+    if (!offset) {
+        var offset = 'Z';
+        var date = this;
+    } else {
+        var d = offset.match(/([-+])([0-9]{2}):([0-9]{2})/);
+        var offsetnum = (Number(d[2]) * 60) + Number(d[3]);
+        offsetnum *= ((d[1] == '-') ? -1 : 1);
+        var date = new Date(Number(Number(this) + (offsetnum * 60000)));
+    }
+
+    var zeropad = function (num) { return ((num < 10) ? '0' : '') + num; }
+
+    var str = "";
+    str += date.getUTCFullYear();
+    if (format > 1) { str += "-" + zeropad(date.getUTCMonth() + 1); }
+    if (format > 2) { str += "-" + zeropad(date.getUTCDate()); }
+    if (format > 3) {
+        str += "T" + zeropad(date.getUTCHours()) +
+               ":" + zeropad(date.getUTCMinutes());
+    }
+    if (format > 5) {
+        var secs = Number(date.getUTCSeconds() + "." +
+                   ((date.getUTCMilliseconds() < 100) ? '0' : '') +
+                   zeropad(date.getUTCMilliseconds()));
+        str += ":" + zeropad(secs);
+    } else if (format > 4) { str += ":" + zeropad(date.getUTCSeconds()); }
+
+    if (format > 3) { str += offset; }
+    return str;
+}
 
 function initMap(){
     // initialise the map with your choice of API
-      var mapstraction = new Mapstraction('map','google');
-      
-      var myPoint = new LatLonPoint(50, -110);
-      // display the map centered on a latitude and longitude (Google zoom levels)
-      mapstraction.setCenterAndZoom(myPoint, 3);
-      mapstraction.addControls({zoom: 'large'});
-      mapstraction.addOverlay("http://votereport.us/reports.kml");
-}
-function initOLMap(){
-    map = new OpenLayers.Map('map', {maxResolution: 360/512,  controls: []});
-    var wms = new OpenLayers.Layer.WMS( "OpenLayers WMS", 
-        "http://labs.metacarta.com/wms-c/Basic.py", {'layers':'basic'}); 
-    var wms2 = new OpenLayers.Layer.WMS( "OpenLayers WMS", 
-        "http://labs.metacarta.com/wms-c/Basic.py", {'layers':'satellite'}); 
-    map.addLayers([wms, wms2]);
+    mapstraction = new Mapstraction('map','google');
 
-	// map = new OpenLayers.Map(
-	// 	"map",
-	// 	{
-	// 		maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
-	// 		maxResolution:156543, numZoomLevels:18, units:'meters', projection: "EPSG:41001"
-	// 	}
-	// );
-	// 
-	// var osmmapnik_layer = new OpenLayers.Layer.TMS(
-	// 	'OSM Mapnik',
-	// 	[
-	// 			"http://a.tile.openstreetmap.org/",
-	// 			"http://b.tile.openstreetmap.org/",
-	// 			"http://c.tile.openstreetmap.org/"
-	// 	],
-	// 	{
-	// 		type:'png',
-	// 		getURL: function (bounds) {
-	// 			var res = this.map.getResolution();
-	// 			var x = Math.round ((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
-	// 			var y = Math.round ((this.maxExtent.top - bounds.top) / (res * this.tileSize.h));
-	// 			var z = this.map.getZoom();
-	// 			var limit = Math.pow(2, z);
-	// 			if (y < 0 || y >= limit) {
-	// 				return null;
-	// 			} else {
-	// 				x = ((x % limit) + limit) % limit;
-	// 				var path = z + "/" + x + "/" + y + "." + this.type;
-	// 				var url = this.url;
-	// 				if (url instanceof Array) {
-	// 					url = this.selectUrl(path, url);
-	// 				}
-	// 				return url + path;
-	// 			}
-	// 		},
-	// 		displayOutsideMaxExtent: true
-	// 	}
-	// );
-	// 
-	// var osm_layer = new OpenLayers.Layer.TMS(
-	// 	'OSM',
-	// 	[
-	// 			"http://a.tah.openstreetmap.org/Tiles/tile.php/",
-	// 			"http://b.tah.openstreetmap.org/Tiles/tile.php/",
-	// 			"http://c.tah.openstreetmap.org/Tiles/tile.php/"
-	// 	],
-	// 	{
-	// 		type:'png',
-	// 		getURL: function (bounds) {
-	// 			var res = this.map.getResolution();
-	// 			var x = Math.round ((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
-	// 			var y = Math.round ((this.maxExtent.top - bounds.top) / (res * this.tileSize.h));
-	// 			var z = this.map.getZoom();
-	// 			var limit = Math.pow(2, z);
-	// 			if (y < 0 || y >= limit) {
-	// 				return null;
-	// 			} else {
-	// 				x = ((x % limit) + limit) % limit;
-	// 				var path = z + "/" + x + "/" + y + "." + this.type;
-	// 				var url = this.url;
-	// 				if (url instanceof Array) {
-	// 					url = this.selectUrl(path, url);
-	// 				}
-	// 				return url + path;
-	// 			}
-	// 		},
-	// 		displayOutsideMaxExtent: true
-	// 	}
-	// );
-	// 
-	// map.addLayers([osmmapnik_layer, osm_layer]);
-    map.addControl(new OpenLayers.Control.Navigation());
-    map.addControl(new OpenLayers.Control.MousePosition());
-    map.addControl(new OpenLayers.Control.Permalink());
-    map.addControl(new OpenLayers.Control.LayerSwitcher());
-             	
-    map.addLayer(new OpenLayers.Layer.GML("KML", "/reports.kml?live=1", 
-       {
-        format: OpenLayers.Format.KML, 
-        formatOptions: {
-          extractStyles: true, 
-          extractAttributes: true
-        }
-       }));
-	map.zoomToExtent(new OpenLayers.Bounds(-160,20,-80,60));
+    var myPoint = new LatLonPoint(50, -110);
+    // display the map centered on a latitude and longitude (Google zoom levels)
+    mapstraction.setCenterAndZoom(myPoint, 3);
+    mapstraction.addControls({zoom: 'small'});
+    mapstraction.addOverlay("http://votereport.us/reports.kml");
+    last_updated = new Date().toISO8601String();
+    $("#last_updated").text(last_updated);
+    setInterval("updateMap();",60000);
+
+}
+
+function updateMap() {
+    $("#update_status").show();
+    mapstraction.addOverlay("http://votereport.us/reports.kml?dtstart="+last_updated);
+    last_updated = new Date().toISO8601String();
+    $("#last_updated").text(last_updated);    
+    $("#update_status").hide();
+    return false;
 }

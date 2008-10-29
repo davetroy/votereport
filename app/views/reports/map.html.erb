@@ -4,6 +4,7 @@ go back to the <%= link_to "#votereport homepage", reports_path %>
 	<!-- <script src="http://openlayers.org/api/2.6/OpenLayers.js"></script> -->
     <script src="http://maps.google.com/maps?file=api&v=2&key=<%=GMAPS_API_KEY%>" type="text/javascript"></script>
     <script type="text/javascript" src="http://mapstraction.com/mapstraction-js/mapstraction.js"></script>	
+	<script type="text/javascript" src="/javascripts/jquery.min.js"></script>	
     <style type="text/css">
         #map {
             width: 510px;
@@ -11,6 +12,10 @@ go back to the <%= link_to "#votereport homepage", reports_path %>
             border: 1px solid gray;
         }
     </style>
+
+<div id="update_status" style="display:none">updating...</div>
+<div id="last_updated"></div>
+<a href="#" onclick="updateMap(); return false">Update Map</a>
 
 <script type="text/javascript" charset="utf-8">
 	initMap();

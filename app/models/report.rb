@@ -37,8 +37,18 @@ class Report < ActiveRecord::Base
 
     
   def self.find_with_filters(filters = {})
+    conditions = ["",filters]
+    if filters.include?(:dtstart)
+      conditions[0] << "created_at >= :dtstart"
+    end
+    if filters.include?(:dtend)
+      conditions[0] << "created_at <= :dtend"
+    end
+
     # TODO put in logic here for doing filtering by appropriate parameters
-    Report.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, :order => 'created_at DESC')
+    Report.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
+                      :order => 'created_at DESC',
+                      :conditions => conditions)
   end
     
   private
