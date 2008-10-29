@@ -21,4 +21,4 @@ config.action_view.cache_template_loading            = true
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
 
-GMAPS_API_KEY = "ABQIAAAAS-9BXlmhAxzk5tMQ6009tBTaqkp1AQ5mt_yon2QU6z7kz3FSRhRZ8T3p3uLOiqsB--n0Aedbn6X4Mg"
+GMAPS_API_KEY = "ABQIAAAAS-9BXlmhAxzk5tMQ6009tBQwB7FoWG9CpODCxt78lLSos1hDcBS1vOMMUWPlgylA8hA2CMqwKUC_wg"
