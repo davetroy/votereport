@@ -1,8 +1,29 @@
-Start your new app with "ahn start /path/to/your/app"
+Vote Report Adhearsion App
 
-If you wish to use Adhearsion to control Asterisk's dialplan,
-change the contexts you wish to be affected in your
-/etc/asterisk/extensions.conf file to the following:
+This app controls Asterisk, the open source telephony server, to playback prompts
+and gather the required input parameters.
 
-[your_context_name]
-exten => _X.,1,AGI(agi://1.2.3.4) ; This IP here
+---
+
+basic call flow:
+
+collect zip --
+  get and confirm a 5 digit zip, playing back name of zip as audio file
+
+enter wait time --
+  get and confirm a 2-3 digit wait time value
+  
+enter polling place rating -- 1 = worst, 9 = best
+  get and confirm single digit rating
+
+enter special conditions -- 1 digit between 1 and 6 to indicate a specific type of problem
+  get and confirm single digit special conditions code
+
+record an audio message "please say the full name of your polling place along with a brief audio report about that site"
+  get, playback and confirm recording until user is satisfied
+  
+See PhoneReporter < Reporter models for this function:
+  reporter = PhoneReporter.update_or_create(reporter_fields)
+  reporter.reports.create(report_fields)
+
+Terminate call and store audio file for access via web
