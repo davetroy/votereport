@@ -1,3 +1,11 @@
 Twitter Vote Report
 All code (c) 2008 David Troy (dave@roundhousetech.com) unless otherwise noted
 Made available under the MIT License
+--
+
+Notes:
+
+To install git for CentOS 5, use the EPEL repository:
+rpm -Uvh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-3.noarch.rpm
+yum -y install git
+

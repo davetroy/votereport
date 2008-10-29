@@ -1,6 +1,6 @@
 module ReportHelper
 
-  include BumpsparkHelper 
+  #include BumpsparkHelper 
 
   # Use natural language scan to suggest intended location names
   # Here are some test cases to use against this method
