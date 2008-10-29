@@ -1,14 +1,14 @@
 -- 
 -- Clear statistics for this hour, on this day
 -- In case we're re-running this stat
-DELETE FROM statistics WHERE DATE(created_at) = CURDATE() AND HOUR(created_at) = HOUR(now());
+DELETE FROM statistics WHERE DATE(created_at) = UTC_DATE() AND HOUR(created_at) = HOUR(UTC_TIMESTAMP());
 
 -- ----------------------------------------------------------
 -- reporters count total
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reporters-all_count', NOW(), count(*) 
+  'Reporters-all_count', UTC_TIMESTAMP(), count(*) 
 FROM reporters;
 
 -- ----------------------------------------------------------
@@ -16,7 +16,7 @@ FROM reporters;
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'TwitterReporters-all_count', NOW(), count(*) 
+  'TwitterReporters-all_count', UTC_TIMESTAMP(), count(*) 
 FROM reporters
 WHERE type = 'TwitterReporter';
 
@@ -25,7 +25,7 @@ WHERE type = 'TwitterReporter';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'SmsReporters-all_count', NOW(), count(*) 
+  'SmsReporters-all_count', UTC_TIMESTAMP(), count(*) 
 FROM reporters
 WHERE type = 'SmsReporter';
 
@@ -34,7 +34,7 @@ WHERE type = 'SmsReporter';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'IphoneReporters-all_count', NOW(), count(*) 
+  'IphoneReporters-all_count', UTC_TIMESTAMP(), count(*) 
 FROM reporters
 WHERE type = 'IphoneReporter';
 
@@ -43,7 +43,7 @@ WHERE type = 'IphoneReporter';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'PhoneReporters-all_count', NOW(), count(*) 
+  'PhoneReporters-all_count', UTC_TIMESTAMP(), count(*) 
 FROM reporters
 WHERE type = 'PhoneReporter';
 
@@ -52,15 +52,7 @@ WHERE type = 'PhoneReporter';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-all_count', NOW(), count(*) 
-FROM reports;
-
--- ----------------------------------------------------------
--- reports count total
--- ----------------------------------------------------------
-INSERT INTO statistics (name, created_at, integer_value)
-SELECT 
-  'Reports-all_count', NOW(), count(*) 
+  'Reports-all_count', UTC_TIMESTAMP(), count(*) 
 FROM reports;
 
 -- ----------------------------------------------------------
@@ -68,7 +60,7 @@ FROM reports;
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-sms_count', NOW(), count(*) 
+  'Reports-sms_count', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE r.source = 'SMS';
 
@@ -77,7 +69,7 @@ WHERE r.source = 'SMS';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-twt_count', NOW(), count(*) 
+  'Reports-twt_count', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE r.source = 'TWT';
 
@@ -86,7 +78,7 @@ WHERE r.source = 'TWT';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-telephone_count', NOW(), count(*) 
+  'Reports-telephone_count', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE r.source = 'TEL';
 
@@ -95,7 +87,7 @@ WHERE r.source = 'TEL';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-iphone_count', NOW(), count(*) 
+  'Reports-iphone_count', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE r.source = 'IPH';
 
@@ -104,19 +96,19 @@ WHERE r.source = 'IPH';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-last_hour_all', NOW(), count(*) 
+  'Reports-last_hour_all', UTC_TIMESTAMP(), count(*) 
 FROM reports r
-WHERE r.created_at > NOW() - INTERVAL 1 DAY;
+WHERE r.created_at > UTC_TIMESTAMP() - INTERVAL 1 DAY;
 
 -- ----------------------------------------------------------
 -- sms reports created in last hour
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-last_hour_sms', NOW(), count(*) 
+  'Reports-last_hour_sms', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE 
-  r.created_at > NOW() - INTERVAL 1 DAY AND
+  r.created_at > UTC_TIMESTAMP() - INTERVAL 1 DAY AND
   r.source = 'SMS';
   
 -- ----------------------------------------------------------
@@ -124,10 +116,10 @@ WHERE
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-last_hour_twitter', NOW(), count(*) 
+  'Reports-last_hour_twitter', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE 
-  r.created_at > NOW() - INTERVAL 1 DAY AND
+  r.created_at > UTC_TIMESTAMP() - INTERVAL 1 DAY AND
   r.source = 'TWT';
   
 -- ----------------------------------------------------------
@@ -135,10 +127,10 @@ WHERE
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-last_hour_iphone', NOW(), count(*) 
+  'Reports-last_hour_iphone', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE 
-  r.created_at > NOW() - INTERVAL 1 DAY AND
+  r.created_at > UTC_TIMESTAMP() - INTERVAL 1 DAY AND
   r.source = 'IPH';
   
 -- ----------------------------------------------------------
@@ -146,10 +138,10 @@ WHERE
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-last_hour_telephone', NOW(), count(*) 
+  'Reports-last_hour_telephone', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE 
-  r.created_at > NOW() - INTERVAL 1 DAY AND
+  r.created_at > UTC_TIMESTAMP() - INTERVAL 1 DAY AND
   r.source = 'TEL';
   
 -- ----------------------------------------------------------
@@ -157,7 +149,7 @@ WHERE
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-all_NullLocation', NOW(), count(*) 
+  'Reports-all_NullLocation', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE 
   r.location_id = NULL;
@@ -167,10 +159,10 @@ WHERE
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-last_hour_NullLocation', NOW(), count(*) 
+  'Reports-last_hour_NullLocation', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE 
-  r.created_at > NOW() - INTERVAL 1 DAY AND
+  r.created_at > UTC_TIMESTAMP() - INTERVAL 1 DAY AND
   r.location_id = NULL;
   
 -- ----------------------------------------------------------
@@ -178,7 +170,7 @@ WHERE
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, string_value, integer_value)
 SELECT 
-  'reporters-leaders-all_count', NOW(), 
+  'reporters-leaders-all_count', UTC_TIMESTAMP(), 
   src.uniqueid, count(r.id)
   FROM reporters src INNER JOIN reports r ON r.reporter_id = src.id
 GROUP BY src.uniqueid
@@ -190,11 +182,11 @@ LIMIT 20;
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, string_value, integer_value)
 SELECT 
-  'reporters-leaders-all_count', NOW(), 
+  'reporters-leaders-all_count', UTC_TIMESTAMP(), 
   src.uniqueid, count(r.id)
   FROM reporters src INNER JOIN reports r ON r.reporter_id = src.id
 WHERE
-  r.created_at > NOW() - INTERVAL 1 HOUR
+  r.created_at > UTC_TIMESTAMP() - INTERVAL 1 HOUR
 GROUP BY src.uniqueid
 ORDER BY count(r.id) DESC
 LIMIT 20;
@@ -204,7 +196,7 @@ LIMIT 20;
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, decimal_value)
 SELECT 
-  'reports-sms_percent', NOW(),
+  'reports-sms_percent', UTC_TIMESTAMP(),
   count(*) / (select count(*) from reports) * 100.0 
 FROM reports r WHERE r.source = 'SMS';
 
@@ -213,7 +205,7 @@ FROM reports r WHERE r.source = 'SMS';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, decimal_value)
 SELECT 
-  'reports-twitter_percent', NOW(),
+  'reports-twitter_percent', UTC_TIMESTAMP(),
   count(*) / (select count(*) from reports) * 100.0 
 FROM reports r WHERE r.source = 'TWT';
 
@@ -222,7 +214,7 @@ FROM reports r WHERE r.source = 'TWT';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, decimal_value)
 SELECT 
-  'reports-iphone_percent', NOW(),
+  'reports-iphone_percent', UTC_TIMESTAMP(),
   count(*) / (select count(*) from reports) * 100.0 
 FROM reports r WHERE r.source = 'IPH';
 
@@ -231,7 +223,7 @@ FROM reports r WHERE r.source = 'IPH';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, decimal_value)
 SELECT 
-  'reports-telephone_percent', NOW(),
+  'reports-telephone_percent', UTC_TIMESTAMP(),
   count(*) / (select count(*) from reports) * 100.0 
 FROM reports r WHERE r.source = 'TEL';
 
@@ -240,6 +232,6 @@ FROM reports r WHERE r.source = 'TEL';
 -- ----------------------------------------------------------
 SELECT name, string_value, integer_value, decimal_value
 FROM statistics
-WHERE DATE(created_at) = CURDATE()
+WHERE DATE(created_at) = UTC_DATE()
 ORDER BY name, sort  
 ;
