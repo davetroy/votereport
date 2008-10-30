@@ -24,6 +24,10 @@ class Report < ActiveRecord::Base
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
   named_scope :with_wait_time, :conditions => 'wait_time IS NOT NULL'
+  named_scope :assigned, lambda { |user| 
+    { :conditions => ['reviewer_id = ? AND reviewed_at IS NULL AND assigned_at > UTC_TIMESTAMP - INTERVAL 10 MINUTE', user.id],
+      :order => 'created_at DESC' }
+  }
   # @reports = Report.unassigned.assign(@current_user) &tc...
   # FIXME: can't we do this more efficiently from the controller, UPDATE, then SELECT updated? depends on the kool-aid
   named_scope( :unassigned, 

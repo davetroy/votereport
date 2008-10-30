@@ -1,6 +1,8 @@
 class ReportsController < ApplicationController
   protect_from_forgery :except => :create
   before_filter :filter_from_params, :only => [ :index, :chart ]
+  attr_accessor :current_user
+  before_filter { |ctl| ctl.current_user = Report.find(:first) }
   
   # GET /reports
   def index
@@ -30,19 +32,53 @@ class ReportsController < ApplicationController
   
   # GET /reports/review
   def review
+    # fetches basic review layout
+    @reports = Report.assigned(current_user)
   end
   
-  # POST /reports/reviews
-  def reviews
-    @reports = Report.unassigned.assign(Reporter.find(:first)) # @current_user
+  # POST /reports/assign
+  def assign
+    # assigns a set of reviews to the user
+    # FIXME: causes 10 updates when one would suffice
+    @reports = Report.unassigned.assign(current_user)
     respond_to do |format|
-      format.js do 
+      format.js { 
         render :update do |page|
           page['reports'].replace_html :partial => 'reviews', :locals => { :reports => @reports }
           page['reports'].show
         end
-      end
+      }
     end
+  end
+  
+  # POST /reports/release
+  def release
+    # could we do this with named_scope extensions? kinda gnarly...
+    # Report.assigned(current_user).release
+    Report.update_all("reviewer_id = NULL, assigned_at = NULL", [ 'reviewer_id = ? AND reviewed_at IS NULL', current_user.id])
+    respond_to do |format|
+      format.js {
+        render :update do |page|
+          page['reports'].fade
+        end
+      }
+    end
+  end
+  
+  # GET /reports/:id/edit
+  def edit
+    @report = Report.find(params[:id])
+    respond_to do |format|
+      format.js {
+        render :update do |page|
+          page["report_#{@report.id}"]
+        end
+      }
+    end
+  end
+  
+  # POST /reports/:id
+  def update
   end
   
   def map  

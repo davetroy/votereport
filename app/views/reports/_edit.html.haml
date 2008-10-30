@@ -10,7 +10,5 @@
 %td 
   %abbr{ :class => "published", :title => report.created_at.iso8601 }
     ="#{time_ago_in_words(report.created_at)} ago"
-  = link_to_remote 'Edit', { :url => edit_report_path(report) }
 %td
-  = link_to_remote 'Confirm', { :url => confirm_report_path(report) }
-  = link_to_remote 'Delete', { :url => report_path(report), :method => :delete, :confirm => 'Are you SURE this is bogus data?' }
+  = link_to_remote 'Save', { :url => report_path(report), :method => :put }
