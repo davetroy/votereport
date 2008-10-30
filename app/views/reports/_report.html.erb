@@ -4,6 +4,7 @@
     <span class="whenwhere">
       <abbr class="published" title="<%= report.created_at.iso8601 %>"><%=time_ago_in_words(report.created_at)%></abbr> ago
       <%="in <span class=\"adr\">#{report.location.address}</a>" if report.location%>
-      via <%=report.reporter.source_name%> <%=audio_link(report)%>
+      via <%=report.reporter.source_name%><br/>
+      <%=audio_link(report)%>
     </span>
 </div>
