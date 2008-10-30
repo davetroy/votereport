@@ -1,0 +1,14 @@
+%td
+  =image_tag(report.reporter.icon, :class => "profile")
+  %span{ :class => "author vcard"}
+    =h report.reporter.name
+    %br
+    =h report.reporter.uniqueid
+%td= report.reporter.source_name
+%td= report.text
+%td= report.location
+%td 
+  %abbr{ :class => "published", :title => report.created_at.iso8601 }
+    ="#{time_ago_in_words(report.created_at)} ago"
+%td
+  = link_to_remote 'Save', { :url => report_path(report), :method => :put }

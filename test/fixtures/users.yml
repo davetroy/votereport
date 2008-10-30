@@ -12,6 +12,7 @@ quentin:
   first_name:                quentin
   last_name:                 mc-quenterson
   api_key:                   805de17580e1bd9cbaae3b5f637dc14e6e443f3e
+  type:                      Reviewer
       
 aaron:
   id:                        2
@@ -26,6 +27,7 @@ aaron:
   url:                       http://aaron.com/
   first_name:                aaron
   last_name:                 aaronson
+  type:                      Reviewer
 
 old_password_holder:
   id:                        3
@@ -38,4 +40,5 @@ old_password_holder:
   url:                       http://old_password_holder.com/          
   first_name:                salty
   last_name:                 dog
-
+  type:                      Reviewer
+  

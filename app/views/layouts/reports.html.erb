@@ -1,9 +1,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <%= stylesheet_link_tag 'reports' %>
+  <%= yield :style %>
   <%= yield :head %>
   <title>VoteReport</title>
-	<script type="text/javascript" charset="utf-8" src="/javascripts/application.js"></script>
+	<%= javascript_include_tag 'application' %>
+	<%= yield :javascript %>
 	<link rel="search" type="application/opensearchdescription+xml" title="#votereport" href="http://votereport.us/opensearch.xml" />
 	<%- [:atom, :kml].each do |format| -%>
 	<%=  auto_discovery_link_tag(format, {:controller => :reports, :action => :index, :format => format}, {:title => "#votereport #{format} feed"}) %>

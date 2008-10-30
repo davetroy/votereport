@@ -1,0 +1,11 @@
+%table#reports-list
+  %tbody
+    %tr#reports-header.header
+      %th Reporter
+      %th Source
+      %th Report
+      %th Report Location
+      %th When
+      %th &nbsp;
+    - reports.each do |report|
+      = render :partial => 'report_tr', :locals => {:report => report}

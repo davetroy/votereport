@@ -1,4 +1,6 @@
 class Report < ActiveRecord::Base
+  acts_as_paranoid 
+  
   validates_presence_of :reporter_id
   validates_uniqueness_of :uniqueid, :scope => :source, :allow_blank => true, :message => 'already processed'
 
@@ -22,6 +24,21 @@ class Report < ActiveRecord::Base
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
   named_scope :with_wait_time, :conditions => 'wait_time IS NOT NULL'
+  named_scope :assigned, lambda { |user| 
+    { :conditions => ['reviewer_id = ? AND reviewed_at IS NULL AND assigned_at > UTC_TIMESTAMP - INTERVAL 10 MINUTE', user.id],
+      :order => 'created_at DESC' }
+  }
+  # @reports = Report.unassigned.assign(@current_user) &tc...
+  # FIXME: can't we do this more efficiently from the controller, UPDATE, then SELECT updated? depends on the kool-aid
+  named_scope( :unassigned, 
+    :limit => 10, 
+    :order => 'created_at DESC',
+    :conditions => 'reviewer_id IS NULL OR assigned_at < UTC_TIMESTAMP - INTERVAL 10 MINUTE' 
+  ) do
+    def assign(reviewer)
+      each { |r| r.update_attributes(:reviewer_id => reviewer.id, :assigned_at => Time.now.utc) }
+    end
+  end
 
   cattr_accessor :public_fields
   @@public_fields = [:id,:source,:text,:score,:zip,:wait_time,:created_at,:updated_at]

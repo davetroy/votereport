@@ -11,7 +11,17 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => "reports"
 
   map.connect 'local/:filter', :controller => "reports", :action => "index"
-  map.resources :reports, :collection => {:map => :get, :chart => :get}
+  map.resources :reports, 
+    :collection => {
+      :map => :get, 
+      :chart => :get, 
+      :review => :get, 
+      :assign => :post, 
+      :release => :post
+    },
+    :member => {
+      :confirm => :put
+    }
 
   
   # The priority is based upon order of creation: first created -> highest priority.
