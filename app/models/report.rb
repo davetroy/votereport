@@ -25,6 +25,10 @@ class Report < ActiveRecord::Base
   cattr_accessor :public_fields
   @@public_fields = [:id,:source,:text,:score,:zip,:wait_time,:created_at,:updated_at]
 
+  def name
+    self.reporter.name
+  end
+  
   alias_method :ar_to_json, :to_json
   def to_json(options = {})
     options[:only] = @@public_fields

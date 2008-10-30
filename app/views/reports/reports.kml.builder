@@ -24,7 +24,7 @@ xml.kml("xmlns" => "http://earth.google.com/kml/2.2",
             xml.color "ff00aaff"
           end
           xml.tag! "BalloonStyle" do
-            xml.text "$[description]"
+            xml.text "$[description] by $[screen_name]"
             xml.textColor "ff000000"
             xml.color "ff669999"
           end
@@ -39,6 +39,11 @@ xml.kml("xmlns" => "http://earth.google.com/kml/2.2",
               xml.value report.send(attribute) 
             end
           end
+          %w{screen_name}.each do |attribute|
+            xml.tag! "Data", :name => attribute do
+              xml.value report.reporter.send(attribute) 
+            end
+          end          
         end
         xml.address report.location.address unless report.location.address.blank?          
         xml.tag! "TimeStamp" do
