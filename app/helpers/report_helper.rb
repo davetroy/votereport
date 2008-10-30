@@ -16,7 +16,7 @@ module ReportHelper
   end
 
   def audio_link(report)
-    link_to "with audio", "#{report.reporter.audio_path}/#{report.audio_file}" if report.has_audio
+    link_to("with audio", "#{report.reporter.audio_path}/#{report.audio_file}", :target => 'new') if report.has_audio
   end
 
   def bumpspark2( results )
