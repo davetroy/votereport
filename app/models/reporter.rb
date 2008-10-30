@@ -23,13 +23,9 @@ class Reporter < ActiveRecord::Base
   def self.update_or_create(fields)
     fields = fields.delete_if { |k,v| !self.column_names.include?(k) }
     if reporter = self.find_by_uniqueid(fields['uniqueid'])
-      p "updating attributes"
       reporter.update_attributes(fields)
     else
-      p "creating reporter"
-      p fields
       reporter = self.create(fields)
-      p "done creating"
     end
     reporter
   end
