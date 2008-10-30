@@ -1,4 +1,6 @@
 class Report < ActiveRecord::Base
+  acts_as_paranoid 
+  
   validates_presence_of :reporter_id
   validates_uniqueness_of :uniqueid, :scope => :source, :allow_blank => true, :message => 'already processed'
 

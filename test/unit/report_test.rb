@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ReportTest < ActiveSupport::TestCase
+  fixtures :reports, :users
   
   def setup
     @twitter_reporter = reporters(:reporters_001)
@@ -41,5 +42,13 @@ class ReportTest < ActiveSupport::TestCase
     assert_equal 5, (md_report.filters & %w(annapolis baltimore maryland northamerica unitedstates).map { |c| Filter.find_by_name(c) }).size
     ca_report = @twitter_reporter.reports.create(:text => 'all is well in 94107')
     assert_equal 4, (ca_report.filters & %w(sanfrancisco california northamerica unitedstates).map { |c| Filter.find_by_name(c) }).size
+  end
+  
+  def test_review_assignment
+    @reports = Report.unassigned.assign(users(:bob))
+    assert_equal 10, @reports.size
+    @reports.each do |r|
+      assert_equal users(:bob), r.reviewer
+    end
   end
 end

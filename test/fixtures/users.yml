@@ -1,1 +1,8 @@
---- {}
+---
+bob:
+  id: 1000
+  first_name: Bob
+  last_name: Bobethan
+  verified: 1
+  authorized: 1
+  type: Reviewer

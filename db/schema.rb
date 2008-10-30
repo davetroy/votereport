@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(:version => 20081030035036) do
     t.column "assigned_at", :datetime
     t.column "reviewed_at", :datetime
     t.column "reviewer_id", :integer
+    t.column "deleted_at", :datetime
   end
 
   add_index "reports", ["created_at"], :name => "index_reports_on_created_at"
