@@ -29,7 +29,7 @@ xml.feed "xmlns" => "http://www.w3.org/2005/Atom",
       end
       xml << report.location.point.as_georss unless report.location.nil?
       xml.content :type => "html" do
-        xml.text! CGI::unescapeHTML(report.text) unless report.text.blank?
+        xml.text! CGI::unescapeHTML("#{report.reporter.screen_name}: " + report.text) unless report.text.blank?
       end 
     end
   end
