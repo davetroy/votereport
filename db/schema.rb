@@ -129,15 +129,6 @@ ActiveRecord::Schema.define(:version => 20081030035036) do
     t.column "decimal_value", :integer, :limit => 10
   end
 
-  create_table "statistics", :options=>'ENGINE=MyISAM', :force => true do |t|
-    t.column "name", :string
-    t.column "created_at", :datetime
-    t.column "sort", :integer, :default => 0
-    t.column "string_value", :string
-    t.column "integer_value", :integer
-    t.column "decimal_value", :integer, :limit => 10
-  end
-
   create_table "tags", :force => true do |t|
     t.column "pattern", :string, :limit => 30
     t.column "description", :string, :limit => 80
@@ -149,7 +140,6 @@ ActiveRecord::Schema.define(:version => 20081030035036) do
     t.column "last_name", :string, :limit => 80
     t.column "url", :string, :limit => 120
     t.column "api_key", :string, :limit => 40
-    t.column "password_hash", :string, :limit => 40
     t.column "email", :string, :limit => 80
     t.column "verified", :boolean
     t.column "authorized", :boolean
@@ -164,9 +154,16 @@ ActiveRecord::Schema.define(:version => 20081030035036) do
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
     t.column "type", :string, :limit => 30
+    t.column "crypted_password", :string, :limit => 40
+    t.column "salt", :string, :limit => 40
+    t.column "remember_token", :string, :limit => 40
+    t.column "remember_token_expires_at", :datetime
+    t.column "activation_code", :string, :limit => 40
+    t.column "activated_at", :datetime
   end
 
   add_index "users", ["api_key"], :name => "index_users_on_api_key", :unique => true
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["type"], :name => "index_users_on_type"
 
 end
