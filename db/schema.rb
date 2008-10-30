@@ -129,6 +129,15 @@ ActiveRecord::Schema.define(:version => 20081030035036) do
     t.column "decimal_value", :integer, :limit => 10
   end
 
+  create_table "statistics", :options=>'ENGINE=MyISAM', :force => true do |t|
+    t.column "name", :string
+    t.column "created_at", :datetime
+    t.column "sort", :integer, :default => 0
+    t.column "string_value", :string
+    t.column "integer_value", :integer
+    t.column "decimal_value", :integer, :limit => 10
+  end
+
   create_table "tags", :force => true do |t|
     t.column "pattern", :string, :limit => 30
     t.column "description", :string, :limit => 80
