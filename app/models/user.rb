@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 
   validates_presence_of :first_name, :last_name, :url, :api_key, :password_hash, :email
   validates_uniqueness_of :api_key, :email, :url
+  validates_email_veracity_of :email
 
   attr_accessor(:password)
   
