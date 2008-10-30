@@ -57,7 +57,7 @@ class ReportsController < ApplicationController
     raise "Invalid UDID" unless info[:reporter][:uniqueid][/^[\d\-A-F]{36,40}$/i]
     reporter = IphoneReporter.update_or_create(info[:reporter])
     polling_place = PollingPlace.match_or_create(info[:polling_place][:name], reporter.location)
-    report = reporter.reports.create(info[:report].merge(:polling_place => polling_place))
+    report = reporter.reports.create(info[:report].merge(:polling_place => polling_place, :latlon => info[:reporter][:latlon]))
     "OK"
   rescue => e
     logger.info "*** IPHONE ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"
@@ -70,7 +70,7 @@ class ReportsController < ApplicationController
     raise "Invalid IMEI" unless info[:reporter][:uniqueid][/^\d{14,16}/]
     reporter = AndroidReporter.update_or_create(info[:reporter])
     polling_place = PollingPlace.match_or_create(info[:polling_place][:name], reporter.location)
-    report = reporter.reports.create(info[:report].merge(:polling_place => polling_place))
+    report = reporter.reports.create(info[:report].merge(:polling_place => polling_place, :latlon => info[:reporter][:latlon]))
     "OK"
   rescue => e
     logger.info "*** ANDROID ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"

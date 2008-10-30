@@ -4,7 +4,7 @@ class Reporter < ActiveRecord::Base
 
   validates_presence_of :uniqueid
   validates_uniqueness_of :uniqueid, :scope => :type, :allow_blank => false
-  
+    
   cattr_accessor :public_fields
   @@public_fields = [:name]
 

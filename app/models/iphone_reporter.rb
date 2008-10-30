@@ -10,7 +10,7 @@ class IphoneReporter < Reporter
   
   private
   def set_location
-    self.latlon.gsub!(/:\d+$/,'')  # TODO: make use of this accuracy parameter - 39.024,-76.511:2000
+    self.latlon, location_accuracy = self.latlon.split(/:/)
     if self.location = Location.geocode(self.latlon)
       self.profile_location = self.location.address if self.profile_location.nil?
     end

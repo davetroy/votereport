@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081023221200) do
+ActiveRecord::Schema.define(:version => 20081029201200) do
 
   create_table "filters", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "name", :string, :limit => 80
@@ -111,6 +111,8 @@ ActiveRecord::Schema.define(:version => 20081023221200) do
     t.column "polling_place_id", :integer
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
+    t.column "rating", :integer
+    t.column "location_accuracy", :integer
   end
 
   add_index "reports", ["created_at"], :name => "index_reports_on_created_at"
