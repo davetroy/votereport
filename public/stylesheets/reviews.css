@@ -1,0 +1,6 @@
+#reports-list {
+  width: 100%; }
+  #reports-list th {
+    font-weight: bold; }
+  #reports-list td {
+    vertical-align: top; }

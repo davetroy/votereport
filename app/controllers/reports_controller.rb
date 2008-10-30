@@ -28,6 +28,23 @@ class ReportsController < ApplicationController
     end
   end
   
+  # GET /reports/review
+  def review
+  end
+  
+  # POST /reports/reviews
+  def reviews
+    @reports = Report.unassigned.assign(Reporter.find(:first)) # @current_user
+    respond_to do |format|
+      format.js do 
+        render :update do |page|
+          page['reports'].replace_html :partial => 'reviews', :locals => { :reports => @reports }
+          page['reports'].show
+        end
+      end
+    end
+  end
+  
   def map  
   end
   
