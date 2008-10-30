@@ -16,7 +16,7 @@ config.action_controller.perform_caching             = false
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
 
-AUDIO_UPLOAD_PATH = "/tmp"
+AUDIO_UPLOAD_PATH = "/private/tmp"
 GMAPS_API_KEY = "ABQIAAAAzMUFFnT9uH0xq39J0Y4kbhTJQa0g3IQ9GZqIMmInSLzwtGDKaBR6j135zrztfTGVOm2QlWnkaidDIQ"
 
-require 'ruby-debug'
+#require 'ruby-debug'

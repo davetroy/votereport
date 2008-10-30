@@ -58,7 +58,12 @@ class ReportsController < ApplicationController
     reporter = IphoneReporter.update_or_create(info[:reporter])
     polling_place = PollingPlace.match_or_create(info[:polling_place][:name], reporter.location)
     report = reporter.reports.create(info[:report].merge(:polling_place => polling_place, :latlon => info[:reporter][:latlon]))
-    File.open('w', "#{AUDIO_UPLOAD_PATH}/#{report.uniqueid}.caf") { |f| f.write params[:uploaded].read } if params[:uploaded]
+    if audiofile = params[:uploaded]
+      fn = "#{AUDIO_UPLOAD_PATH}/#{report.uniqueid}.caf"
+      File.open(fn, 'w') { |f| f.write audiofile.read }
+      logger.info "*** iPhone Audio Report: #{fn}"
+      report.has_audio = true
+    end
     "OK"
   rescue => e
     logger.info "*** IPHONE ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"
