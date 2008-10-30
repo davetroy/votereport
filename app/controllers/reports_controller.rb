@@ -67,7 +67,7 @@ class ReportsController < ApplicationController
   # Store an Android-generated report given a hash of parameters
   # Check for a valid Android IMEI
   def save_android_report(info)
-    raise "Invalid IMEI" unless info[:reporter][:uniqueid][/^\d{16}/]
+    raise "Invalid IMEI" unless info[:reporter][:uniqueid][/^\d{14,16}/]
     reporter = AndroidReporter.update_or_create(info[:reporter])
     polling_place = PollingPlace.match_or_create(info[:polling_place][:name], reporter.location)
     report = reporter.reports.create(info[:report].merge(:polling_place => polling_place))
