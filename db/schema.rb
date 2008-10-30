@@ -95,7 +95,6 @@ ActiveRecord::Schema.define(:version => 20081029201200) do
     t.column "followers_count", :integer
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
-    t.column "location_accuracy", :integer
   end
 
   add_index "reporters", ["uniqueid", "type"], :name => "index_reports_on_uniqueid_and_type", :unique => true
@@ -114,6 +113,7 @@ ActiveRecord::Schema.define(:version => 20081029201200) do
     t.column "updated_at", :datetime
     t.column "rating", :integer
     t.column "location_accuracy", :integer
+    t.column "has_audio", :boolean
   end
 
   add_index "reports", ["created_at"], :name => "index_reports_on_created_at"

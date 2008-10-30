@@ -54,7 +54,11 @@ class Report < ActiveRecord::Base
                       :order => 'created_at DESC',
                       :conditions => conditions)
   end
-    
+  
+  def audio_file
+    "#{uniqueid}." + (self.source=='IPH' ? 'caf' : 'gsm')
+  end
+
   private
   def set_source
     self.source = self.reporter.source

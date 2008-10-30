@@ -62,7 +62,7 @@ class ReportsController < ApplicationController
       fn = "#{AUDIO_UPLOAD_PATH}/#{report.uniqueid}.caf"
       File.open(fn, 'w') { |f| f.write audiofile.read }
       logger.info "*** iPhone Audio Report: #{fn}"
-      report.has_audio = true
+      report.update_attribute(:has_audio, true)
     end
     "OK"
   rescue => e
