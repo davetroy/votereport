@@ -6,7 +6,7 @@ development:
   database: votereport_development
   username: root
   password:
-  socket: /private/var/mysql/mysql.sock
+  socket: /tmp/mysql.sock
   
 test:
   adapter: mysql
