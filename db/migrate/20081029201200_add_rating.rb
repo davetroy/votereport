@@ -2,7 +2,6 @@ class AddRating < ActiveRecord::Migration
   def self.up
     add_column :reports, :rating, :integer
     add_column :reports, :location_accuracy, :integer
-    add_column :reporters, :location_accuracy, :integer
     
   end
   
