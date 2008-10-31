@@ -31,7 +31,7 @@ class Report < ActiveRecord::Base
   named_scope( :unassigned, 
     :limit => 10, 
     :order => 'created_at DESC',
-    :conditions => 'reviewer_id IS NULL OR assigned_at < UTC_TIMESTAMP - INTERVAL 10 MINUTE' 
+    :conditions => 'reviewer_id IS NULL OR (assigned_at < UTC_TIMESTAMP - INTERVAL 10 MINUTE AND reviewed_at IS NULL)' 
   ) do
     def assign(reviewer)
       each { |r| r.update_attributes(:reviewer_id => reviewer.id, :assigned_at => Time.now.utc) }
