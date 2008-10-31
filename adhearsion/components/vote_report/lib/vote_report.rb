@@ -3,15 +3,17 @@ class VoteReport
     
   TAGS = %w(#good #machine #registration #challenges #hava #ballots #other)
   CALL_AUDIO_PATH = "/home/votereport/audio"
-  TVR_AUDIO_PATH = "/home/votereport/adhearsion/tvr-audio"
+  TVR_AUDIO_PATH = "/home/votereport/current/adhearsion/tvr-audio"
   ZIP_AUDIO_PATH = "/home/votereport/zips"
   
+  def initialize
+  end
+  
   def start
-    play 'thank-you-for-calling-votereport'
-    
-    reporter = PhoneReporter.update_or_create(:uniqueid => call.callerid)
+    reporter = PhoneReporter.update_or_create(:uniqueid => call.callerid || call.uniqueid, :profile_location => call.calleridname.capitalize_words)
     report = reporter.reports.new(:uniqueid => call.uniqueid)
 
+    #play 'thank-you-for-calling-votereport'
     report.zip = enter_zip
     reporter.location = Location.geocode(report.zip)
     report.wait_time = enter_wait_time
@@ -21,6 +23,8 @@ class VoteReport
     report.has_audio = true
     
     play 'thank-you-for-calling-goodbye'
+  rescue => e
+    puts "#{e.message} #{e.backtrace.first}"
   ensure
     reporter.save
     report.save
@@ -88,7 +92,7 @@ class VoteReport
   def confirm
     begin
       yield
-    	confirmed = call.input(1, :play => '#{TVR_AUDIO_PATH}/press-1-to-confirm')      
+    	confirmed = call.input(1, :play => "#{TVR_AUDIO_PATH}/press-1-to-confirm")      
     end until confirmed == '1'
   end
 end
