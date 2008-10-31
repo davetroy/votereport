@@ -71,7 +71,7 @@ class ReportsController < ApplicationController
     respond_to do |format|
       format.js {
         render :update do |page|
-          page["report_#{@report.id}"].replace_html :partial => 'report_review', :locals => { :report => @report }
+          page["report_#{@report.id}"].replace :partial => 'report_review', :locals => { :report => @report }
         end
       }
     end
@@ -83,7 +83,7 @@ class ReportsController < ApplicationController
     respond_to do |format|
       format.js {
         render :update do |page|
-          page["report_#{@report.id}"].replace_html :partial => 'edit', :locals => { :report => @report }
+          page["report_#{@report.id}"].replace :partial => 'edit', :locals => { :report => @report }
         end
       }
     end
@@ -97,7 +97,7 @@ class ReportsController < ApplicationController
         format.xml { head :ok }
         format.js {
           render :update do |page|
-            page["report_#{@report.id}"].replace_html :partial => 'report_review', :locals => { :report => @report }
+            page["report_#{@report.id}"].replace :partial => 'report_review', :locals => { :report => @report }
             page["report_#{@report.id}"].visual_effect :highlight
           end
         }
