@@ -7,13 +7,37 @@ class VoteReport
   end
   
   def start
+    report = Report.new :reporterid => call.callerid, :uniqueid => call.uniqueid
+    
     collect_zip
+    report.zip = @zip
+    
     get_report_type
-    Report.create(:zip => @zip, :report_type_id => @report_type_id,
-                  :reporterid => call.callerid,
-                  :uniqueid => call.uniqueid)
+    report.report_type_id = @report_type_id
+    
     record_audio_message?
-    call.play('vm-goodbye')
+    
+    # TODO: Add wait_time column
+    enter_wait_time
+    report.wait_time = @wait_time
+    
+    # TODO: Add polling_location_rating column
+    enter_polling_location_rating
+    report.rating = @rating
+    
+    call.play 'thank-you', 'vm-goodbye'
+  ensure
+    report.save
+  end
+  
+  def enter_wait_time
+    @wait_time = get_digits 3, "enter-your-wait-time-in-minutes-and-press-pound"
+    # Do any input verification?
+  end
+  
+  def enter_polling_location_rating
+    @rating = get_digits 1, "enter-your-wait-time-in-minutes-and-press-pound"
+    @rating == "0" ? enter_polling_location_rating : @rating
   end
   
   def record_audio_message?
