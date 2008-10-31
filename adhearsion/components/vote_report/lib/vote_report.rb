@@ -1,7 +1,7 @@
 class VoteReport
   add_call_context :as => :call
     
-  TAGS = %w(#good #machine #registration #challenges #hava #ballots #other)
+  TAGS = %w(#good #machine #registration #challenges #hava #ballots #bad)
   CALL_AUDIO_PATH = "/home/votereport/audio"
   TVR_AUDIO_PATH = "/home/votereport/current/adhearsion/tvr-audio"
   ZIP_AUDIO_PATH = "/home/votereport/zips"
@@ -13,13 +13,13 @@ class VoteReport
   end
   
   def start
-    play 'thank-you-for-calling-votereport'
+    #play 'thank-you-for-calling-votereport'
 
     @report.zip = enter_zip
     @report.wait_time = enter_wait_time
     @report.rating = enter_polling_location_rating
     @report.text = get_problems
-    @record_audio_message
+    record_audio_message
     @report.has_audio = true
     
     play 'thank-you-for-calling-goodbye'
@@ -44,8 +44,7 @@ class VoteReport
     wait_time = nil
     confirm do
       wait_time = get_digits(nil, "enter-waittime")
-      play you-entered
-      play wait_time
+      play ['you-entered', wait_time.to_i]
     end
     wait_time
   end
@@ -53,9 +52,9 @@ class VoteReport
   def enter_polling_location_rating
     rating = nil
     confirm do
-      rating = confine(1..9) { get_digits(1, "rate-your-polling-place") }
-      play you-entered
-      play rating
+      rating = confine(1..9) { get_digits(1, "rate-your-polling-place") }.to_i
+      play 'you-entered'
+      call.say_digits rating
     end
     (( (rating-1) / 8.0) * 100).to_i
   end
@@ -64,7 +63,8 @@ class VoteReport
     problem = nil
     confirm do
       problem = confine(0..6) { get_digits(1, 'special-conditions') }
-      play %W(you-entered #{problem})
+      play 'you-entered'
+      call.say_digits problem
     end
     TAGS[problem.to_i]
   end
@@ -72,7 +72,7 @@ class VoteReport
   def record_audio_message
     play 'record-message'
     confirm do
-      call.record("#{CALL_AUDIO_PATH}/#{call.uniqueid}.ulaw", :beep => true, :silence => 5, :maxduration => 120)
+      call.record("#{CALL_AUDIO_PATH}/#{call.uniqueid} gsm # 60 BEEP s=5")
       play "please-review-recording"
       call.play "#{CALL_AUDIO_PATH}/#{call.uniqueid}"
     end
