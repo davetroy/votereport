@@ -44,7 +44,8 @@ class VoteReport
     wait_time = nil
     confirm do
       wait_time = get_digits(nil, "enter-waittime")
-      play %W(you-entered #{wait_time})
+      play you-entered
+      play wait_time
     end
     wait_time
   end
@@ -53,7 +54,8 @@ class VoteReport
     rating = nil
     confirm do
       rating = confine(1..9) { get_digits(1, "rate-your-polling-place") }
-      play %W(you-entered #{rating})
+      play you-entered
+      play rating
     end
     (( (rating-1) / 8.0) * 100).to_i
   end
