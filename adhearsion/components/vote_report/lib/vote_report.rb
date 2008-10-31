@@ -13,7 +13,7 @@ class VoteReport
   end
   
   def start
-    #play 'thank-you-for-calling-votereport'
+    play 'thank-you-for-calling-votereport'
 
     @report.zip = enter_zip
     @report.wait_time = enter_wait_time
@@ -44,7 +44,8 @@ class VoteReport
     wait_time = nil
     confirm do
       wait_time = get_digits(nil, "enter-waittime")
-      play ['you-entered', wait_time.to_i]
+      play 'you-entered'
+      call.play wait_time.to_i
     end
     wait_time
   end
@@ -72,7 +73,7 @@ class VoteReport
   def record_audio_message
     play 'record-message'
     confirm do
-      call.record("#{CALL_AUDIO_PATH}/#{call.uniqueid} gsm # 60 BEEP s=5")
+      call.record("#{CALL_AUDIO_PATH}/#{call.uniqueid}.gsm # 60 BEEP s=5")
       play "please-review-recording"
       call.play "#{CALL_AUDIO_PATH}/#{call.uniqueid}"
     end
