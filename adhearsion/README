@@ -60,7 +60,7 @@ special-conditions
 almost-done
   Thanks, you're almost done.
 
-record-optional-message
+record-message
   Now, after the beep, please say the full name of your polling place location.
   You may optionally tell us about your overall experience at your polling place,
   and your audio report will be made available on the web and to the media.
