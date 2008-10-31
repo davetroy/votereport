@@ -1,5 +1,4 @@
 default {
   Report
-  report = new_vote_report
-  report.start  
+  new_vote_report.start
 }

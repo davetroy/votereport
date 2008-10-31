@@ -1,7 +1,11 @@
 class Report < ActiveRecord::Base
+  
   validates_presence_of :reporter_id
   validates_uniqueness_of :uniqueid, :scope => :source, :allow_blank => true, :message => 'already processed'
-
+  
+  validates_inclusion_of :rating, :in => ("1".."9").to_a + (1..9).to_a, :allow_nil => true
+  validates_numericality_of :wait_time, :allow_nil => true
+  
   attr_accessor :latlon, :tag_string   # virtual field supplied by iphone/android
   
   belongs_to :location
