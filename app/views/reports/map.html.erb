@@ -3,12 +3,13 @@ go back to the <%= link_to "#votereport homepage", reports_path %>
 
 	<!-- <script src="http://openlayers.org/api/2.6/OpenLayers.js"></script> -->
     <script src="http://maps.google.com/maps?file=api&v=2&key=<%=GMAPS_API_KEY%>" type="text/javascript"></script>
-    <script type="text/javascript" src="http://mapstraction.com/mapstraction-js/mapstraction.js"></script>	
+    <script type="text/javascript" src="/javascripts/mapstraction.js"></script>	
+    <script type="text/javascript" src="/javascripts/mapping.js"></script>	
 	<script type="text/javascript" src="/javascripts/jquery.min.js"></script>	
     <style type="text/css">
         #map {
-            width: 510px;
-            height: 600px;
+            width: 100%;
+            height: 80%;
             border: 1px solid gray;
         }
     </style>
@@ -18,5 +19,8 @@ updated: <span id="last_updated"></span>
 <a href="#" onclick="updateMap(); return false">Update Map</a>
 
 <script type="text/javascript" charset="utf-8">
-	initMap();
+		$(document).ready(function() {
+			initMapJS();
+			remoteLoad("/reports.json?callback=loadMarkers&<%= @filters.collect{|k,v| "#{k}=#{v}"}.join("&") %>")
+		 });
 </script>

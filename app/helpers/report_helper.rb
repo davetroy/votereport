@@ -27,7 +27,7 @@ module ReportHelper
     else
       image = "rating_good.png"
     end
-    %Q{<img src="http://mapsomething.com/demo/votereport/#{image}"> (#{rating}%)}
+    %Q{<img src="http://votereport.us/images/#{image}"> (#{rating}%)}
   end
   
   def bumpspark2( results )

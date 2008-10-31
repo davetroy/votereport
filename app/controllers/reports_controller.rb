@@ -1,13 +1,13 @@
 class ReportsController < ApplicationController
   protect_from_forgery :except => :create
-  before_filter :filter_from_params, :only => [ :index, :chart ]
+  before_filter :filter_from_params, :only => [ :index, :map, :chart ]
   
   # GET /reports
   def index
     respond_to do |format|
       format.kml do
         @per_page = params[:count] || 20
-        @reports = Report.with_location.paginate :page => @page, :per_page => @per_page, :order => 'created_at DESC'
+        @reports = Report.with_location.find_with_filters(@filters)
         case params[:live]
         when /1/
           render :template => "reports/reports.kml.builder"
@@ -16,11 +16,11 @@ class ReportsController < ApplicationController
         end
       end
       format.json do 
-        @reports = Report.paginate :page => @page, :per_page => @per_page, :order => 'created_at DESC'
+        @reports = Report.find_with_filters(@filters)
         render :json => @reports.to_json, :callback => params[:callback]
       end      
       format.atom do
-        @reports = Report.with_location.paginate :page => @page, :per_page => @per_page, :order => 'created_at DESC'
+        @reports = Report.with_location.find_with_filters(@filters)
       end
       format.html do
         @reports = Report.find_with_filters(@filters)
