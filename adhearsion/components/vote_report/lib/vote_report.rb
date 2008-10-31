@@ -23,7 +23,7 @@ class VoteReport
     @report.text += get_problems
     record_audio_message
     @report.has_audio = true
-    @reoport.save
+    @report.save
     
     play 'thank-you-for-calling-goodbye'
   rescue => e
