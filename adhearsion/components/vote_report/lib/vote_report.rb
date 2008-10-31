@@ -1,7 +1,9 @@
 class VoteReport
   add_call_context :as => :call
   
-  def format_did(btn) btn.match(/^(\d{3})(\d{3})(\d{4})/).captures.join('-') end
+  def format_did(btn)
+    btn ? btn.to_s.match(/^(\d{3})(\d{3})(\d{4})/).captures.join('-') : "Vote Report"
+  end
     
   TAGS = %w(#good #machine #registration #challenges #hava #ballots #bad)
   CALL_AUDIO_PATH = "/home/votereport/audio"
