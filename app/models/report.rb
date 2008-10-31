@@ -5,7 +5,7 @@ class Report < ActiveRecord::Base
   
   # rating comes from more than one source; needs to be validated at input
   #validates_inclusion_of :rating, :in => ("1".."9").to_a + (1..9).to_a, :allow_nil => true
-  validates_numericality_of :wait_time, :allow_nil => true
+  #validates_numericality_of :wait_time, :allow_nil => true
   
   attr_accessor :latlon, :tag_string   # virtual field supplied by iphone/android
   
@@ -84,7 +84,10 @@ class Report < ActiveRecord::Base
     if self.text
       LOCATION_PATTERNS.find { |p| self.text[p] }
       self.location = Location.geocode($1) if $1
-      self.zip = location.postal_code if self.location && location.postal_code
+      self.zip = location.postal_code if !self.zip && (self.location && location.postal_code)
+    end
+    if !self.location && self.zip
+      self.location = Location.geocode(self.zip)
     end
     self.location = self.reporter.location if !self.location && self.reporter && self.reporter.location
     ll, self.location_accuracy = self.latlon.split(/:/) if self.latlon

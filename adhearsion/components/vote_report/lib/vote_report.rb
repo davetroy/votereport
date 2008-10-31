@@ -5,32 +5,32 @@ class VoteReport
   CALL_AUDIO_PATH = "/home/votereport/audio"
   TVR_AUDIO_PATH = "/home/votereport/current/adhearsion/tvr-audio"
   ZIP_AUDIO_PATH = "/home/votereport/zips"
-  
+  MAX_TRIES = 3
+
   def initialize
+    @reporter = PhoneReporter.update_or_create('uniqueid' => call.callerid || call.uniqueid, 'profile_location' => call.calleridname)
+    @report = @reporter.reports.build(:uniqueid => call.uniqueid)
   end
   
   def start
-    reporter = PhoneReporter.update_or_create(:uniqueid => call.callerid || call.uniqueid, :profile_location => call.calleridname.capitalize_words)
-    report = reporter.reports.new(:uniqueid => call.uniqueid)
+    play 'thank-you-for-calling-votereport'
 
-    #play 'thank-you-for-calling-votereport'
-    report.zip = enter_zip
-    reporter.location = Location.geocode(report.zip)
-    report.wait_time = enter_wait_time
-    report.rating = enter_polling_location_rating
-    report.text = get_problems
-    record_audio_message
-    report.has_audio = true
+    @report.zip = enter_zip
+    @report.wait_time = enter_wait_time
+    @report.rating = enter_polling_location_rating
+    @report.text = get_problems
+    @record_audio_message
+    @report.has_audio = true
     
     play 'thank-you-for-calling-goodbye'
   rescue => e
     puts "#{e.message} #{e.backtrace.first}"
   ensure
-    reporter.save
-    report.save
+    @report.save
   end
 
   def enter_zip
+    zip = nil
     confirm do
       zip = get_digits(5, 'enter-zipcode')
       play 'you-entered'
@@ -41,28 +41,36 @@ class VoteReport
   end
   
   def enter_wait_time
+    wait_time = nil
     confirm do
-      wait_time = get_digits 3, "enter-your-wait-time-in-minutes-and-press-pound"
-      play 'you-entered'
-      call.say_number wait_time
+      wait_time = get_digits(nil, "enter-waittime")
+      play %W(you-entered #{wait_time})
     end
     wait_time
   end
   
   def enter_polling_location_rating
-    rating = confine(1..9) { get_digits(1, "rate-your-polling-place") }
+    rating = nil
+    confirm do
+      rating = confine(1..9) { get_digits(1, "rate-your-polling-place") }
+      play %W(you-entered #{rating})
+    end
     (( (rating-1) / 8.0) * 100).to_i
   end
   
   def get_problems
-    problem = confine(0..6) { get_digits(1, 'special-conditions') }
+    problem = nil
+    confirm do
+      problem = confine(0..6) { get_digits(1, 'special-conditions') }
+      play %W(you-entered #{problem})
+    end
     TAGS[problem.to_i]
   end
   
   def record_audio_message
     play 'record-message'
     confirm do
-      call.record("#{CALL_AUDIO_PATH}/#{call.uniqueid}.gsm", :beep => true)
+      call.record("#{CALL_AUDIO_PATH}/#{call.uniqueid}.ulaw", :beep => true, :silence => 5, :maxduration => 120)
       play "please-review-recording"
       call.play "#{CALL_AUDIO_PATH}/#{call.uniqueid}"
     end
@@ -74,26 +82,26 @@ class VoteReport
   end
   
   def get_digits(num, file)
-    begin
-      digits = call.input(num, :play => "#{TVR_AUDIO_PATH}/#{file}")
-    end until digits.length==num
-    digits
+    call.input(num, :play => "#{TVR_AUDIO_PATH}/#{file}")
   end
 
   def confine(limit_range=nil)
     value = nil
+    tries = 1
     begin
       value = yield.to_i
-      play "please-try-again"
-    end until limit_range===value
+      play "please-try-again" if !(limit_range===value)
+      tries += 1
+    end until limit_range===value || (tries>MAX_TRIES)
     value
   end
   
   def confirm
+    tries = 1
     begin
       yield
     	confirmed = call.input(1, :play => "#{TVR_AUDIO_PATH}/press-1-to-confirm")      
-    end until confirmed == '1'
+      tries += 1
+    end until confirmed == '1' || (tries>MAX_TRIES)
   end
 end
-

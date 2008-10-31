@@ -9,3 +9,5 @@ To install git for CentOS 5, use the EPEL repository:
 rpm -Uvh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-3.noarch.rpm
 yum -y install git
 
+MySQL native ruby gem:
+gem install mysql -- --with-mysql-include=/usr/include/mysql --with-mysql-lib=/usr/lib/mysql
