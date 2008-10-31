@@ -27,13 +27,14 @@ class Report < ActiveRecord::Base
       :order => 'created_at DESC' }
   }
   # @reports = Report.unassigned.assign(@current_user) &tc...
-  # FIXME: can't we do this more efficiently from the controller, UPDATE, then SELECT updated? depends on the kool-aid
   named_scope( :unassigned, 
     :limit => 10, 
     :order => 'created_at DESC',
     :conditions => 'reviewer_id IS NULL OR (assigned_at < UTC_TIMESTAMP - INTERVAL 10 MINUTE AND reviewed_at IS NULL)' 
   ) do
     def assign(reviewer)
+      # FIXME: can't we do this more efficiently from the controller, UPDATE, then SELECT updated? depends on the kool-aid
+      # self.update_all(reviewer_id=reviewer.id, assigned_at => time.now where id IN (each.collect{r.id}))
       each { |r| r.update_attributes(:reviewer_id => reviewer.id, :assigned_at => Time.now.utc) }
     end
   end

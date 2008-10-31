@@ -24,6 +24,6 @@
           %label Location
           = display( report.location.to_s )
       %td.controls
-        = link_to_remote 'Edit', { :url => edit_report_path(report), :method => :get }
+        = link_to_remote 'Adjust', { :url => edit_report_path(report), :method => :get }
         = link_to_remote 'Dismiss', { :url => dismiss_report_path(report), :method => :post, :confirm => 'Are you SURE this is a bogus report?' }
         = link_to_remote 'Confirm', { :url => confirm_report_path(report), :method => :post }
