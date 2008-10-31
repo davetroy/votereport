@@ -50,6 +50,6 @@ class ReportTest < ActiveSupport::TestCase
     @reports.each do |r|
       assert_equal users(:quentin), r.reviewer
     end
-    assert_equal @reports.size, Report.assigned(users(:quentin))
+    assert_equal @reports.size, Report.assigned(users(:quentin)).size
   end
 end
