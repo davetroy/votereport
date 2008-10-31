@@ -69,6 +69,7 @@ class Report < ActiveRecord::Base
       end
   end
   
+  # Subsititute text for reports that have none
   def field_text
     [wait_time     ? "#{wait_time} minute wait time" : nil,
      rating        ? "rating #{rating}" : nil,

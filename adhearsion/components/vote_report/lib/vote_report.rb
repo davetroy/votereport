@@ -9,7 +9,7 @@ class VoteReport
 
   def initialize
     @reporter = PhoneReporter.update_or_create('uniqueid' => call.callerid || call.uniqueid, 'profile_location' => call.calleridname)
-    @report = @reporter.reports.build(:uniqueid => call.uniqueid)
+    @report = @reporter.reports.build(:uniqueid => call.uniqueid, :text => "Phone call to #{call.dnid} ")
   end
   
   def start
@@ -18,9 +18,10 @@ class VoteReport
     @report.zip = enter_zip
     @report.wait_time = enter_wait_time
     @report.rating = enter_polling_location_rating
-    @report.text = get_problems
+    @report.text += get_problems
     record_audio_message
     @report.has_audio = true
+    @reoport.save
     
     play 'thank-you-for-calling-goodbye'
   rescue => e
@@ -46,6 +47,7 @@ class VoteReport
       wait_time = get_digits(nil, "enter-waittime")
       play 'you-entered'
       call.play wait_time.to_i
+      call.play 'minutes'
     end
     wait_time
   end
@@ -57,7 +59,7 @@ class VoteReport
       play 'you-entered'
       call.say_digits rating
     end
-    (( (rating-1) / 8.0) * 100).to_i
+    rating ? (( (rating-1) / 8.0) * 100).to_i : nil
   end
   
   def get_problems
