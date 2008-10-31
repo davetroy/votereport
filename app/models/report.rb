@@ -45,6 +45,25 @@ class Report < ActiveRecord::Base
     self.reporter.name
   end
   
+  def dismiss!
+    self.dismissed_at = Time.now.utc
+    self.reviewed_at = Time.now.utc
+    self.save_with_validation(false)
+  end
+  
+  def confirm!
+    self.reviewed_at = Time.now.utc
+    self.save
+  end
+  
+  def is_confirmed?
+    self.dismissed_at.nil?
+  end
+  
+  def is_dismissed?
+    !self.is_confirmed?
+  end
+  
   alias_method :ar_to_json, :to_json
   def to_json(options = {})
     options[:only] = @@public_fields

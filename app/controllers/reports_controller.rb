@@ -65,13 +65,25 @@ class ReportsController < ApplicationController
     end
   end
   
+  # GET /reports/:id
+  def show 
+    @report = Report.find(params[:id])
+    respond_to do |format|
+      format.js {
+        render :update do |page|
+          page["report_#{@report.id}"].replace_html :partial => 'report_review', :locals => { :report => @report }
+        end
+      }
+    end
+  end
+    
   # GET /reports/:id/edit
   def edit
     @report = Report.find(params[:id])
     respond_to do |format|
       format.js {
         render :update do |page|
-          page["report_#{@report.id}"]
+          page["report_#{@report.id}"].replace_html :partial => 'edit', :locals => { :report => @report }
         end
       }
     end
@@ -79,6 +91,69 @@ class ReportsController < ApplicationController
   
   # POST /reports/:id
   def update
+    @report = Report.find(params[:id])
+    if @report.update_attributes(params[:report])
+      respond_to do |format|
+        format.xml { head :ok }
+        format.js {
+          render :update do |page|
+            page["report_#{@report.id}"].replace_html :partial => 'report_review', :locals => { :report => @report }
+            page["report_#{@report.id}"].visual_effect :highlight
+          end
+        }
+      end
+    else
+      respond_to do |format|
+        format.xml  { render :xml => @report.errors, :status => :unprocessable_entity }
+        format.js {
+          render :update do |page|
+            page["error_report_#{@report.id}"].replace(
+              error_messages_for(:report, :id => "error_report_#{@report.id}", :class => 'xhr_errors', :header_message => nil, :message => nil)
+            ).show
+          end
+        }
+      end
+    end
+  end
+  
+  # POST /reports/:id/confirm
+  def confirm
+    @report = Report.find(params[:id])
+    if @report.confirm!
+      respond_to do |format|
+        format.xml { head :ok }
+        format.js {
+          render :update do |page|
+            page["report_#{@report.id}"].fade
+          end
+        }
+      end
+    else
+      respond_to do |format|
+        format.xml { render :xml => @report.errors, :status => :unprocessable_entity }
+        format.js {
+          render :update do |page|
+            page["error_report_#{@report.id}"].replace(
+              error_messages_for(:report, :id => "error_report_#{@report.id}", :class => 'xhr_errors', :header_message => nil, :message => nil)
+            ).show
+          end
+        }
+      end
+    end
+  end
+  
+  # POST /reports/:id/dismiss
+  def dismiss
+    @report = Report.find(params[:id])
+    @report.dismiss!
+    respond_to do |format|
+      format.xml { head :ok }
+      format.js {
+        render :update do |page|
+          page["report_#{@report.id}"].fade
+        end
+      }
+    end
   end
   
   def map  

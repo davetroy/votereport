@@ -20,7 +20,8 @@ ActionController::Routing::Routes.draw do |map|
       :release => :post
     },
     :member => {
-      :confirm => :put
+      :confirm => :post,
+      :dismiss => :post
     }
 
   

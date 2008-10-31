@@ -4,3 +4,14 @@
     font-weight: bold; }
   #reports-list td {
     vertical-align: top; }
+
+.record-form {
+  background-color: white; }
+  .record-form table {
+    width: 100%; }
+  .record-form label {
+    font-weight: bold;
+    padding: 0 5px; }
+  .record-form input, .record-form textarea {
+    margin: 0;
+    padding: 0; }
