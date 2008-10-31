@@ -38,6 +38,7 @@ Adhearsion::Configuration.configure do |config|
   # the following: :development, :production, or :test.
   
   my_env = ENV['HOSTNAME'][/voip/] ? :production : :development
+  puts "starting in #{my_env} environment"
   config.enable_rails :path => File.dirname(__FILE__) + "/../..", :env => my_env
   
   # Note: You CANNOT do enable_rails and enable_database at the same time. When you enable Rails,

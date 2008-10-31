@@ -33,21 +33,6 @@ class ExtractableHash < Hash
   end
 end
 
-# Extensions to String
-class String
-  def capitalize_words
-    split.map(&:capitalize_word).join " "
-  end
-  
-  def capitalize_words!
-    replace capitalize_words
-  end
-
-	def capitalize_word
-		self.size > 3 ? self.capitalize : self
-	end
-end
-
 # Geocoder service class - provides access to all available geocoder subclasses
 module Geo
   class Geocoder
