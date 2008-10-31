@@ -1,17 +1,25 @@
-#reports-list
-  :width 100%
+label
+  :font-weight bold
+  :padding 0 5px
+
+table.report
+  :margin-bottom 1em
+  :font-size 90%
+  :width 800px
   th
     :font-weight bold
   td
+    :text-align left
     :vertical-align top
-    
-.record-form
-  :background-color white
-  table
-    :width 100%
-  label
-    :font-weight bold
-    :padding 0 5px
-  input, textarea
-    :margin 0
-    :padding 0
+  td.image
+    :width 75px
+  td.author
+    :width 100px
+  td.text
+    :width 500px
+  td.controls
+    :text-align right
+    :width 125px
+  
+  .record-form
+    :background-color white

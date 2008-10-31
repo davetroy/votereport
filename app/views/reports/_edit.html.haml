@@ -3,24 +3,24 @@
     %div.xhr_errors{:id => "error_report_#{report.id}", :style => 'display: none;'}
       = error_messages_for :report
     - remote_form_for :report, :url => report_path(report), :html => {:method => :put} do |f|
-      %table
+      %table{ :width => '100%' }
         %tbody
           %tr
-            %td 
-              =image_tag(report.reporter.icon, :class => "profile")
-              %span{ :class => "author vcard"}
+            %td{ :width => '100%'} 
+              %span{ :class => "report-id"}= report.id
+              %span{ :class => "report-source" }= report.reporter.source_name
+              %span{ :class => "report-when"}
+                %abbr{ :class => "published", :title => report.created_at.iso8601 }
+                  ="#{time_ago_in_words(report.created_at)} ago"
+          %tr
+            %td
+              %span{ :class => "report-author" }
+                =image_tag(report.reporter.icon, :class => "profile")
                 =h report.reporter.name
                 %br
                 =h report.reporter.uniqueid
-            %td= report.reporter.source_name
-            %td= report.text
-            %td 
-              %abbr{ :class => "published", :title => report.created_at.iso8601 }
-                ="#{time_ago_in_words(report.created_at)} ago"
-      %table
-        %tbody
-          %tr
-            %td 
+              %span{ :class => "report-text" }
+                =h report.text
               %label Wait
             %td 
               %label Tags

@@ -1,17 +1,24 @@
-#reports-list {
-  width: 100%; }
-  #reports-list th {
-    font-weight: bold; }
-  #reports-list td {
-    vertical-align: top; }
+label {
+  font-weight: bold;
+  padding: 0 5px; }
 
-.record-form {
-  background-color: white; }
-  .record-form table {
-    width: 100%; }
-  .record-form label {
-    font-weight: bold;
-    padding: 0 5px; }
-  .record-form input, .record-form textarea {
-    margin: 0;
-    padding: 0; }
+table.report {
+  margin-bottom: 1em;
+  font-size: 90%;
+  width: 800px; }
+  table.report th {
+    font-weight: bold; }
+  table.report td {
+    text-align: left;
+    vertical-align: top; }
+  table.report td.image {
+    width: 75px; }
+  table.report td.author {
+    width: 100px; }
+  table.report td.text {
+    width: 500px; }
+  table.report td.controls {
+    text-align: right;
+    width: 125px; }
+  table.report .record-form {
+    background-color: white; }

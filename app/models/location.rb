@@ -65,6 +65,10 @@ class Location < ActiveRecord::Base
     Envelope.from_coordinates([[x1, y1], [x2, y2]])
   end
   
+  def to_s
+    self.address
+  end
+  
   private
   def review_address
     self.address = [locality, sub_administrative_area, administrative_area, country_code].compact.join(', ') if self.address.blank?

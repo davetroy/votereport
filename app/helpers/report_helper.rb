@@ -15,7 +15,7 @@ module ReportHelper
     # assert_equal "San Francisco, CA, USA", @twitter_reporter.reports.create(:text => 'waiting in San Francisco at the poll in line forever').location.address
   end
 
- def bumpspark2( results )
+  def bumpspark2( results )
      white, red, grey = 0, 16, 32
      padding = 3 - ( results.length - 1 ) % 4
      ibmp = results.inject([]) do |ary, r|
@@ -29,5 +29,9 @@ module ReportHelper
        results.length * 2, 15, 1, 4, 0, 0, 0, 0, 3, 0,
        0xFFFFFF, 0xFF0000, 0x999999 ].
        pack("A2Vv2V4v2V9") + ibmp
- end
+  end
+ 
+  def display(val, default='Undefined')
+    (val.blank?) ? default : val.strip
+  end
 end

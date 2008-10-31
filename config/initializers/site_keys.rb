@@ -1,4 +1,3 @@
-
 # A Site key gives additional protection against a dictionary attack if your
 # DB is ever compromised.  With no site key, we store
 #   DB_password = hash(user_password, DB_user_salt)
