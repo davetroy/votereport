@@ -81,24 +81,35 @@ for (var i = 0; i < features.length; i++) {
 		switch(item.location.location.point.type) {
 			case "Point":
 			var icon_size; var icon;
-			html = "<div class='balloon'><strong>" + item.zip + "</strong><p>" + item.text + "</p></div>";
-			if(item.icon == "" || item.icon == null){
+            if(item.rating != null) {
+                if(item.rating <= 30)
+                    icon = "/images/rating_bad.png"
+                else if (item.rating <= 70)
+                    icon = "/images/rating_medium.png"
+                else
+                    icon = "/images/rating_good.png"
+                icon_size = [24,24];
+            }
+			else if(item.icon == "" || item.icon == null){
 				icon = "/images/gmaps/pushpins/webhues/159.png" 
 				icon_size = [10,17];
 				
 			} else {
 				icon = item.icon;
-				icon_size = [32,32];
+				icon_size = [24,24];
 			}
-			
+            html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.text + "<br />";
+            if(item.rating != null)
+                html += "Rating: <img src='"+icon+"'/> ("+item.rating+"%)";
+			html += "</div>";
 			this.addMarkerWithData(new Marker(new LatLonPoint(item.location.location.point.coordinates[1],item.location.location.point.coordinates[0])),{
 				infoBubble : html, 
 				label : item.name, 
-				date : "new Date(\""+item.date+"\")", 
-				iconShadow : item.icon_shadow,
+				date : "new Date(\""+item.created_at+"\")", 
+				iconShadow : "http://mapufacture.com/images/providers/blank.png",
 				marker : item.id, 
 				date : "new Date(\""+item.date+"\")", 
-				iconShadowSize : item.icon_shadow_size,
+				iconShadowSize : [0,0],
 				icon : icon,
 				iconSize : icon_size, 
 				category : item.source_id, 
