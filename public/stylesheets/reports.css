@@ -88,4 +88,12 @@ span.whenwhere {
 .barGraph li.p1{ background-color:#666666 }
 .barGraph li.p2{ background-color:#888888 }
 .barGraph li.p3{ background-color:#AAAAAA } 
-
+ul#syndication a { text-decoration: none; }
+ul#syndication {
+    list-style-image:none;
+    list-style-position:outside;
+    list-style-type:none;
+    margin-top:20px;
+}
+li#rss_link { margin-left:47px; }
+ul#syndication img { border:medium none; margin: 0 4px;}

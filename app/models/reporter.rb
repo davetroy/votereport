@@ -7,7 +7,7 @@ class Reporter < ActiveRecord::Base
     
   cattr_accessor :public_fields
   @@public_fields = [:name]
-
+ 
   alias_method :ar_to_json, :to_json
   def to_json(options = {})
     options[:only] = @@public_fields

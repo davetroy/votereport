@@ -20,6 +20,7 @@ class Report < ActiveRecord::Base
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
   named_scope :with_wait_time, :conditions => 'wait_time IS NOT NULL'
+  named_scope :with_rating, :conditions => 'rating IS NOT NULL'
 
   cattr_accessor :public_fields
   @@public_fields = [:id,:source,:text,:score,:zip,:wait_time,:created_at,:updated_at]
@@ -27,7 +28,10 @@ class Report < ActiveRecord::Base
   def name
     self.reporter.name
   end
-  
+  def icon
+    self.reporter.icon =~ /http:/ ? self.reporter.icon : "http://votereport.us#{self.reporter.icon}"
+  end
+    
   # DCT - pls document this
   alias_method :ar_to_json, :to_json
   def to_json(options = {})
@@ -48,11 +52,16 @@ class Report < ActiveRecord::Base
     if filters.include?(:dtend)
       conditions[0] << "created_at <= :dtend"
     end
-
-    # TODO put in logic here for doing filtering by appropriate parameters
-    Report.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
-                      :order => 'created_at DESC',
-                      :conditions => conditions)
+    
+    if filters.include?(:state)
+      Filter.find_by_state(filters[:state]).reports.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
+                        :order => 'created_at DESC')
+    else
+      # TODO put in logic here for doing filtering by appropriate parameters
+      Report.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
+                        :order => 'created_at DESC',
+                        :conditions => conditions)
+      end
   end
   
   def field_text

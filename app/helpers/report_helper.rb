@@ -19,6 +19,17 @@ module ReportHelper
     "<embed src='#{report.reporter.audio_path}/#{report.audio_file}' width='100' height='20' AUTOPLAY='false'/>" if report.has_audio
   end
 
+  def rating_icon(rating)
+    if rating <= 30
+      image = "rating_bad.png"
+    elsif rating <= 70
+      image = "rating_medium.png"
+    else
+      image = "rating_good.png"
+    end
+    %Q{<img src="http://mapsomething.com/demo/votereport/#{image}"> (#{rating}%)}
+  end
+  
   def bumpspark2( results )
      white, red, grey = 0, 16, 32
      padding = 3 - ( results.length - 1 ) % 4

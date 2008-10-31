@@ -57,7 +57,7 @@ function initMap(){
     // display the map centered on a latitude and longitude (Google zoom levels)
     mapstraction.setCenterAndZoom(myPoint, 3);
     mapstraction.addControls({zoom: 'small'});
-    mapstraction.addOverlay("http://votereport.us/reports.kml");
+    mapstraction.addOverlay("http://mapsomething.com/demok/votereport/reports.kml");
     last_updated = new Date().toISO8601String();
     $("#last_updated").text(last_updated);
     setInterval("updateMap();",60000);

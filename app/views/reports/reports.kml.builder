@@ -17,16 +17,16 @@ xml.kml("xmlns" => "http://earth.google.com/kml/2.2",
         xml.tag! "Style" do
           xml.tag! "IconStyle" do
             xml.tag! "Icon" do
-              xml.href report.reporter.icon
+              xml.href report.icon
             end
           end unless report.reporter.nil?
           xml.tag! "LabelStyle" do
             xml.color "ff00aaff"
           end
           xml.tag! "BalloonStyle" do
-            xml.text "$[description] by $[screen_name]"
-            xml.textColor "ff000000"
-            xml.color "ff669999"
+            xml.text render( :partial => "balloon", :locals => {:report => report})
+            xml.textColor "ff084156"
+            xml.color "ff000000"
           end
         end
         xml.atom :author do
@@ -34,7 +34,7 @@ xml.kml("xmlns" => "http://earth.google.com/kml/2.2",
         end unless report.reporter.nil?
         xml.atom( :link, :href => report_url(:id => report, :only_path => false ), :rel => "alternate", :type => "text/html")
         xml.tag! "ExtendedData" do
-          %w{wait_time score}.each do |attribute|
+          %w{wait_time score rating}.each do |attribute|
             xml.tag! "Data", :name => attribute do
               xml.value report.send(attribute) 
             end
