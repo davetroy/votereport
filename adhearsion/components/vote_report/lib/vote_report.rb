@@ -1,5 +1,7 @@
 class VoteReport
   add_call_context :as => :call
+  
+  def format_did(btn) btn.match(/^(\d{3})(\d{3})(\d{4})/).captures.join('-') end
     
   TAGS = %w(#good #machine #registration #challenges #hava #ballots #bad)
   CALL_AUDIO_PATH = "/home/votereport/audio"
@@ -9,7 +11,7 @@ class VoteReport
 
   def initialize
     @reporter = PhoneReporter.update_or_create('uniqueid' => call.callerid || call.uniqueid, 'profile_location' => call.calleridname)
-    @report = @reporter.reports.build(:uniqueid => call.uniqueid, :text => "Phone call to #{call.dnid} ")
+    @report = @reporter.reports.build(:uniqueid => call.uniqueid, :text => "Telephone report to #{format_did(call.dnid)} ")
   end
   
   def start
