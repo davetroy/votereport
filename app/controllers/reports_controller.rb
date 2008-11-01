@@ -1,8 +1,7 @@
 class ReportsController < ApplicationController
   protect_from_forgery :except => :create
   before_filter :filter_from_params, :only => [ :index, :chart ]
-  attr_accessor :current_user
-  before_filter { |ctl| ctl.current_user = Report.find(:first) }
+  before_filter :login_required, :except => [:index, :chart, :map]
   
   # GET /reports
   def index

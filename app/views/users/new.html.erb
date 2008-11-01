@@ -9,7 +9,7 @@
 <p><%= label_tag 'last name' %><br/>
 <%= f.text_field :last_name %></p>
 
-<p><%= label_tag 'url' %><br/>
+<p><%= label_tag 'url' %> (optional)<br/>
 <%= f.text_field :url %></p>
 
 <p><%= label_tag 'email' %><br/>
@@ -20,6 +20,10 @@
 
 <p><%= label_tag 'password_confirmation', 'Confirm Password' %><br/>
 <%= f.password_field :password_confirmation %></p>
+
+<p><%= label_tag 'human', "Verify you are a human" %><br />
+  What is <%= @captcha_num_1 %> + <%= @captcha_num_2 %>?<br />
+<%= text_field_tag :fakeasscaptcha %></p>
 
 <p><%= submit_tag 'Sign up' %></p>
 <% end -%>
