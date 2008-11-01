@@ -139,9 +139,11 @@ class UserTest < ActiveSupport::TestCase
     u.terminate!
     u.reload
     assert u.is_terminated?
+    assert !u.has_access?
     assert_not_equal h, u.crypted_password
     u.unterminate!
     assert !u.is_terminated?
+    assert u.has_access?
     assert_equal h, u.crypted_password
   end
 

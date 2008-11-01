@@ -130,5 +130,9 @@ class User < ActiveRecord::Base
     self.is_terminated = false
     self.save!
   end
+  
+  def has_access?
+    !self.is_terminated?
+  end
 
 end

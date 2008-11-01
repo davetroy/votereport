@@ -16,7 +16,11 @@ class ApplicationController < ActionController::Base
     @filters = {:page => @page, :per_page => @per_page}
     [:dtstart, :dtend, :filter, :zip, :postal, :city, :state].each do |p|
       @filters[p] = params[p] if params[p]
-    end
+  end
+    
+  def active_acount_required
+    
+  end  
     
     
   end
