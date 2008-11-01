@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ReportTest < ActiveSupport::TestCase
-  fixtures :reports, :users
+  fixtures :reports, :users, :tags
   
   def setup
     @twitter_reporter = reporters(:reporters_001)
@@ -35,6 +35,22 @@ class ReportTest < ActiveSupport::TestCase
     assert_equal 2, goodreport.tags.size
   end
   
+  def test_tag_assignment_by_string
+    report = @twitter_reporter.reports.create(:text => 'all is well in 94107')
+    assert report.tags.empty?, "there should be no tags at this point"
+    report.tag_s = "registration machine challenges bogus ballots good bad"
+    report.save!
+    assert !report.tags.empty?, "tags should not be empty"
+    assert_equal 6, report.tags.size, "there should be six tags"
+    # make sure the bogus tag wasn't included
+    assert !report.tag_s.split(' ').include?('bogus')
+  end
+  
+  def test_tag_cache
+    report = @twitter_reporter.reports.create(:text => 'no problems #good overall, #wait12')
+    assert_equal 'good', report.tag_s, "'wait' tag should be excluded from cache"
+  end
+  
   # Tests to be sure that a report made in a particular location
   # is asoociated with the correct geographical filters - subject to fixtures
   def test_filter_creation
@@ -45,11 +61,11 @@ class ReportTest < ActiveSupport::TestCase
   end
   
   def test_review_assignment
-    @reports = Report.unassigned.assign(users(:quentin))
-    assert_equal 10, @reports.size
-    @reports.each do |r|
+    reports = Report.unassigned.assign(users(:quentin))
+    assert_equal 10, reports.size
+    reports.each do |r|
       assert_equal users(:quentin), r.reviewer
     end
-    assert_equal @reports.size, Report.assigned(users(:quentin)).size
+    assert_equal reports.size, Report.assigned(users(:quentin)).size
   end
 end

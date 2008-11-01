@@ -90,6 +90,33 @@ class Report < ActiveRecord::Base
                       :order => 'created_at DESC',
                       :conditions => conditions)
   end
+  
+  ## cached tags string
+  def tag_s
+    self[:tag_s]
+  end
+  
+  # updates tag string cache
+  def cache_tags
+    self[:tag_s] =  self.tags.collect{|tag| tag.pattern}.reject{|p| p =~ /wait/ }.sort.join(' ')
+  end
+  
+  # over-ride tag_s accessor to set self.tags from given string
+  # where input is just tags, a la "machine challenges good bad"
+  def tag_s=(text)
+    text ||= "" # coerce nil values to empty strings
+    # standardize white-space and strip out the octothorpe
+    text = text.strip.gsub(/#/, '') # dont use strip! will return nil if not modified
+    Tag.find(:all).each do |t|
+      if text[/#{t.pattern}/i]
+        self.tags << t
+        self.wait_time = $1 if t.pattern.starts_with?('wait')
+      end
+    end
+    self.score = self.tags.inject(0) { |sum, t| sum+t.score }
+    self.tags = tags.compact # exclude nil values 
+    self.cache_tags # cache tags string
+  end
     
   private
   def set_source
@@ -114,13 +141,7 @@ class Report < ActiveRecord::Base
   # Find them and store for easy reference later
   def assign_tags
     if self.text
-      Tag.find(:all).each do |t|
-        if self.text[/#?#{t.pattern}/i]
-          self.tags << t
-          self.wait_time = $1 if t.pattern.starts_with?('wait')
-        end
-      end
-      self.score = self.tags.inject(0) { |sum, t| sum+t.score }
+      self.tag_s = self.text.scan(/\s+\#\S+/).join(' ')
     end
     true
   end
