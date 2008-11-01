@@ -16,7 +16,7 @@ class ReportsController < ApplicationController
         end
       end
       format.json do 
-        @reports = Report.find_with_filters(@filters)
+        @reports = Report.with_location.find_with_filters(@filters)
         render :json => @reports.to_json, :callback => params[:callback]
       end      
       format.atom do

@@ -1,6 +1,7 @@
 var mapstraction, drawControls;
 var last_updated = null;
 var filters = "";
+var state = ""; // used for autoZoom toggling
 
 function initMap(map_filters){
     // initialise the map with your choice of API
@@ -16,6 +17,12 @@ function initMap(map_filters){
     $("#last_updated").text(last_updated);
     setInterval("updateMap();",60000);
 
+}
+function loadJSON(file, handler) {
+	req = new XMLHttpRequest();
+	req.open("GET", file, true); 
+	req.onreadystatechange = handler;   // the handler 
+	req.send(null); 
 }
 function remoteLoad(file, handler) {
 	jsonp(file, handler);
@@ -43,11 +50,11 @@ function initMapJS(map_filters){
     mapstraction = new Mapstraction('map','google');
     filters = map_filters;
 
-    var myPoint = new LatLonPoint(50, -110);
     // display the map centered on a latitude and longitude (Google zoom levels)
-    mapstraction.setCenterAndZoom(myPoint, 3);
+    var myPoint = new LatLonPoint(38, -90);
+    mapstraction.setCenterAndZoom(myPoint, 4);
     mapstraction.addControls({zoom: 'small'});
-
+    
     last_updated = new Date().toISO8601String();
     $("#last_updated").text(last_updated);
     // setInterval("updateMap();",60000);
@@ -55,18 +62,22 @@ function initMapJS(map_filters){
 }
 function loadMarkers(response) {
     mapstraction.addJSON(response);
-    mapstraction.autoCenterAndZoom();
+    if(state != "")
+        mapstraction.autoCenterAndZoom();
     
 }
 function updateMap() {
     $("#update_status").show();
-    mapstraction.addOverlay("http://votereport.us/reports.kml?dtstart="+last_updated + "&" + filters);
+    loadJSON("/reports.json?count=200&dtstart="+last_updated+"&"+filters, updateJSON);
+    return false;
+}
+function updateJSON(response) {
+    mapstraction.addJSON(eval(response));
     last_updated = new Date().toISO8601String();
     $("#last_updated").text(last_updated);    
     $("#update_status").hide();
-    return false;
 }
-
+var gmarkers = []
 Mapstraction.prototype.addJSON = function(features) {
 // var features = eval('(' + json + ')');
 var map = this.maps[this.api];
@@ -74,9 +85,10 @@ var html = "";
 var polyline;
 var item;
 var asset_server = "http://assets0.mapufacture.com";
+
 for (var i = 0; i < features.length; i++) {
 	item = features[i].report;
-	if(item.location.location.point != null) {
+	if(item.location != null && item.location.location.point != null) {
 
 		switch(item.location.location.point.type) {
 			case "Point":
@@ -102,6 +114,7 @@ for (var i = 0; i < features.length; i++) {
             if(item.rating != null)
                 html += "Rating: <img src='"+icon+"'/> ("+item.rating+"%)";
 			html += "</div>";
+			
 			this.addMarkerWithData(new Marker(new LatLonPoint(item.location.location.point.coordinates[1],item.location.location.point.coordinates[0])),{
 				infoBubble : html, 
 				label : item.name, 
@@ -115,7 +128,6 @@ for (var i = 0; i < features.length; i++) {
 				category : item.source_id, 
 				draggable : false, 
 				hover : false});
-
 				break;
 			case "Polygon":
 				var points = [];
@@ -126,6 +138,6 @@ for (var i = 0; i < features.length; i++) {
 			}
 		}
 	}
-}
 
+}
 
