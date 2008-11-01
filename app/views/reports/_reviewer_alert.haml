@@ -1,0 +1,4 @@
+%div.reviewer_alert{:id => "reviewer_alert_#{reviewer_alert.id}"}
+  %p= reviewer_alert.text
+  %p.dismiss
+    = link_to_remote "Dismiss", {:url => dismiss_reviewer_alert_path(reviewer_alert)}

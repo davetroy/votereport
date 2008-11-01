@@ -16,14 +16,13 @@ class ApplicationController < ActionController::Base
     @filters = {:page => @page, :per_page => @per_page}
     [:dtstart, :dtend, :filter, :zip, :postal, :city, :state].each do |p|
       @filters[p] = params[p] if params[p]
+    end
+  end
+  
+  def admin_required
+    (authorized? && current_user.is_admin?) || access_denied
   end
     
-  def active_acount_required
-    
-  end  
-    
-    
-  end
   # See ActionController::Base for details 
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password"). 

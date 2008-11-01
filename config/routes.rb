@@ -29,7 +29,11 @@ ActionController::Routing::Routes.draw do |map|
       :confirm => :post,
       :dismiss => :post
     }
-
+    
+  map.resources :reviewer_alerts,
+    :member => {
+      :dismiss => :post
+    }
   
   # The priority is based upon order of creation: first created -> highest priority.
 
