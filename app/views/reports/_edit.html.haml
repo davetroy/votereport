@@ -23,10 +23,10 @@
             %label Wait
             = f.text_field :wait_time, :size => 3
             %label Tags
-            = f.text_field :tags, :size => 32
+            = f.text_field :tag_s, :size => 32
           %p
             %label Location
-            = f.text_field :location, :size => 40
+            = text_field_tag 'location', (report.location.nil?) ? '' : report.location.address, :size => 40
             = submit_tag 'Save!'
             %em - or -
             = link_to_remote 'Cancel', { :url => report_path(report), :method => :get }

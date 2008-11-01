@@ -91,6 +91,8 @@ class ReportsController < ApplicationController
   # POST /reports/:id
   def update
     @report = Report.find(params[:id])
+    @report.location = Location.geocode(params[:location])
+    
     if @report.update_attributes(params[:report])
       respond_to do |format|
         format.xml { head :ok }

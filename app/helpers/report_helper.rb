@@ -32,6 +32,6 @@ module ReportHelper
   end
  
   def display(val, default='Undefined')
-    (val.blank?) ? default : val.strip
+    (val.blank?) ? default : val.to_s.strip
   end
 end

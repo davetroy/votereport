@@ -20,9 +20,9 @@
           %label Wait
           = display( report.wait_time )
           %label Tags
-          = display( report.tags.join(', ') )
+          = display( report.tag_s )
           %label Location
-          = display( report.location.to_s )
+          = (report.location.nil?) ? 'Undefined' : report.location.address
       %td.controls
         = link_to_remote 'Adjust', { :url => edit_report_path(report), :method => :get }
         = link_to_remote 'Dismiss', { :url => dismiss_report_path(report), :method => :post, :confirm => 'Are you SURE this is a bogus report?' }
