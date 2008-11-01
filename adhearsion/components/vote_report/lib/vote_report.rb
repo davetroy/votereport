@@ -14,6 +14,7 @@ class VoteReport
   def initialize
     @reporter = PhoneReporter.update_or_create('uniqueid' => call.callerid || call.uniqueid, 'profile_location' => call.calleridname)
     @report = @reporter.reports.build(:uniqueid => call.uniqueid, :text => "Telephone report to #{format_did(call.dnid)} ")
+    @audiofile = "#{CALL_AUDIO_PATH}/#{@report.uniqueid}"
   end
   
   def start
@@ -24,13 +25,18 @@ class VoteReport
     @report.rating = enter_polling_location_rating
     @report.text += get_problems
     record_audio_message
-    @report.has_audio = true
-    @report.save
     
     play 'thank-you-for-calling-goodbye'
   rescue => e
     puts "#{e.message} #{e.backtrace.first}"
   ensure
+    if File.exist?("#{@audiofile}.gsm")
+      if File.size("#{@audiofile}.gsm")==0
+        File.delete("#{@audiofile}.gsm")        
+      else
+        @report.has_audio = true
+      end
+    end
     @report.save
   end
 
@@ -79,9 +85,9 @@ class VoteReport
   def record_audio_message
     play 'record-message'
     confirm do
-      call.record("#{CALL_AUDIO_PATH}/#{call.uniqueid}.gsm # 60 BEEP s=5")
+      call.record("#{@audiofile}.gsm # 60 BEEP s=5")
       play "please-review-recording"
-      call.play "#{CALL_AUDIO_PATH}/#{call.uniqueid}"
+      call.play @audiofile
     end
   end
   
