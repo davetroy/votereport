@@ -19,14 +19,14 @@ class User < ActiveRecord::Base
   # anything else you want your user to change should be added here.
   attr_accessible :first_name, :last_name, :email, :password, :password_confirmation, :url
 
-  validates_presence_of :first_name, :last_name, :email, :url
-  validates_uniqueness_of :email, :url
+  validates_presence_of :first_name, :last_name, :email
+  validates_uniqueness_of :email
   
   before_create :assign_api_key
   before_validation_on_create :set_api_limits, :fix_url
   
   def assign_api_key
-    self.api_key = Digest::SHA1.hexdigest(self.url+self.email).reverse
+    self.api_key = Digest::SHA1.hexdigest(Time.now.to_s + self.email)
   end
   
   def set_api_limits
