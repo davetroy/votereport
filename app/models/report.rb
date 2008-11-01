@@ -98,7 +98,7 @@ class Report < ActiveRecord::Base
   
   # updates tag string cache
   def cache_tags
-    self[:tag_s] =  self.tags.collect{|tag| tag.pattern}.reject{|p| p =~ /wait/ }.sort.join(' ')
+    self[:tag_s] =  self.tags.collect{|tag| tag.pattern}.reject{|p| p.starts_with?('wait') }.sort.join(' ')
   end
   
   # over-ride tag_s accessor to set self.tags from given string
@@ -107,14 +107,15 @@ class Report < ActiveRecord::Base
     text ||= "" # coerce nil values to empty strings
     # standardize white-space and strip out the octothorpe
     text = text.strip.gsub(/#/, '') # dont use strip! will return nil if not modified
+    new_tags = []
     Tag.find(:all).each do |t|
       if text[/#{t.pattern}/i]
-        self.tags << t
+        new_tags << t
         self.wait_time = $1 if t.pattern.starts_with?('wait')
       end
     end
+    self.tags = new_tags.uniq.compact # exclude any duplicate and nil values 
     self.score = self.tags.inject(0) { |sum, t| sum+t.score }
-    self.tags = tags.compact # exclude nil values 
     self.cache_tags # cache tags string
   end
     
