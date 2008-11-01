@@ -1,9 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  # Be sure to include AuthenticatedTestHelper in test/test_helper.rb instead.
-  # Then, you can remove it from this and the functional test.
-  include AuthenticatedTestHelper
   fixtures :users
 
   def test_new_user
@@ -66,6 +63,13 @@ class UserTest < ActiveSupport::TestCase
     assert_difference 'User.count' do
       user = create_user(:email => "new_user@example.com", :url => "http://xyz.com")
       assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
+    end
+  end
+  
+  def test_should_create_api_key
+    assert_difference 'User.count' do
+      user = create_user(:email => "api_key@example.com")
+      assert !user.api_key.nil?
     end
   end
 
