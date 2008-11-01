@@ -132,6 +132,18 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil users(:quentin).remember_token_expires_at
     assert users(:quentin).remember_token_expires_at.between?(before, after)
   end
+  
+  def test_user_termination
+    u = users(:quentin)
+    h = u.crypted_password
+    u.terminate!
+    u.reload
+    assert u.is_terminated?
+    assert_not_equal h, u.crypted_password
+    u.unterminate!
+    assert !u.is_terminated?
+    assert_equal h, u.crypted_password
+  end
 
 protected
   def create_user(options = {})

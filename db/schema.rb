@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081101210715) do
+ActiveRecord::Schema.define(:version => 20081101225454) do
 
   create_table "filters", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "name", :string, :limit => 80
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(:version => 20081101210715) do
     t.column "remember_token_expires_at", :datetime
     t.column "activation_code", :string, :limit => 40
     t.column "activated_at", :datetime
+    t.column "is_terminated", :boolean, :default => false
   end
 
   add_index "users", ["api_key"], :name => "index_users_on_api_key", :unique => true

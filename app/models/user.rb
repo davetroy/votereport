@@ -113,5 +113,22 @@ class User < ActiveRecord::Base
     self.save
     raise VoteReport::APIError, "Exceeded update limit!" if (self.day_query_count > self.day_query_limit)  
   end
+  
+  def terminate!
+    # 1. reverse password hash
+    self.crypted_password.reverse!
+    # 2. set is_terminated = true
+    self.is_terminated = true
+    self.save!
+  end
+  
+  def unterminate!
+    raise "User was not previously terminated" unless self.is_terminated?
+    # 1. reverse password hash
+    self.crypted_password.reverse!
+    # 2. set is_terminated = false
+    self.is_terminated = false
+    self.save!
+  end
 
 end
