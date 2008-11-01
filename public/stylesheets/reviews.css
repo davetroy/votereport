@@ -22,3 +22,8 @@ table.report {
     width: 125px; }
   table.report .record-form {
     background-color: white; }
+
+.reviewer_alert {
+  border: 1px solid red;
+  background-color: #EEE;
+}

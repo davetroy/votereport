@@ -4,15 +4,15 @@ class User < ActiveRecord::Base
   include Authentication::ByPassword
   include Authentication::ByCookieToken
 
-  validates_format_of       :name,     :with => Authentication.name_regex,  :message => Authentication.bad_name_message, :allow_nil => true
-  validates_length_of       :name,     :maximum => 100
-
+  ##########################################################################
+  ###########                     VALIDATIONS                   ############
+  ##########################################################################
+  
   validates_presence_of     :email
   validates_length_of       :email,    :within => 6..100 #r@a.wk
   validates_uniqueness_of   :email
-  validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
-
-  before_create :make_activation_code 
+  validates_format_of       :email,    :with => Authentication.email_regex, 
+                                       :message => Authentication.bad_email_message
 
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
@@ -22,9 +22,48 @@ class User < ActiveRecord::Base
   validates_presence_of :first_name, :last_name, :email
   validates_uniqueness_of :email
   
+  ##########################################################################
+  ###########                     CALLBACKS                     ############
+  ##########################################################################
+  
+  before_create :make_activation_code 
   before_create :assign_api_key
   before_validation_on_create :set_api_limits, :fix_url
+
+  ##########################################################################
+  ###########                     ASSOCIATIONS                   ###########
+  ##########################################################################
+
+  has_many :reviewer_alerts, # as the creator, only applies to admins
+           :dependent => :nullify
+  has_many :alert_viewings,
+           :dependent => :destroy
+
+  ##########################################################################
+  ###########                       METHODS                      ###########
+  ##########################################################################
+
+
+  # These are alerts for this reviewer that he has not yet dismissed
+  def unviewed_alerts
+    ReviewerAlert.find(:all, 
+                       :joins => "LEFT JOIN alert_viewings ON alert_viewings.user_id = #{self.id}",
+                       :conditions => "alert_viewings.user_id IS NULL",
+                       :order => "reviewer_alerts.created_at desc", :limit => 10)
+  end
   
+  def viewed_alert!(reviewer_alert)
+    AlertViewing.create!(:user => self, :reviewer_alert => reviewer_alert)
+  end
+
+  # override the +is_admin+ attribute to allow us to specify email addresses
+  # that belong to those working on the site
+  # (This way we don't have a chicken-or-egg issue to set the first admin)
+  ADMIN_EMAIL_ADDRESSES = ["cory.forsyth@gmail.com"]
+  def is_admin?
+    super || ADMIN_EMAIL_ADDRESSES.include?(email)
+  end
+
   def assign_api_key
     self.api_key = Digest::SHA1.hexdigest(Time.now.to_s + self.email)
   end
@@ -41,7 +80,7 @@ class User < ActiveRecord::Base
   def verify(submitted_key)
     return unless submitted_key == api_key
     self.verified = true
-    self.authorized = true
+    self.authorized = true  # skipping an explicit authorization step
     save
   end
   
@@ -67,7 +106,6 @@ class User < ActiveRecord::Base
     activation_code.nil?
   end
   
-  # Skipping the explicit authorization step for now
   def authorized_for_api?
     verified? && authorized?
   end
@@ -88,14 +126,6 @@ class User < ActiveRecord::Base
     write_attribute :email, (value ? value.downcase : nil)
   end
 
-  protected
-    
-  def make_activation_code
-      self.activation_code = self.class.make_token
-  end
-  
-  public
-  
   def record_query_stats
     self.query_count += 1
     self.day_query_count = 0 if last_query_at.nil? || (last_query_at < Time.today)
@@ -112,6 +142,12 @@ class User < ActiveRecord::Base
     self.last_update_at = Time.now
     self.save
     raise VoteReport::APIError, "Exceeded update limit!" if (self.day_query_count > self.day_query_limit)  
+  end
+
+  protected
+    
+  def make_activation_code
+      self.activation_code = self.class.make_token
   end
 
 end

@@ -1,0 +1,11 @@
+- if flash[:notice]
+  .notice
+    = flash[:notice]
+    
+- form_for :reviewer_alert, :url => reviewer_alerts_path do |f|
+  %p
+    = label_tag 'text'
+    %br
+    = f.text_field :text
+  %p
+    = submit_tag "Create"

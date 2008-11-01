@@ -42,6 +42,17 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user, User.authenticate('foo@auth.com', 'nodule')
   end
   
+  def test_user_is_not_admin_by_default
+    user = create_user(:email => "non-admin@admin.com")
+    assert !user.is_admin?
+  end
+  
+  def test_is_admin_email_address_overrides
+    user = create_user(:email => User::ADMIN_EMAIL_ADDRESSES.first)
+    
+    assert user.is_admin?
+  end
+  
   def test_valid_email
     valid_attributes = {
       :first_name => "Sir",

@@ -2,6 +2,8 @@
   = stylesheet_link_tag 'reviews'
 - content_for :javascript do
   = javascript_include_tag :defaults
+
+= render :partial => 'reviewer_alert', :collection => current_user.unviewed_alerts
   
 %h1 Review Interface
 
