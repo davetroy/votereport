@@ -39,7 +39,7 @@ class Report < ActiveRecord::Base
     options[:only] = @@public_fields
     # options[:include] = [ :reporter, :polling_place ]
     # options[:except] = [ ]
-    options[:methods] = [ :rating, :name, :icon, :reporter, :polling_place, :location ].concat(options[:methods]||[]) #lets us include current_items from feeds_controller#show
+    options[:methods] = [ :display_text, :rating, :name, :icon, :reporter, :polling_place, :location ].concat(options[:methods]||[]) #lets us include current_items from feeds_controller#show
     # options[:additional] = {:page => options[:page] }
     ar_to_json(options)
   end    
@@ -56,6 +56,10 @@ class Report < ActiveRecord::Base
     if filters.include?(:wait_time)
       conditions[0] << "wait_time IS NOT NULL AND wait_time >= :wait_time"
     end
+    if filters.include?(:rating)
+      conditions[0] << "rating IS NOT NULL AND rating <= :rating"
+    end
+    
     if filters.include?(:state)
       Filter.find_by_state(filters[:state]).reports.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
                         :order => 'created_at DESC')

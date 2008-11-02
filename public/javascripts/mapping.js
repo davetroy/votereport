@@ -77,11 +77,10 @@ function updateMap(map_filter) {
     }
         
     $("#update_status").show();
-    loadJSON("/reports.json?"+current_filter, updateJSON);
+    $.getJSON("/reports.json?"+current_filter, updateJSON);
     return false;
 }
 function updateJSON(response) {
-    // alert(response);
     mapstraction.addJSON(response);
     last_updated = new Date().toISO8601String();
     $("#last_updated").text(last_updated);    
@@ -97,7 +96,6 @@ var polyline;
 var item;
 var asset_server = "http://assets0.mapufacture.com";
 
-alert(features.length);
 for (var i = 0; i < features.length; i++) {
 	item = features[i].report;
 	if(item.location != null && item.location.location.point != null) {
@@ -122,7 +120,7 @@ for (var i = 0; i < features.length; i++) {
 				icon = item.icon;
 				icon_size = [24,24];
 			}
-            html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.text + "<br />";
+            html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.display_text + "<br />";
             if(item.rating != null)
                 html += "Rating: <img src='"+icon+"'/> ("+item.rating+"%)";
 			html += "</div>";
