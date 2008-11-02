@@ -25,6 +25,7 @@ go back to the <%= link_to "#votereport homepage", reports_path %>
 	<li><%= image_tag "rating_bad.png" %> - Bad rating (0-30)</li>
 	<li><%= image_tag "rating_medium.png" %> - Medium rating (31-70)</li>
 	<li><%= image_tag "rating_good.png" %> - Good rating (71-100)</li>		
+	<li>Wait Time: 0-15 <%= image_tag "rating_none.png", :style => "width: 12px; height: 12px;" %> | 16-60 <%= image_tag "rating_none.png", :style => "width: 20px; height: 20px;" %> | 61+ <%= image_tag "rating_none.png", :style => "width: 26px; height: 26px;" %> mins</li>
 </ul>
 <div id="update_status" style="display:none">updating...</div>
 <a href="#" onclick="updateMap('last_updated='+last_updated +'&'+filters); return false">Update Map</a>
