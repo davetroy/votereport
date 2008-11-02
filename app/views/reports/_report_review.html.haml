@@ -15,7 +15,7 @@
           =report.reporter.source_name
       %td.text
         %p
-          = report.text
+          = auto_link(h(report.text))
         %p
           %label Wait
           = display( report.wait_time )
