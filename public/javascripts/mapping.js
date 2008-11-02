@@ -45,21 +45,29 @@ function jsonp(url,callback, query)
     document.body.appendChild(script);
 }
 
+// Adds a semi-opaque gray overlay on the map to make the markers pop out more
+function fadeMap() {
+    // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,0),new GLatLng(85,0),new GLatLng(85,90),new GLatLng(-85,90)],null,0,0,"#BBBBBB",0.4));
+    // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,90),new GLatLng(85,90),new GLatLng(85,180),new GLatLng(-85,180)],null,0,0,"#BBBBBB",0.4));
+    mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(20,180.000001),new GLatLng(70,180.000001),new GLatLng(70,330),new GLatLng(-20,330)],null,0,0,"#BBBBBB",0.4));
+    // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,270),new GLatLng(85,270),new GLatLng(85,360),new GLatLng(-85,360)],null,0,0,"#BBBBBB",0.4));
+
+}
 function initMapJS(map_filters){
     // initialise the map with your choice of API
     mapstraction = new Mapstraction('map','google');
     filters = map_filters;
 
+    $("#filter_state").change(function () { 
+        state = $("#filter_state").val();
+        updateMap("state="+state);
+    });
     // display the map centered on a latitude and longitude (Google zoom levels)
     var myPoint = new LatLonPoint(38, -90);
     mapstraction.setCenterAndZoom(myPoint, 4);
     mapstraction.addControls({zoom: 'small'});
 
-    // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,0),new GLatLng(85,0),new GLatLng(85,90),new GLatLng(-85,90)],null,0,0,"#BBBBBB",0.4));
-    // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,90),new GLatLng(85,90),new GLatLng(85,180),new GLatLng(-85,180)],null,0,0,"#BBBBBB",0.4));
-    mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(20,180.000001),new GLatLng(70,180.000001),new GLatLng(70,330),new GLatLng(-20,330)],null,0,0,"#BBBBBB",0.4));
-    // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,270),new GLatLng(85,270),new GLatLng(85,360),new GLatLng(-85,360)],null,0,0,"#BBBBBB",0.4));
-          
+    fadeMap();
     last_updated = new Date().toISO8601String();
     $("#last_updated").text(last_updated);
     // setInterval("updateMap();",60000);
@@ -75,6 +83,7 @@ function updateMap(map_filter) {
     var current_filter = "";
     if(map_filter != "" || map_filter != null) {
         mapstraction.removeAllMarkers();
+        fadeMap();
         gmarkers = [];
         filters = current_filter = map_filter;
     } else {
@@ -87,6 +96,9 @@ function updateMap(map_filter) {
 }
 function updateJSON(response) {
     mapstraction.addJSON(response);
+    if(state != "")
+        mapstraction.autoCenterAndZoom();
+    
     last_updated = new Date().toISO8601String();
     $("#last_updated").text(last_updated);    
     $("#update_status").hide();
