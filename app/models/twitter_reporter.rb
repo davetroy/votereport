@@ -4,6 +4,10 @@ class TwitterReporter < Reporter
   def source; "TWT"; end
   def source_name; "Twitter"; end
   def icon; profile_image_url; end
+  
+  def profile
+    "http://twitter.com/#{screen_name}"
+  end
 
   private
   def set_location

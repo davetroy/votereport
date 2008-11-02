@@ -125,6 +125,9 @@ ActiveRecord::Schema.define(:version => 20081101225454) do
     t.column "reviewer_id", :integer
     t.column "dismissed_at", :datetime
     t.column "tag_s", :string
+    t.column "rating", :integer
+    t.column "location_accuracy", :integer
+    t.column "has_audio", :boolean
   end
 
   add_index "reports", ["created_at"], :name => "index_reports_on_created_at"

@@ -4,10 +4,10 @@ class Reporter < ActiveRecord::Base
 
   validates_presence_of :uniqueid
   validates_uniqueness_of :uniqueid, :scope => :type, :allow_blank => false
-  
+    
   cattr_accessor :public_fields
   @@public_fields = [:name]
-
+ 
   alias_method :ar_to_json, :to_json
   def to_json(options = {})
     options[:only] = @@public_fields
@@ -23,13 +23,9 @@ class Reporter < ActiveRecord::Base
   def self.update_or_create(fields)
     fields = fields.delete_if { |k,v| !self.column_names.include?(k) }
     if reporter = self.find_by_uniqueid(fields['uniqueid'])
-      p "updating attributes"
       reporter.update_attributes(fields)
     else
-      p "creating reporter"
-      p fields
       reporter = self.create(fields)
-      p "done creating"
     end
     reporter
   end

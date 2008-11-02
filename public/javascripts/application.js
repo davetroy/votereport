@@ -1,5 +1,3 @@
-var mapstraction, drawControls;
-var last_updated = null;
 
 Date.prototype.toISO8601String = function (format, offset) {
     /* accepted values for the format [1-6]:
@@ -47,28 +45,4 @@ Date.prototype.toISO8601String = function (format, offset) {
 
     if (format > 3) { str += offset; }
     return str;
-}
-
-function initMap(){
-    // initialise the map with your choice of API
-    mapstraction = new Mapstraction('map','google');
-
-    var myPoint = new LatLonPoint(50, -110);
-    // display the map centered on a latitude and longitude (Google zoom levels)
-    mapstraction.setCenterAndZoom(myPoint, 3);
-    mapstraction.addControls({zoom: 'small'});
-    mapstraction.addOverlay("http://votereport.us/reports.kml");
-    last_updated = new Date().toISO8601String();
-    $("#last_updated").text(last_updated);
-    setInterval("updateMap();",60000);
-
-}
-
-function updateMap() {
-    $("#update_status").show();
-    mapstraction.addOverlay("http://votereport.us/reports.kml?dtstart="+last_updated);
-    last_updated = new Date().toISO8601String();
-    $("#last_updated").text(last_updated);    
-    $("#update_status").hide();
-    return false;
 }

@@ -11,8 +11,11 @@ xml.kml("xmlns" => "http://earth.google.com/kml/2.2",
     xml.tag! "NetworkLink" do
       xml.name "#votereport live updating"
       xml.tag! "Link" do
-        xml.href url_for(:controller => :reports, :action => :index, :only_path => false, :live => 1  )
+        xml.href formatted_reports_url(:format => :kml, :live => 1, :count => 4000 )
+        xml.refreshMode "onInterval"
+        xml.refreshInterval 60
         xml.viewRefreshMode "onStop"
+        xml.viewRefreshTime 30
       end
     end
   end

@@ -1,0 +1,21 @@
+<h1>Maps</h1>
+<h2>activity in the past 4 hours</h2>
+<p>Based on the number of reports per state</p>
+<p>
+<img src="http://chart.apis.google.com/chart?
+chco=f5f5f5,edf0d4,6c9642,365e24,13390a
+&chd=t:<%= @vals %>
+&chf=bg,s,eaf7fe
+&chtm=usa
+&chld=<%= @states %>
+&chs=440x220
+&cht=t" alt="chart"/>
+</p>
+<p>
+</p>
+
+<p>
+<br/>
+<%= @state_reports.inspect %>
+</p>
+

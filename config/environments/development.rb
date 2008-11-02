@@ -20,7 +20,7 @@ config.action_mailer.raise_delivery_errors = false
 # config.action_mailer.delivery_method = :sendmail
 # config.action_mailer.perform_deliveries = false
 
-
+AUDIO_UPLOAD_PATH = "/private/tmp"
 GMAPS_API_KEY = "ABQIAAAAzMUFFnT9uH0xq39J0Y4kbhTJQa0g3IQ9GZqIMmInSLzwtGDKaBR6j135zrztfTGVOm2QlWnkaidDIQ"
 
 require 'ruby-debug'

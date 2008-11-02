@@ -1,9 +1,9 @@
 class Report < ActiveRecord::Base
+  
   validates_presence_of :reporter_id
   validates_uniqueness_of :uniqueid, :scope => :source, :allow_blank => true, :message => 'already processed'
-
-  # TODO: grok these extra attributes provided by iphone
-  attr_accessor :rating, :tag_string
+  
+  attr_accessor :latlon, :tag_string   # virtual field supplied by iphone/android
   
   belongs_to :location
   belongs_to :reporter
@@ -16,12 +16,13 @@ class Report < ActiveRecord::Base
   has_many :filters, :through => :report_filters
 
   before_validation :set_source
-  before_create :detect_location
+  before_create :detect_location, :append_tags
   after_save :check_uniqueid
   after_create :assign_tags, :assign_filters
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
   named_scope :with_wait_time, :conditions => 'wait_time IS NOT NULL'
+  named_scope :with_rating, :conditions => 'rating IS NOT NULL'
   named_scope :assigned, lambda { |user| 
     { :conditions => ['reviewer_id = ? AND reviewed_at IS NULL AND assigned_at > UTC_TIMESTAMP - INTERVAL 10 MINUTE', user.id],
       :order => 'created_at DESC' }
@@ -33,7 +34,7 @@ class Report < ActiveRecord::Base
     :conditions => 'reviewer_id IS NULL OR (assigned_at < UTC_TIMESTAMP - INTERVAL 10 MINUTE AND reviewed_at IS NULL)' 
   ) do
     def assign(reviewer)
-      # FIXME: can't we do this more efficiently from the controller, UPDATE, then SELECT updated? depends on the kool-aid
+      # FIXME: can't we do this more efficiently? a la p-code:
       # self.update_all(reviewer_id=reviewer.id, assigned_at => time.now where id IN (each.collect{r.id}))
       each { |r| r.update_attributes(:reviewer_id => reviewer.id, :assigned_at => Time.now.utc) }
     end
@@ -65,12 +66,16 @@ class Report < ActiveRecord::Base
     !self.is_confirmed?
   end
   
+  def icon
+    self.reporter.icon =~ /http:/ ? self.reporter.icon : "http://votereport.us#{self.reporter.icon}"
+  end
+    
   alias_method :ar_to_json, :to_json
   def to_json(options = {})
     options[:only] = @@public_fields
     # options[:include] = [ :reporter, :polling_place ]
     # options[:except] = [ ]
-    options[:methods] = [ :reporter, :polling_place, :location ].concat(options[:methods]||[]) #lets us include current_items from feeds_controller#show
+    options[:methods] = [ :rating, :name, :icon, :reporter, :polling_place, :location ].concat(options[:methods]||[]) #lets us include current_items from feeds_controller#show
     # options[:additional] = {:page => options[:page] }
     ar_to_json(options)
   end    
@@ -84,11 +89,16 @@ class Report < ActiveRecord::Base
     if filters.include?(:dtend)
       conditions[0] << "created_at <= :dtend"
     end
-
-    # TODO put in logic here for doing filtering by appropriate parameters
-    Report.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
-                      :order => 'created_at DESC',
-                      :conditions => conditions)
+    if filters.include?(:state)
+      Filter.find_by_state(filters[:state]).reports.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
+                        :order => 'created_at DESC')
+    else
+      # TODO put in logic here for doing filtering by appropriate parameters
+      Report.paginate( :page => filters[:page] || 1, :per_page => filters[:per_page] || 10, 
+                        :order => 'created_at DESC',
+                        :conditions => conditions,
+                        :include => [:location, :reporter, :polling_place])
+      end
   end
   
   ## cached tags string
@@ -118,7 +128,18 @@ class Report < ActiveRecord::Base
     self.score = self.tags.inject(0) { |sum, t| sum+t.score }
     self.cache_tags # cache tags string
   end
-    
+  
+  # Subsititute text for reports that have none
+  def field_text
+    [wait_time     ? "#{wait_time} minute wait time" : nil,
+     rating        ? "rating #{rating}" : nil,
+     polling_place ? "polling place: #{polling_place.name}" : nil].compact.join(', ')    
+  end
+  
+  def audio_file
+    "#{uniqueid}." + (self.source=='IPH' ? 'caf' : 'gsm')
+  end
+
   private
   def set_source
     self.source = self.reporter.source
@@ -128,13 +149,24 @@ class Report < ActiveRecord::Base
     update_attribute(:uniqueid, "#{Time.now.to_i}.#{self.id}") if self.uniqueid.nil?
   end
   
+  # Detect and geocode any location information present in the report text
   def detect_location
     if self.text
       LOCATION_PATTERNS.find { |p| self.text[p] }
       self.location = Location.geocode($1) if $1
-      self.zip = location.postal_code if self.location && location.postal_code
+      self.zip = location.postal_code if !self.zip && (self.location && location.postal_code)
     end
-    self.location = reporter.location if !self.location && self.reporter && reporter.location
+    if !self.location && self.zip
+      self.location = Location.geocode(self.zip)
+    end
+    self.location = self.reporter.location if !self.location && self.reporter && self.reporter.location
+    ll, self.location_accuracy = self.latlon.split(/:/) if self.latlon
+    true
+  end
+  
+  # append tag_string to report text if supplied (iphone, android)
+  def append_tags
+    self.text += (" "+self.tag_string) if !self.tag_string.blank?
     true
   end
   

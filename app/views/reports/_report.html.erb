@@ -1,9 +1,15 @@
 <div id="<%= dom_id(report) %>" class="hentry report">
+	
+		<% if report.reporter.class == TwitterReporter %>
+		<%= link_to image_tag(report.reporter.icon, :class => "profile"), report.reporter.profile %>
+		<% else %>
     <img src="<%=report.reporter.icon%>" class="profile">
-    <span class="vcard author" id="screen_name"><%=report.reporter.name%></span>: <span class="entry-title"><%=report.text%></span><br/>
+		<% end %>
+    <span class="vcard author" id="screen_name"><%=report.reporter.name%></span>: <span class="entry-title"><%=report.text || report.field_text%></span><br/>
     <span class="whenwhere">
       <abbr class="published" title="<%= report.created_at.iso8601 %>"><%=time_ago_in_words(report.created_at)%></abbr> ago
       <%="in <span class=\"adr\">#{report.location.address}</a>" if report.location%>
-      via <%=report.reporter.source_name%>
+      via <%=report.reporter.source_name%><br/>
+      <%=audio_link(report)%>
     </span>
 </div>

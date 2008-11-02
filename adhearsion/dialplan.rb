@@ -1,5 +1,6 @@
 default {
   Report
-  report = new_vote_report
-  report.start  
+  Reporter
+  PhoneReporter
+  new_vote_report.start
 }
