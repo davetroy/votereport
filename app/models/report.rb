@@ -68,10 +68,10 @@ class Report < ActiveRecord::Base
   
   # Subsititute text for reports that have none
   def display_text
-    self.text ||
-      [wait_time     ? "#{wait_time} minute wait time" : nil,
-       rating        ? "rating #{rating}" : nil,
-       polling_place ? "polling place: #{polling_place.name}" : nil].compact.join(', ')    
+    return self.text unless self.text.blank?
+    [wait_time     ? "#{wait_time} minute wait time" : nil,
+     rating        ? "rating #{rating}" : nil,
+     polling_place ? "polling place: #{polling_place.name}" : nil].compact.join(', ')    
   end
   
   def audio_file
