@@ -5,7 +5,7 @@ if RAILS_ENV=='development'
       # handy task from http://fukamachi.org/wp/2007/05/18/rails-dump-database-to-fixtures-preserving-utf8/
       desc 'Create YAML test fixtures from data in an existing database.  
       Defaults to development database.  Set RAILS_ENV to override.'
-      require 'Ya2YAML'
+      require 'ya2yaml'
       task :extract => :environment do
         sql  = "SELECT * FROM %s"
         skip_tables = %w(schema_info filters locations location_aliases polling_places schema_migrations)
