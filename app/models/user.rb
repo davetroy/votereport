@@ -59,7 +59,12 @@ class User < ActiveRecord::Base
   # override the +is_admin+ attribute to allow us to specify email addresses
   # that belong to those working on the site
   # (This way we don't have a chicken-or-egg issue to set the first admin)
-  ADMIN_EMAIL_ADDRESSES = ["cory.forsyth@gmail.com", "wgray@zetetic.net"]
+  ADMIN_EMAIL_ADDRESSES = 
+    ["cory.forsyth@gmail.com",  # cory forsyth
+     "wgray@zetetic.net",       # billy gray
+     "nancyscola@gmail.com",    # nancy scola
+     "davetroy@gmail.com"       # dave troy
+     ]
   def is_admin?
     super || ADMIN_EMAIL_ADDRESSES.include?(email)
   end
