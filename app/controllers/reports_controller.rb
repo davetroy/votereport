@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  protect_from_forgery :except => :create
+  protect_from_forgery :except => [:create, :auto_complete_for_report_tag_s]
   before_filter :filter_from_params, :only => [ :index, :map, :chart ]
   before_filter :login_required, :except => [:index, :chart, :map]
   
@@ -183,7 +183,7 @@ class ReportsController < ApplicationController
   end
   
   def auto_complete_for_report_tag_s
-    auto_complete_responder_for_tag_s params[:report][:tag_s]
+    auto_complete_responder_for_report_tag_s params[:report][:tag_s]
   end
   
   private
@@ -219,10 +219,14 @@ class ReportsController < ApplicationController
     "ERROR"
   end
   
-  def auto_complete_responder_for_entry_tag_s(value)
+  def auto_complete_responder_for_report_tag_s(value)
     unless value.blank?
-      @items = Tag.find(:all).collect{ |tag| tag.pattern }
-      render :partial => 'autocomplete', :locals => { :items => @items }
+      items = []
+      if value.starts_with? "#"
+        value = value.gsub(/#/,"")
+      end
+      items = Tag.find(:all).select{ |tag| tag.pattern.index(value.downcase) == 0 }.collect{ |t| t.pattern.gsub(/\?(.+)/,'mm') }
+      render :partial => 'autocomplete', :locals => { :items => items }
     end
   end
 end

@@ -19,13 +19,14 @@
         %p.xhr_errors{:id => "error_report_#{report.id}", :style => 'display: none;'}
           = error_messages_for :report
         - remote_form_for :report, :url => report_path(report), :html => {:method => :put} do |f|
-          %p
+          %div
             %label Wait
             = f.text_field :wait_time, :size => 3
             %label Tags
-            = text_field_with_auto_complete :report, :tag_s, {:size => 32}, { :indicator => "report_#{report.id}_tag_s_spinner", :frequency => 0.4, :tokens => [' ',','] }, report.id
+            = text_field_with_auto_complete( :report, :tag_s, {:size => 32}, { :indicator => "report_#{report.id}_tag_s_spinner", :frequency => 0.4, :tokens => [' ',','] }, report.id)
             = image_tag 'spinner.gif', :id => "report_#{report.id}_tag_s_spinner", :style => 'display:none;'
-          %p
+
+          %div
             %label Location
             = text_field_tag 'location', (report.location.nil?) ? '' : report.location.address, :size => 40
             = submit_tag 'Save!'

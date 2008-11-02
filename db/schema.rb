@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081101225454) do
+ActiveRecord::Schema.define(:version => 20081102220820) do
 
   create_table "alert_viewings", :force => true do |t|
     t.column "user_id", :integer
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20081101225454) do
   end
 
   add_index "alert_viewings", ["user_id"], :name => "index_alert_viewings_on_user_id"
+  add_index "alert_viewings", ["reviewer_alert_id"], :name => "index_alert_viewings_on_reviewer_alert_id"
 
   create_table "filters", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "name", :string, :limit => 80
