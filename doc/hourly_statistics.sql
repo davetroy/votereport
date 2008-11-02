@@ -8,24 +8,24 @@ DELETE FROM statistics WHERE DATE(created_at) = UTC_DATE() AND HOUR(created_at) 
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reporters-all_count', UTC_TIMESTAMP(), count(*) 
+  'reporters-count-all', UTC_TIMESTAMP(), count(*) 
 FROM reporters;
 
 -- ----------------------------------------------------------
--- reporters-twitter count total
+-- reporters total twitter
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'TwitterReporters-all_count', UTC_TIMESTAMP(), count(*) 
+  'reporters-count-twitter', UTC_TIMESTAMP(), count(*) 
 FROM reporters
 WHERE type = 'TwitterReporter';
 
 -- ----------------------------------------------------------
--- reporters-sms count total
+-- reporters total sms
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'SmsReporters-all_count', UTC_TIMESTAMP(), count(*) 
+  'reporters-count-sms', UTC_TIMESTAMP(), count(*) 
 FROM reporters
 WHERE type = 'SmsReporter';
 
@@ -34,7 +34,7 @@ WHERE type = 'SmsReporter';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'IphoneReporters-all_count', UTC_TIMESTAMP(), count(*) 
+  'reporters-count-iphone', UTC_TIMESTAMP(), count(*) 
 FROM reporters
 WHERE type = 'IphoneReporter';
 
@@ -43,16 +43,25 @@ WHERE type = 'IphoneReporter';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'PhoneReporters-all_count', UTC_TIMESTAMP(), count(*) 
+  'reporters-count-telephone', UTC_TIMESTAMP(), count(*) 
 FROM reporters
 WHERE type = 'PhoneReporter';
+
+-- ----------------------------------------------------------
+-- reporters-android count total
+-- ----------------------------------------------------------
+INSERT INTO statistics (name, created_at, integer_value)
+SELECT 
+  'reporters-count-android', UTC_TIMESTAMP(), count(*) 
+FROM reporters
+WHERE type = 'AndroidReporter';
 
 -- ----------------------------------------------------------
 -- reports count total
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-all_count', UTC_TIMESTAMP(), count(*) 
+  'reports-count-all', UTC_TIMESTAMP(), count(*) 
 FROM reports;
 
 -- ----------------------------------------------------------
@@ -60,7 +69,7 @@ FROM reports;
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-sms_count', UTC_TIMESTAMP(), count(*) 
+  'reports-count-sms', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE r.source = 'SMS';
 
@@ -69,7 +78,7 @@ WHERE r.source = 'SMS';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-twt_count', UTC_TIMESTAMP(), count(*) 
+  'reports-count-twitter', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE r.source = 'TWT';
 
@@ -78,7 +87,7 @@ WHERE r.source = 'TWT';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-telephone_count', UTC_TIMESTAMP(), count(*) 
+  'reports-count-telephone', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE r.source = 'TEL';
 
@@ -87,16 +96,25 @@ WHERE r.source = 'TEL';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-iphone_count', UTC_TIMESTAMP(), count(*) 
+  'reports-count-iphone', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE r.source = 'IPH';
+
+-- ----------------------------------------------------------
+-- reports count android
+-- ----------------------------------------------------------
+INSERT INTO statistics (name, created_at, integer_value)
+SELECT 
+  'reports-count-android', UTC_TIMESTAMP(), count(*) 
+FROM reports r
+WHERE r.source = 'ADR';
 
 -- ----------------------------------------------------------
 -- reports created in last hour
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-last_hour_all', UTC_TIMESTAMP(), count(*) 
+  'reports-lasthour-all', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE r.created_at > UTC_TIMESTAMP() - INTERVAL 1 DAY;
 
@@ -105,7 +123,7 @@ WHERE r.created_at > UTC_TIMESTAMP() - INTERVAL 1 DAY;
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-last_hour_sms', UTC_TIMESTAMP(), count(*) 
+  'reports-lasthour-sms', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE 
   r.created_at > UTC_TIMESTAMP() - INTERVAL 1 DAY AND
@@ -116,7 +134,7 @@ WHERE
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-last_hour_twitter', UTC_TIMESTAMP(), count(*) 
+  'reports-lasthour-twitter', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE 
   r.created_at > UTC_TIMESTAMP() - INTERVAL 1 DAY AND
@@ -127,7 +145,7 @@ WHERE
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-last_hour_iphone', UTC_TIMESTAMP(), count(*) 
+  'reports-lasthour-iphone', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE 
   r.created_at > UTC_TIMESTAMP() - INTERVAL 1 DAY AND
@@ -138,65 +156,109 @@ WHERE
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-last_hour_telephone', UTC_TIMESTAMP(), count(*) 
+  'reports-lasthour-telephone', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE 
   r.created_at > UTC_TIMESTAMP() - INTERVAL 1 DAY AND
   r.source = 'TEL';
   
 -- ----------------------------------------------------------
+-- android reports created in last hour
+-- ----------------------------------------------------------
+INSERT INTO statistics (name, created_at, integer_value)
+SELECT 
+  'reports-lasthour-android', UTC_TIMESTAMP(), count(*) 
+FROM reports r
+WHERE 
+  r.created_at > UTC_TIMESTAMP() - INTERVAL 1 DAY AND
+  r.source = 'ADR';
+  
+-- ----------------------------------------------------------
 -- all reports lacking location
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-all_NullLocation', UTC_TIMESTAMP(), count(*) 
+  'reports-nolocation-all', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE 
-  r.location_id = NULL;
+  r.location_id IS NULL;
   
 -- ----------------------------------------------------------
 -- reports lacking location last hour
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'Reports-last_hour_NullLocation', UTC_TIMESTAMP(), count(*) 
+  'reports-nolocation-lasthour', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE 
   r.created_at > UTC_TIMESTAMP() - INTERVAL 1 DAY AND
-  r.location_id = NULL;
+  r.location_id IS NULL;
+  
+-- ----------------------------------------------------------
+-- precentage reports lacking location
+-- ----------------------------------------------------------
+INSERT INTO statistics (name, created_at, decimal_value)
+SELECT 
+  'reports-nolocation-percent', UTC_TIMESTAMP(), 
+  count(*) / (select count(*) from reports) * 100.0 
+FROM reports r
+WHERE 
+  r.location_id IS NULL;
+  
+-- ----------------------------------------------------------
+-- precentage reports dismissed
+-- ----------------------------------------------------------
+INSERT INTO statistics (name, created_at, decimal_value)
+SELECT 
+  'reports-dismissed-percent', UTC_TIMESTAMP(), 
+  count(*) / (select count(*) from reports) * 100.0 
+FROM reports r
+WHERE 
+  r.dismissed_at IS NOT NULL;
+  
+-- ----------------------------------------------------------
+-- precentage reports reviewed
+-- ----------------------------------------------------------
+INSERT INTO statistics (name, created_at, decimal_value)
+SELECT 
+  'reports-reviewed-percent', UTC_TIMESTAMP(), 
+  count(*) / (select count(*) from reports) * 100.0 
+FROM reports r
+WHERE 
+  r.reviewed_at IS NOT NULL;
   
 -- ----------------------------------------------------------
 -- total leader board
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, string_value, integer_value)
 SELECT 
-  'reporters-leaders-all_count', UTC_TIMESTAMP(), 
-  src.uniqueid, count(r.id)
+  'reporters-leaders-alltime', UTC_TIMESTAMP(), 
+  CONCAT(src.uniqueid,':',src.screen_name), count(r.id)
   FROM reporters src INNER JOIN reports r ON r.reporter_id = src.id
-GROUP BY src.uniqueid
+GROUP BY src.uniqueid,src.screen_name
 ORDER BY count(r.id) DESC
-LIMIT 20;
+LIMIT 10;
 
 -- ----------------------------------------------------------
 -- last-hour leader board
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, string_value, integer_value)
 SELECT 
-  'reporters-leaders-all_count', UTC_TIMESTAMP(), 
-  src.uniqueid, count(r.id)
+  'reporters-leaders-lasthour', UTC_TIMESTAMP(), 
+  CONCAT(src.uniqueid,':',src.screen_name), count(r.id)
   FROM reporters src INNER JOIN reports r ON r.reporter_id = src.id
 WHERE
   r.created_at > UTC_TIMESTAMP() - INTERVAL 1 HOUR
-GROUP BY src.uniqueid
+GROUP BY src.uniqueid,src.screen_name
 ORDER BY count(r.id) DESC
-LIMIT 20;
+LIMIT 10;
 
 -- ----------------------------------------------------------
 -- percent of reports sms
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, decimal_value)
 SELECT 
-  'reports-sms_percent', UTC_TIMESTAMP(),
+  'source-percent-sms', UTC_TIMESTAMP(),
   count(*) / (select count(*) from reports) * 100.0 
 FROM reports r WHERE r.source = 'SMS';
 
@@ -205,7 +267,7 @@ FROM reports r WHERE r.source = 'SMS';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, decimal_value)
 SELECT 
-  'reports-twitter_percent', UTC_TIMESTAMP(),
+  'source-percent-twitter', UTC_TIMESTAMP(),
   count(*) / (select count(*) from reports) * 100.0 
 FROM reports r WHERE r.source = 'TWT';
 
@@ -214,7 +276,7 @@ FROM reports r WHERE r.source = 'TWT';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, decimal_value)
 SELECT 
-  'reports-iphone_percent', UTC_TIMESTAMP(),
+  'source-percent-iphone', UTC_TIMESTAMP(),
   count(*) / (select count(*) from reports) * 100.0 
 FROM reports r WHERE r.source = 'IPH';
 
@@ -223,9 +285,18 @@ FROM reports r WHERE r.source = 'IPH';
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, decimal_value)
 SELECT 
-  'reports-telephone_percent', UTC_TIMESTAMP(),
+  'source-percent-telephone', UTC_TIMESTAMP(),
   count(*) / (select count(*) from reports) * 100.0 
 FROM reports r WHERE r.source = 'TEL';
+
+-- ----------------------------------------------------------
+-- percent of reports android
+-- ----------------------------------------------------------
+INSERT INTO statistics (name, created_at, decimal_value)
+SELECT 
+  'source-percent-android', UTC_TIMESTAMP(),
+  count(*) / (select count(*) from reports) * 100.0 
+FROM reports r WHERE r.source = 'ADR';
 
 -- ----------------------------------------------------------
 -- SELECT out our stats!!!

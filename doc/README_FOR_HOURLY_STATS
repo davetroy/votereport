@@ -1,0 +1,25 @@
+To run hourly stats and get a quick text report with table formatting:
+
+mysql --table -u root votereport_development < doc/hourly_statistics.sql 
+
+Looks like:
+
++-----------------------------+--------------------------+---------------+---------------+
+| name                        | string_value             | integer_value | decimal_value |
++-----------------------------+--------------------------+---------------+---------------+
+| reporters-count-all         | NULL                     |            91 |          NULL | 
+| reporters-count-android     | NULL                     |             0 |          NULL | 
+| reporters-count-iphone      | NULL                     |             0 |          NULL | 
+| reporters-count-sms         | NULL                     |            45 |          NULL | 
+| reporters-count-telephone   | NULL                     |             0 |          NULL | 
+| reporters-count-twitter     | NULL                     |            46 |          NULL | 
+| reporters-leaders-alltime   | 5998452:EndTheRoboCalls  |             4 |          NULL | 
+| reporters-leaders-alltime   | 15422611:szewong         |             3 |          NULL | 
+| reporters-leaders-alltime   | 14747137:sd08            |             2 |          NULL | 
+| reporters-leaders-alltime   | 15396053:YesOnProp2      |             2 |          NULL |
+
+...
+
+Run hourly via cron and mail via:
+
+0 * * * * mysql --table -u <USER> votereport_development < doc/hourly_statistics.sql | /bin/mail -s "TVR Hours Stats" monitors@twitter.votereport.com
