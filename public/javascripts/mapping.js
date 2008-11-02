@@ -110,16 +110,17 @@ for (var i = 0; i < features.length; i++) {
                     icon = "/images/rating_medium.png"
                 else
                     icon = "/images/rating_good.png"
-                icon_size = [24,24];
             }
 			else if(item.icon == "" || item.icon == null){
 				icon = "/images/gmaps/pushpins/webhues/159.png" 
 				icon_size = [10,17];
 				
 			} else {
-				icon = item.icon;
-				icon_size = [24,24];
+                icon = "/images/rating_none.png"
+                // icon = item.icon;
 			}
+            icon_size = [16,16];
+
             html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.display_text + "<br />";
             if(item.rating != null)
                 html += "Rating: <img src='"+icon+"'/> ("+item.rating+"%)";
