@@ -119,11 +119,15 @@ for (var i = 0; i < features.length; i++) {
                 icon = "/images/rating_none.png"
                 // icon = item.icon;
 			}
-            icon_size = [16,16];
+			icon_scale = 0.18 * item.wait_time + 10;
+            icon_size = [icon_scale,icon_scale];
 
             html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.display_text + "<br />";
             if(item.rating != null)
                 html += "Rating: <img src='"+icon+"'/> ("+item.rating+"%)";
+            if(item.rating != null)
+                html += "<br />Wait time: "+ item.wait_time+" min";
+
 			html += "</div>";
 			
 			this.addMarkerWithData(new Marker(new LatLonPoint(item.location.location.point.coordinates[1],item.location.location.point.coordinates[0])),{
