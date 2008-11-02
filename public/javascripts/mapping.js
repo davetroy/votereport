@@ -66,17 +66,27 @@ function loadMarkers(response) {
         mapstraction.autoCenterAndZoom();
     
 }
-function updateMap() {
+function updateMap(map_filter) {
+    var current_filter = "";
+    if(map_filter != "" || map_filter != null) {
+        mapstraction.removeAllMarkers();
+        gmarkers = [];
+        filters = current_filter = map_filter;
+    } else {
+        current_filter = "dtstart="+last_updated+"&" + filters;
+    }
+        
     $("#update_status").show();
-    loadJSON("/reports.json?count=200&dtstart="+last_updated+"&"+filters, updateJSON);
+    $.getJSON("/reports.json?"+current_filter, updateJSON);
     return false;
 }
 function updateJSON(response) {
-    mapstraction.addJSON(eval(response));
+    mapstraction.addJSON(response);
     last_updated = new Date().toISO8601String();
     $("#last_updated").text(last_updated);    
     $("#update_status").hide();
 }
+
 var gmarkers = []
 Mapstraction.prototype.addJSON = function(features) {
 // var features = eval('(' + json + ')');
@@ -110,7 +120,7 @@ for (var i = 0; i < features.length; i++) {
 				icon = item.icon;
 				icon_size = [24,24];
 			}
-            html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.text + "<br />";
+            html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.display_text + "<br />";
             if(item.rating != null)
                 html += "Rating: <img src='"+icon+"'/> ("+item.rating+"%)";
 			html += "</div>";
