@@ -10,7 +10,11 @@
 view the <%= link_to "#votereport map", map_reports_path %>
 
 <div id="reports" class="hfeed">
-  <%= render :partial => @reports %>
+  <% if !@live_feed -%>
+    <%= render :partial => @reports %>
+  <% else -%>
+    <%= render :file => 'public/cached_tweets.html' %>
+  <% end -%>
 </div>
 
 <!-- either (a) paginate, or (b) auto-update -->
@@ -22,7 +26,7 @@ view the <%= link_to "#votereport map", map_reports_path %>
   <% end -%>
   <script type="text/javascript">
     function reloadReportData() {
-      $("#reports").load("/reports/reload");
+      $("#reports").load("/cached_tweets.html");
     }
     setInterval("reloadReportData();", 30000);
   </script>
