@@ -24,6 +24,25 @@ table.report {
     background-color: white; }
 
 .reviewer_alert {
+  background: url(/images/icons/exclamation.png) no-repeat center left;
+  padding-left: 25px;
   border: 1px solid red;
   background-color: #EEE;
+}
+
+.reviewer_alert p {
+  padding: 5px;
+}
+
+tr.even {
+  background-color: #EEE;
+}
+
+tr.odd {
+  background-color: #DDD;
+}
+
+#toolbar {
+  width: 100%;
+  text-align: right;
 }

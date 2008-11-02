@@ -47,8 +47,8 @@ class User < ActiveRecord::Base
   # These are alerts for this reviewer that he has not yet dismissed
   def unviewed_alerts
     ReviewerAlert.find(:all, 
-                       :joins => "LEFT JOIN alert_viewings ON alert_viewings.user_id = #{self.id}",
-                       :conditions => "alert_viewings.user_id IS NULL",
+                       :joins => "LEFT JOIN alert_viewings ON alert_viewings.reviewer_alert_id = reviewer_alerts.id AND alert_viewings.user_id = #{self.id}",
+                       :conditions => "alert_viewings.reviewer_alert_id IS NULL",
                        :order => "reviewer_alerts.created_at desc", :limit => 10)
   end
   
