@@ -3,6 +3,8 @@ class ReportsController < ApplicationController
   before_filter :filter_from_params, :only => [ :index, :map, :chart ]
   before_filter :login_required, :except => [:index, :chart, :map]
   
+  auto_complete_for :report, :tag_s
+  
   # GET /reports
   def index
     respond_to do |format|
@@ -179,6 +181,10 @@ class ReportsController < ApplicationController
     end
   end
   
+  def auto_complete_for_report_tag_s
+    auto_complete_responder_for_tag_s params[:report][:tag_s]
+  end
+  
   private
   # Store an iPhone-generated report given a hash of parameters
   # Check for a valid iPhone UDID
@@ -210,5 +216,12 @@ class ReportsController < ApplicationController
   rescue => e
     logger.info "*** ANDROID ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"
     "ERROR"
+  end
+  
+  def auto_complete_responder_for_entry_tag_s(value)
+    unless value.blank?
+      @items = Tag.find(:all).collect{ |tag| tag.pattern }
+      render :partial => 'autocomplete', :locals => { :items => @items }
+    end
   end
 end
