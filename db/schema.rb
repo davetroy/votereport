@@ -11,6 +11,15 @@
 
 ActiveRecord::Schema.define(:version => 20081101225454) do
 
+  create_table "alert_viewings", :force => true do |t|
+    t.column "user_id", :integer
+    t.column "reviewer_alert_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
+  add_index "alert_viewings", ["user_id"], :name => "index_alert_viewings_on_user_id"
+
   create_table "filters", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "name", :string, :limit => 80
     t.column "aliases", :string
@@ -121,6 +130,13 @@ ActiveRecord::Schema.define(:version => 20081101225454) do
   add_index "reports", ["created_at"], :name => "index_reports_on_created_at"
   add_index "reports", ["reviewer_id"], :name => "index_reports_on_reviewer_id"
 
+  create_table "reviewer_alerts", :force => true do |t|
+    t.column "text", :string
+    t.column "user_id", :integer
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+  end
+
   create_table "statistics", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "name", :string
     t.column "created_at", :datetime
@@ -162,6 +178,7 @@ ActiveRecord::Schema.define(:version => 20081101225454) do
     t.column "activation_code", :string, :limit => 40
     t.column "activated_at", :datetime
     t.column "is_terminated", :boolean, :default => false
+    t.column "is_admin", :boolean, :default => false
   end
 
   add_index "users", ["api_key"], :name => "index_users_on_api_key", :unique => true
