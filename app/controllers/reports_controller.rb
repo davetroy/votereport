@@ -1,6 +1,6 @@
 class ReportsController < ApplicationController
   protect_from_forgery :except => :create
-  before_filter :filter_from_params, :only => [ :index, :map, :chart ]
+  before_filter :filter_from_params, :only => [ :index, :reload, :map, :chart ]
   
   # GET /reports
   def index
@@ -23,9 +23,16 @@ class ReportsController < ApplicationController
         @reports = Report.with_location.find_with_filters(@filters)
       end
       format.html do
+        @live_feed = (params[:live] == "1")
         @reports = Report.find_with_filters(@filters)
       end
     end
+  end
+  
+  # GET /reports/reload (AJAX)
+  def reload
+    @reports = Report.find_with_filters(@filters)
+    render :partial => @reports
   end
   
   def map  
