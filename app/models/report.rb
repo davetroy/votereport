@@ -65,11 +65,12 @@ class Report < ActiveRecord::Base
                         :order => 'created_at DESC',
                         :conditions => conditions,
                         :include => [:location, :reporter, :polling_place])
-      end
+    end
   end
   
   # Subsititute text for reports that have none
-  def field_text
+  def display_text
+    return self.text unless self.text.blank?
     [wait_time     ? "#{wait_time} minute wait time" : nil,
      rating        ? "rating #{rating}" : nil,
      polling_place ? "polling place: #{polling_place.name}" : nil].compact.join(', ')    

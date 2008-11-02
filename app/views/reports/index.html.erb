@@ -1,3 +1,5 @@
+
+
 <ul id="syndication">
 	<li id="kml_link"><%= link_to "GoogleEarth"+image_tag("kml_icon.png", :alt => "KML")+"view", formatted_reports_url(:kml), :title => "Download the KML to view in GoogleEarth" %></li>
 	<li id="rss_link"><%= link_to "RSS"+image_tag("feed_icon.png", :alt => "RSS")+"subscribe", formatted_reports_url(:atom), :title => "Subscribe to #votereport GeoRSS-Atom feed" %></li>
@@ -10,6 +12,19 @@ view the <%= link_to "#votereport map", map_reports_path %>
 <div id="reports" class="hfeed">
   <%= render :partial => @reports %>
 </div>
-<%=will_paginate @reports%>
 
+<!-- either (a) paginate, or (b) auto-update -->
+<% if !@live_feed -%>
+  <%= will_paginate @reports %>
+<% else -%>
+  <% content_for(:head) do %>
+    <%= javascript_include_tag("jquery.min.js") %>
+  <% end -%>
+  <script type="text/javascript">
+    function reloadReportData() {
+      $("#reports").load("/reports/reload");
+    }
+    setInterval("reloadReportData();", 30000);
+  </script>
+<% end -%>
 
