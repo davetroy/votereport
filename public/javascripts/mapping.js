@@ -54,7 +54,12 @@ function initMapJS(map_filters){
     var myPoint = new LatLonPoint(38, -90);
     mapstraction.setCenterAndZoom(myPoint, 4);
     mapstraction.addControls({zoom: 'small'});
-    
+
+    // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,0),new GLatLng(85,0),new GLatLng(85,90),new GLatLng(-85,90)],null,0,0,"#BBBBBB",0.4));
+    // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,90),new GLatLng(85,90),new GLatLng(85,180),new GLatLng(-85,180)],null,0,0,"#BBBBBB",0.4));
+    mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(20,180.000001),new GLatLng(70,180.000001),new GLatLng(70,330),new GLatLng(-20,330)],null,0,0,"#BBBBBB",0.4));
+    // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,270),new GLatLng(85,270),new GLatLng(85,360),new GLatLng(-85,360)],null,0,0,"#BBBBBB",0.4));
+          
     last_updated = new Date().toISO8601String();
     $("#last_updated").text(last_updated);
     // setInterval("updateMap();",60000);
