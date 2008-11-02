@@ -1,12 +1,16 @@
 ENV["RAILS_ENV"] ||= defined?(Daemons) ? 'production' : 'development'
 
-# Dev
-#URL = "http://localhost:3000/reports/reload"
-#PATH_TO_CACHED_FILE = "public/cached_tweets.html"
-
-# Prod
-URL = "http://votereport.us/reports/reload"
-PATH_TO_CACHED_FILE = "cached_tweets.html"  # I don't know what this should be?
+if ENV["RAILS_ENV"] == 'development'
+  # Dev
+  URL = "http://localhost:3000/reports/reload"
+  PATH_TO_CACHED_FILE = "public/cached_reports.html"
+  CURL = "/opt/local/bin/curl"
+else
+  # Prod
+  URL = "http://votereport.us/reports/reload"
+  PATH_TO_CACHED_FILE = "public/cached_reports.html"  # I don't know what this should be?
+  CURL = "curl" # Should probably reference w/ a global path
+end
 
 $running = true
 Signal.trap("TERM") do 
@@ -14,6 +18,6 @@ Signal.trap("TERM") do
 end
 
 while($running) do
-  `curl #{URL} > #{PATH_TO_CACHED_FILE}`
+  `#{CURL} #{URL} > #{PATH_TO_CACHED_FILE}`
   sleep 30
 end

@@ -13,7 +13,7 @@ view the <%= link_to "#votereport map", map_reports_path %>
   <% if !@live_feed -%>
     <%= render :partial => @reports %>
   <% else -%>
-    <%= render :file => 'public/cached_tweets.html' %>
+    <%= render :file => 'public/cached_reports.html' %>
   <% end -%>
 </div>
 
@@ -26,7 +26,7 @@ view the <%= link_to "#votereport map", map_reports_path %>
   <% end -%>
   <script type="text/javascript">
     function reloadReportData() {
-      $("#reports").load("/cached_tweets.html");
+      $("#reports").load("/cached_reports.html");
     }
     setInterval("reloadReportData();", 30000);
   </script>
