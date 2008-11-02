@@ -53,7 +53,9 @@ class Report < ActiveRecord::Base
     if filters.include?(:dtend)
       conditions[0] << "created_at <= :dtend"
     end
-    
+    if filters.include?(:wait_time)
+      conditions[0] << "wait_time IS NOT NULL AND wait_time >= :wait_time"
+    end
     if filters.include?(:state)
       Filter.find_by_state(filters[:state]).reports.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
                         :order => 'created_at DESC')

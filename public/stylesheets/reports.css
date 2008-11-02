@@ -97,3 +97,6 @@ ul#syndication {
 }
 li#rss_link { margin-left:47px; }
 ul#syndication img { border:medium none; margin: 0 4px;}
+ul.legend {    list-style-image:none;    list-style-position:outside;    list-style-type:none;}
+ul.controls {    list-style-image:none;    list-style-position:outside;    list-style-type:none;}
+ul.controls li  { list-style: none;  	display: inline;}

@@ -66,17 +66,28 @@ function loadMarkers(response) {
         mapstraction.autoCenterAndZoom();
     
 }
-function updateMap() {
+function updateMap(map_filter) {
+    var current_filter = "";
+    if(map_filter != "" || map_filter != null) {
+        mapstraction.removeAllMarkers();
+        gmarkers = [];
+        filters = current_filter = map_filter;
+    } else {
+        current_filter = "dtstart="+last_updated+"&" + filters;
+    }
+        
     $("#update_status").show();
-    loadJSON("/reports.json?count=200&dtstart="+last_updated+"&"+filters, updateJSON);
+    loadJSON("/reports.json?"+current_filter, updateJSON);
     return false;
 }
 function updateJSON(response) {
-    mapstraction.addJSON(eval(response));
+    // alert(response);
+    mapstraction.addJSON(response);
     last_updated = new Date().toISO8601String();
     $("#last_updated").text(last_updated);    
     $("#update_status").hide();
 }
+
 var gmarkers = []
 Mapstraction.prototype.addJSON = function(features) {
 // var features = eval('(' + json + ')');
@@ -86,6 +97,7 @@ var polyline;
 var item;
 var asset_server = "http://assets0.mapufacture.com";
 
+alert(features.length);
 for (var i = 0; i < features.length; i++) {
 	item = features[i].report;
 	if(item.location != null && item.location.location.point != null) {
