@@ -12,7 +12,10 @@ class VoteReport
   MAX_TRIES = 3
 
   def initialize
-    @reporter = PhoneReporter.update_or_create('uniqueid' => call.callerid || call.uniqueid, 'profile_location' => call.calleridname)
+    ani = call.callerid.gsub(/^\+1/, '')
+    ani = nil if ani=='ANONYMOUS'
+    ani = ani || call.uniqueid
+    @reporter = PhoneReporter.update_or_create('uniqueid' => ani, 'profile_location' => call.calleridname)
     @report = @reporter.reports.build(:uniqueid => call.uniqueid, :text => "Telephone report to #{format_did(call.dnid)} ")
     @audiofile = "#{CALL_AUDIO_PATH}/#{@report.uniqueid}"
   end
