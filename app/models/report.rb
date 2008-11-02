@@ -59,9 +59,10 @@ class Report < ActiveRecord::Base
                         :order => 'created_at DESC')
     else
       # TODO put in logic here for doing filtering by appropriate parameters
-      Report.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
+      Report.paginate( :page => filters[:page] || 1, :per_page => filters[:per_page] || 10, 
                         :order => 'created_at DESC',
-                        :conditions => conditions)
+                        :conditions => conditions,
+                        :include => [:location, :reporter, :polling_place])
       end
   end
   

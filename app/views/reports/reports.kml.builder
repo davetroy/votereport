@@ -24,9 +24,12 @@ xml.kml("xmlns" => "http://earth.google.com/kml/2.2",
             xml.color "ff00aaff"
           end
           xml.tag! "BalloonStyle" do
-            xml.text render( :partial => "balloon", :locals => {:report => report})
+            # this is ugly, but faster than calling a partial a lot
+              balloonText = "$[description] by $[screen_name]"
+              balloonText << "<br />Rating: #{rating_icon(report.rating)}" unless report.rating.nil?
+            xml.text balloonText
             xml.textColor "ff084156"
-            xml.color "ff000000"
+            xml.color "ffffffff"
           end
         end
         xml.atom :author do

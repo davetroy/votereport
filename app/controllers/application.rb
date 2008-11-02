@@ -9,8 +9,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # :secret => 'd5feb8525b287ec306f7d88ee9a9af83'
   
   def filter_from_params
-    @per_page = params[:count] || 10
-    @page = params[:page] || 1
+    @per_page = params[:count] ||= params[:per_page] || 10
+    @page = params[:page] ||= 1
     
     @filters = {:page => @page, :per_page => @per_page}
     [:dtstart, :dtend, :filter, :zip, :postal, :city, :state].each do |p|

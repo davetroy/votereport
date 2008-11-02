@@ -15,12 +15,15 @@ go back to the <%= link_to "#votereport homepage", reports_path %>
     </style>
 
 <div id="update_status" style="display:none">updating...</div>
-updated: <span id="last_updated"></span>
 <a href="#" onclick="updateMap(); return false">Update Map</a>
+updated: <span id="last_updated"></span>
 
 <script type="text/javascript" charset="utf-8">
+
 		$(document).ready(function() {
 			initMapJS();
-			remoteLoad("/reports.json?callback=loadMarkers&<%= @filters.collect{|k,v| "#{k}=#{v}"}.join("&") %>")
+			filters = "<%= @filters.collect{|k,v| "#{k}=#{v}"}.join("&") %>";
+			state = "<%= @filters[:state] || '' %>";
+			remoteLoad("/reports.json?callback=loadMarkers&per_page=200&" + filters)
 		 });
 </script>
