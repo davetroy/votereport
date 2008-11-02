@@ -35,6 +35,7 @@ class ReportsController < ApplicationController
   def review
     # fetches basic review layout
     @reports = Report.assigned(current_user)
+    render :layout => "admin"
   end
   
   # POST /reports/assign

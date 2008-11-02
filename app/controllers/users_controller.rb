@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  layout "admin"
   
   # render new.rhtml
   def new

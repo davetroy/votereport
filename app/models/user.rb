@@ -47,8 +47,8 @@ class User < ActiveRecord::Base
   # These are alerts for this reviewer that he has not yet dismissed
   def unviewed_alerts
     ReviewerAlert.find(:all, 
-                       :joins => "LEFT JOIN alert_viewings ON alert_viewings.user_id = #{self.id}",
-                       :conditions => "alert_viewings.user_id IS NULL",
+                       :joins => "LEFT JOIN alert_viewings ON alert_viewings.reviewer_alert_id = reviewer_alerts.id AND alert_viewings.user_id = #{self.id}",
+                       :conditions => "alert_viewings.reviewer_alert_id IS NULL",
                        :order => "reviewer_alerts.created_at desc", :limit => 10)
   end
   
@@ -59,7 +59,12 @@ class User < ActiveRecord::Base
   # override the +is_admin+ attribute to allow us to specify email addresses
   # that belong to those working on the site
   # (This way we don't have a chicken-or-egg issue to set the first admin)
-  ADMIN_EMAIL_ADDRESSES = ["cory.forsyth@gmail.com", "wgray@zetetic.net"]
+  ADMIN_EMAIL_ADDRESSES = 
+    ["cory.forsyth@gmail.com",  # cory forsyth
+     "wgray@zetetic.net",       # billy gray
+     "nancyscola@gmail.com",    # nancy scola
+     "davetroy@gmail.com"       # dave troy
+     ]
   def is_admin?
     super || ADMIN_EMAIL_ADDRESSES.include?(email)
   end
