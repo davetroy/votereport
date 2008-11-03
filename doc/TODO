@@ -1,10 +1,5 @@
 Backend Tasks
 
-Asterisk/Adhearsion Interface:
-  Finalize call flow
-  Record new sound files
-  Standardize daemonization
-  Allow for callers to record audio message
   
 delete daemon logs on restart
 
@@ -42,3 +37,9 @@ Mozes (SMS):
 
 iPhone:
   Write REST report controller (POST only) to receive new reports
+
+Asterisk/Adhearsion Interface:
+  Finalize call flow
+  Record new sound files
+  Standardize daemonization
+  Allow for callers to record audio message

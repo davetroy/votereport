@@ -8,8 +8,8 @@ if ENV["RAILS_ENV"] == 'development'
 else
   # Prod
   URL = "http://votereport.us/reports/reload"
-  PATH_TO_CACHED_FILE = "public/cached_reports.html"  # I don't know what this should be?
-  CURL = "curl" # Should probably reference w/ a global path
+  PATH_TO_CACHED_FILE = "/home/votereport/current/public/cached_reports.html"
+  CURL = "/usr/bin/curl"
 end
 
 $running = true
