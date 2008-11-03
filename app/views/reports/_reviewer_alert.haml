@@ -1,0 +1,6 @@
+%div.reviewer_alert{:id => "reviewer_alert_#{reviewer_alert.id}"}
+  %p
+    = h(reviewer_alert.text)
+    %span.date= reviewer_alert.created_at.utc.strftime("%m/%d at %I:%M%p")
+    %span.dismiss{:style => "float: right; margin-right: 2em"}
+      = link_to_remote "Dismiss #{image_tag("icons/delete.png")}", {:url => dismiss_reviewer_alert_path(reviewer_alert)}

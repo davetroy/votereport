@@ -1,0 +1,11 @@
+- form_for :reviewer_alert, :url => reviewer_alerts_path do |f|
+  %p
+    The text you enter below will be displayed at the top of the review screen
+    that all the reviewers use.
+  %p
+    = label_tag 'text:'
+    = f.text_field :text, :size => 60
+  %p
+    = submit_tag "Create"
+
+= link_to "View current alerts", reviewer_alerts_path

@@ -1,0 +1,4 @@
+- reports.each do |report|
+  = render :partial => 'report_review', :locals => { :report => report }
+- if reports.empty?
+  %h2 No reports were found.

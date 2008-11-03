@@ -1,0 +1,48 @@
+label {
+  font-weight: bold;
+  padding: 0 5px; }
+
+table.report {
+  margin-bottom: 1em;
+  font-size: 90%;
+  width: 800px; }
+  table.report th {
+    font-weight: bold; }
+  table.report td {
+    text-align: left;
+    vertical-align: top; }
+  table.report td.image {
+    width: 75px; }
+  table.report td.author {
+    width: 100px; }
+  table.report td.text {
+    width: 500px; }
+  table.report td.controls {
+    text-align: right;
+    width: 125px; }
+  table.report .record-form {
+    background-color: white; }
+
+.reviewer_alert {
+  background: url(/images/icons/exclamation.png) no-repeat center left;
+  padding-left: 25px;
+  border: 1px solid red;
+  background-color: #EEE;
+}
+
+.reviewer_alert p {
+  padding: 5px;
+}
+
+tr.even {
+  background-color: #EEE;
+}
+
+tr.odd {
+  background-color: #DDD;
+}
+
+#toolbar {
+  width: 100%;
+  text-align: right;
+}

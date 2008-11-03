@@ -1,0 +1,19 @@
+- if @reviewer_alerts.empty?
+  %h2 No reviewer alerts have been created.
+- else
+  %table.reviewer_alerts{:cellspacing => "2px"}
+    %tr
+      %th Created At
+      %th Text
+      %th Created by
+      %th Delete?
+    - @reviewer_alerts.each do |reviewer_alert|
+      %tr[reviewer_alert]{:class => cycle("even","odd")}
+        %td= reviewer_alert.created_at.utc.strftime("%m/%d at %I:%M%p")
+        %td= h(reviewer_alert.text)
+        %td= reviewer_alert.user.name
+        %td= link_to_remote image_tag("icons/delete.png"), {:url => reviewer_alert_path(reviewer_alert), :method => :delete}
+
+= will_paginate(@reviewer_alerts)
+
+= link_to "Create a new alert", new_reviewer_alert_path

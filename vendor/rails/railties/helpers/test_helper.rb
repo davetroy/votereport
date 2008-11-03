@@ -1,6 +1,9 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
+# Be sure to include AuthenticatedTestHelper in test/test_helper.rb instead
+# Then, you can remove it from this and the units test.
+include AuthenticatedTestHelper
 
 class Test::Unit::TestCase
   # Transactional fixtures accelerate your tests by wrapping each test method

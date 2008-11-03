@@ -103,4 +103,8 @@ module ReportHelper
        0xFFFFFF, 0xFF0000, 0x999999 ].
        pack("A2Vv2V4v2V9") + ibmp
   end
+ 
+  def display(val, default='Undefined')
+    (val.blank?) ? default : val.to_s.strip
+  end
 end

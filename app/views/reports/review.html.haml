@@ -1,0 +1,21 @@
+- content_for :style do
+  = stylesheet_link_tag 'reviews'
+- content_for :javascript do
+  = javascript_include_tag :defaults
+
+= render :partial => 'reviewer_alert', :collection => current_user.unviewed_alerts
+  
+%h1 Review Interface
+
+%p
+  To get started, 
+  = link_to_remote 'click here', { :url => assign_reports_path, :method => :post }
+  to grab a fresh set of reports that need to be reviewed. They 
+  will be reserved just for you for the next 10 minutes.
+
+%p
+  If you have to leave these reports unreviewed, please
+  = link_to_remote 'click here', { :url => release_reports_path, :method => :post }
+  to release them to another reviewer. Thanks! [do we need/want this function?]
+  
+#reports

@@ -1,0 +1,29 @@
+<h1>Sign up as a new user</h1>
+<% @user.password = @user.password_confirmation = nil %>
+
+<%= error_messages_for :user %>
+<% form_for :user, :url => users_path do |f| -%>
+<p><%= label_tag 'first name' %><br/>
+<%= f.text_field :first_name %></p>
+
+<p><%= label_tag 'last name' %><br/>
+<%= f.text_field :last_name %></p>
+
+<p><%= label_tag 'url' %> (optional)<br/>
+<%= f.text_field :url %></p>
+
+<p><%= label_tag 'email' %><br/>
+<%= f.text_field :email %></p>
+
+<p><%= label_tag 'password' %><br/>
+<%= f.password_field :password %></p>
+
+<p><%= label_tag 'password_confirmation', 'Confirm Password' %><br/>
+<%= f.password_field :password_confirmation %></p>
+
+<p><%= label_tag 'human', "Verify you are a human" %><br />
+  What is <%= @captcha_num_1 %> + <%= @captcha_num_2 %>?<br />
+<%= text_field_tag :fakeasscaptcha %></p>
+
+<p><%= submit_tag 'Sign up' %></p>
+<% end -%>

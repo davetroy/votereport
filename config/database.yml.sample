@@ -20,6 +20,5 @@ production:
   adapter: mysql
   encoding: utf8
   database: votereport_production
-  username: vruser
-  password: sa98dadsjafg
-  host: 10.0.2.51
+  username: 
+  password:

@@ -3,6 +3,7 @@
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
+  include AuthenticatedSystem
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -16,9 +17,12 @@ class ApplicationController < ActionController::Base
     [:wait_time, :dtstart, :dtend, :rating, :filter, :zip, :postal, :city, :state].each do |p|
       @filters[p] = params[p] if params[p]
     end
-    
-    
   end
+  
+  def admin_required
+    (authorized? && current_user.is_admin?) || access_denied
+  end
+    
   # See ActionController::Base for details 
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password"). 

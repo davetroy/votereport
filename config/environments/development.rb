@@ -16,7 +16,11 @@ config.action_controller.perform_caching             = false
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
 
+# Uncomment and change perform_deliveries to +true+ to send emails locally
+# config.action_mailer.delivery_method = :sendmail
+# config.action_mailer.perform_deliveries = false
+
 AUDIO_UPLOAD_PATH = "/private/tmp"
 GMAPS_API_KEY = "ABQIAAAAzMUFFnT9uH0xq39J0Y4kbhTJQa0g3IQ9GZqIMmInSLzwtGDKaBR6j135zrztfTGVOm2QlWnkaidDIQ"
 
-#require 'ruby-debug'
+require 'ruby-debug'
