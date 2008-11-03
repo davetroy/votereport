@@ -22,7 +22,8 @@ ActionController::Routing::Routes.draw do |map|
     :collection => {
       :map => :get, 
       :chart => :get, 
-      :review => :get, 
+      :review => :get,
+      :reload => :get, 
       :assign => :post, 
       :release => :post
     },
