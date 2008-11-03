@@ -24,7 +24,9 @@ class ReportsController < ApplicationController
       end
       format.html do
         @live_feed = (params[:live] == "1")
-        @reports = Report.find_with_filters(@filters)
+        if !@live_feed 
+          @reports = Report.find_with_filters(@filters)
+        end
       end
     end
   end

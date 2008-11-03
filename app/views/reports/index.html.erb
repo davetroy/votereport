@@ -23,12 +23,8 @@ view the <%= link_to "#votereport map", map_reports_path %>
 <% else -%>
   <% content_for(:head) do %>
     <%= javascript_include_tag("jquery.min.js") %>
+    <%= javascript_include_tag("report_autoupdate.js") %>
+    <div id="hdn_reports_container" style="display: none;"></div>
   <% end -%>
-  <script type="text/javascript">
-    function reloadReportData() {
-      $("#reports").load("/cached_reports.html");
-    }
-    setInterval("reloadReportData();", 30000);
-  </script>
 <% end -%>
 

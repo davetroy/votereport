@@ -7,10 +7,10 @@ class ReportsControllerTest < ActionController::TestCase
     assert !@response.body.include?("function reloadReportData(")
   end
   
-  def test_zzz_autoupdate_index_loads
+  def test_live_autoupdate_index_loads
     get(:index, :live => "1", :format => 'html')
     assert_response :success
-    assert @response.body.include?("function reloadReportData(")
+    assert @response.body.include?("hdn_reports_container")
   end
   
   def test_reload_loads
