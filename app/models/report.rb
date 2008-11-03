@@ -1,7 +1,10 @@
 class Report < ActiveRecord::Base
   
+  MAXIMUM_WAIT_TIME = 480 # we will ignore reports > this as they are likely bogus and will throw off our data
+  
   validates_presence_of :reporter_id
   validates_uniqueness_of :uniqueid, :scope => :source, :allow_blank => true, :message => 'already processed'
+  validates_numericality_of :wait_time, :allow_nil => true, :less_than_or_equal_to => MAXIMUM_WAIT_TIME
   
   attr_accessor :latlon, :tag_string   # virtual field supplied by iphone/android
   
@@ -18,7 +21,7 @@ class Report < ActiveRecord::Base
   before_validation :set_source
   before_create :detect_location, :append_tags
   after_save :check_uniqueid
-  after_create :assign_tags, :assign_filters
+  after_create :assign_tags, :assign_wait_time, :assign_filters
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
   named_scope :with_wait_time, :conditions => 'wait_time IS NOT NULL'
@@ -59,11 +62,11 @@ class Report < ActiveRecord::Base
   end
   
   def is_confirmed?
-    self.dismissed_at.nil?
+    self.dismissed_at.nil? && !self.reviewed_at.nil?
   end
   
   def is_dismissed?
-    !self.is_confirmed?
+    !self.dismissed_at.nil?
   end
   
   def icon
@@ -121,7 +124,6 @@ class Report < ActiveRecord::Base
     Tag.find(:all).each do |t|
       if text[/#{t.pattern}/i]
         new_tags << t
-        self.wait_time = $1 if t.pattern.starts_with?('wait')
       end
     end
     self.tags = new_tags.uniq.compact # exclude any duplicate and nil values 
@@ -177,6 +179,27 @@ class Report < ActiveRecord::Base
       self.tag_s = self.text.scan(/\s+\#\S+/).join(' ')
     end
     true
+  end
+  
+  def assign_wait_time
+    return unless self.text
+    
+    case self.text
+    when /wait(\d{1,4})/     # waitNUM
+      self.wait_time = $1
+    when /wait:(\d{1,4})/    # wait:NUM
+      self.wait_time = $1
+    when /wait\s+(\d{1,4})/  # wait NUM
+      self.wait_time = $1
+    when /\s(\d)(\s+|\-)hours?/      # NUM hour(s) or NUM-hour(s)
+      self.wait_time = $1.to_i * 60 
+    when /\s(\d{1,4})(\s+|\-)minutes?/   # NUM minute(s) or NUM-minute(s)
+      self.wait_time = $1
+    end
+    
+    if self.wait_time && self.wait_time > MAXIMUM_WAIT_TIME
+      self.wait_time = MAXIMUM_WAIT_TIME
+    end
   end
   
   # What location filters apply to this report?  US, MD, etc?
