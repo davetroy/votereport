@@ -19,15 +19,17 @@ go back to the <%= link_to "#votereport homepage", reports_path %>
 	<li><a href="#" onclick="return updateMap('count=100')">Last 100 reports</a></li>
 	<li><a href="#" onclick="return updateMap('wait_time=90')">Wait time > 90 minutes</a></li>
 	<li><a href="#" onclick="return updateMap('rating=30')">Bad rating</a></li>
+	<li>or by State: <%= state_select %></li>
 </ul>
 <ul class="legend">
 	<li><strong>Map Legend</strong></li>
 	<li><%= image_tag "rating_bad.png" %> - Bad rating (0-30)</li>
 	<li><%= image_tag "rating_medium.png" %> - Medium rating (31-70)</li>
 	<li><%= image_tag "rating_good.png" %> - Good rating (71-100)</li>		
+	<li>Wait Time: 0-15 <%= image_tag "rating_none.png", :style => "width: 12px; height: 12px;" %> | 16-60 <%= image_tag "rating_none.png", :style => "width: 20px; height: 20px;" %> | 61+ <%= image_tag "rating_none.png", :style => "width: 26px; height: 26px;" %> mins</li>
 </ul>
 <div id="update_status" style="display:none">updating...</div>
-<a href="#" onclick="updateMap(); return false">Update Map</a>
+<a href="#" onclick="updateMap('last_updated='+last_updated +'&'+filters); return false">Update Map</a>
 updated: <span id="last_updated"></span>
 
 <script type="text/javascript" charset="utf-8">

@@ -1,8 +1,66 @@
 module ReportHelper
 
+      US_STATES = [ 	
+	['Select a State', 'None'],
+	['Alabama', 'AL'], 
+	['Alaska', 'AK'],
+	['Arizona', 'AZ'],
+	['Arkansas', 'AR'], 
+	['California', 'CA'], 
+	['Colorado', 'CO'], 
+	['Connecticut', 'CT'], 
+	['Delaware', 'DE'], 
+	['District Of Columbia', 'DC'], 
+	['Florida', 'FL'],
+	['Georgia', 'GA'],
+	['Hawaii', 'HI'], 
+	['Idaho', 'ID'], 
+	['Illinois', 'IL'], 
+	['Indiana', 'IN'], 
+	['Iowa', 'IA'], 
+	['Kansas', 'KS'], 
+	['Kentucky', 'KY'], 
+	['Louisiana', 'LA'], 
+	['Maine', 'ME'], 
+	['Maryland', 'MD'], 
+	['Massachusetts', 'MA'], 
+	['Michigan', 'MI'], 
+	['Minnesota', 'MN'],
+	['Mississippi', 'MS'], 
+	['Missouri', 'MO'], 
+	['Montana', 'MT'], 
+	['Nebraska', 'NE'], 
+	['Nevada', 'NV'], 
+	['New Hampshire', 'NH'], 
+	['New Jersey', 'NJ'], 
+	['New Mexico', 'NM'], 
+	['New York', 'NY'], 
+	['North Carolina', 'NC'], 
+	['North Dakota', 'ND'], 
+	['Ohio', 'OH'], 
+	['Oklahoma', 'OK'], 
+	['Oregon', 'OR'], 
+	['Pennsylvania', 'PA'], 
+	['Rhode Island', 'RI'], 
+	['South Carolina', 'SC'], 
+	['South Dakota', 'SD'], 
+	['Tennessee', 'TN'], 
+	['Texas', 'TX'], 
+	['Utah', 'UT'], 
+	['Vermont', 'VT'], 
+	['Virginia', 'VA'], 
+	['Washington', 'WA'], 
+	['West Virginia', 'WV'], 
+	['Wisconsin', 'WI'], 
+	['Wyoming', 'WY']]
+        
   # TODO: DCT - commented this out because object cannot be found; need a gem or a lib?
   #include BumpsparkHelper 
 
+  def state_select(current = "")
+    select(:filter, :state, US_STATES)
+  end
+  
   # Use natural language scan to suggest intended location names
   # Here are some test cases to use against this method
   def suggest_location(text)

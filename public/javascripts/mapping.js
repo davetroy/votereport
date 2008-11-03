@@ -45,16 +45,29 @@ function jsonp(url,callback, query)
     document.body.appendChild(script);
 }
 
+// Adds a semi-opaque gray overlay on the map to make the markers pop out more
+function fadeMap() {
+    // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,0),new GLatLng(85,0),new GLatLng(85,90),new GLatLng(-85,90)],null,0,0,"#BBBBBB",0.4));
+    // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,90),new GLatLng(85,90),new GLatLng(85,180),new GLatLng(-85,180)],null,0,0,"#BBBBBB",0.4));
+    mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(20,180.000001),new GLatLng(70,180.000001),new GLatLng(70,330),new GLatLng(-20,330)],null,0,0,"#BBBBBB",0.4));
+    // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,270),new GLatLng(85,270),new GLatLng(85,360),new GLatLng(-85,360)],null,0,0,"#BBBBBB",0.4));
+
+}
 function initMapJS(map_filters){
     // initialise the map with your choice of API
     mapstraction = new Mapstraction('map','google');
     filters = map_filters;
 
+    $("#filter_state").change(function () { 
+        state = $("#filter_state").val();
+        updateMap("state="+state);
+    });
     // display the map centered on a latitude and longitude (Google zoom levels)
     var myPoint = new LatLonPoint(38, -90);
     mapstraction.setCenterAndZoom(myPoint, 4);
     mapstraction.addControls({zoom: 'small'});
-    
+
+    fadeMap();
     last_updated = new Date().toISO8601String();
     $("#last_updated").text(last_updated);
     // setInterval("updateMap();",60000);
@@ -70,6 +83,7 @@ function updateMap(map_filter) {
     var current_filter = "";
     if(map_filter != "" || map_filter != null) {
         mapstraction.removeAllMarkers();
+        fadeMap();
         gmarkers = [];
         filters = current_filter = map_filter;
     } else {
@@ -82,6 +96,9 @@ function updateMap(map_filter) {
 }
 function updateJSON(response) {
     mapstraction.addJSON(response);
+    if(state != "")
+        mapstraction.autoCenterAndZoom();
+    
     last_updated = new Date().toISO8601String();
     $("#last_updated").text(last_updated);    
     $("#update_status").hide();
@@ -110,19 +127,24 @@ for (var i = 0; i < features.length; i++) {
                     icon = "/images/rating_medium.png"
                 else
                     icon = "/images/rating_good.png"
-                icon_size = [24,24];
             }
 			else if(item.icon == "" || item.icon == null){
 				icon = "/images/gmaps/pushpins/webhues/159.png" 
 				icon_size = [10,17];
 				
 			} else {
-				icon = item.icon;
-				icon_size = [24,24];
+                icon = "/images/rating_none.png"
+                // icon = item.icon;
 			}
+			icon_scale = 0.18 * item.wait_time + 10;
+            icon_size = [icon_scale,icon_scale];
+
             html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.display_text + "<br />";
             if(item.rating != null)
                 html += "Rating: <img src='"+icon+"'/> ("+item.rating+"%)";
+            if(item.rating != null)
+                html += "<br />Wait time: "+ item.wait_time+" min";
+
 			html += "</div>";
 			
 			this.addMarkerWithData(new Marker(new LatLonPoint(item.location.location.point.coordinates[1],item.location.location.point.coordinates[0])),{
