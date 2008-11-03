@@ -12,7 +12,7 @@ class VoteReport
   MAX_TRIES = 3
 
   def initialize
-    ani = call.callerid.gsub(/^\+1/, '')
+    ani = call.callerid.to_s.gsub(/^\+1/, '')
     ani = nil if ani=='ANONYMOUS'
     ani = ani || call.uniqueid
     @reporter = PhoneReporter.update_or_create('uniqueid' => ani, 'profile_location' => call.calleridname)
