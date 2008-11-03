@@ -205,9 +205,7 @@ class Report < ActiveRecord::Base
       self.wait_time = $1
     end
     
-    if self.wait_time && self.wait_time > MAXIMUM_WAIT_TIME
-      self.wait_time = MAXIMUM_WAIT_TIME
-    end
+    self.wait_time = MAXIMUM_WAIT_TIME if self.wait_time && self.wait_time > MAXIMUM_WAIT_TIME
   end
   
   # What location filters apply to this report?  US, MD, etc?
