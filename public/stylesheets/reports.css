@@ -109,3 +109,4 @@ ul#syndication img { border:medium none; margin: 0 4px;}
 ul.legend {    list-style-image:none;    list-style-position:outside;    list-style-type:none;}
 ul.controls {    list-style-image:none;    list-style-position:outside;    list-style-type:none;}
 ul.controls li  { list-style: none;  	display: inline;}
+#message {width: 100%; margin: 5px 0; padding: 5px 0; text-align: center; border: 1px solid #555555; background-color: #BBBBBB;}

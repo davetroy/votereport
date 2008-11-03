@@ -73,14 +73,11 @@ function initMapJS(map_filters){
     // setInterval("updateMap();",60000);
 
 }
-function loadMarkers(response) {
-    mapstraction.addJSON(response);
-    if(state != "")
-        mapstraction.autoCenterAndZoom();
-    
-}
+
 function updateMap(map_filter) {
     var current_filter = "";
+    hideMessage();
+
     if(map_filter != "" || map_filter != null) {
         mapstraction.removeAllMarkers();
         fadeMap();
@@ -94,9 +91,19 @@ function updateMap(map_filter) {
     $.getJSON("/reports.json?"+current_filter, updateJSON);
     return false;
 }
+function showMessage(message) {
+    $("#message").text(message);
+    $("#message").show();
+}
+function hideMessage(message) {
+    $("#message").text("");
+    $("#message").hide();
+}
 function updateJSON(response) {
-    mapstraction.addJSON(response);
-    if(state != "")
+    var num_markers = mapstraction.addJSON(response);
+    if(num_markers <= 0)
+        showMessage("Sorry - no reports with this filter.");
+    else if(state != "")
         mapstraction.autoCenterAndZoom();
     
     last_updated = new Date().toISO8601String();
@@ -112,7 +119,7 @@ var html = "";
 var polyline;
 var item;
 var asset_server = "http://assets0.mapufacture.com";
-
+var num_markers = 0;
 for (var i = 0; i < features.length; i++) {
 	item = features[i].report;
 	if(item.location != null && item.location.location.point != null) {
@@ -137,13 +144,17 @@ for (var i = 0; i < features.length; i++) {
                 // icon = item.icon;
 			}
 			icon_scale = 0.18 * item.wait_time + 10;
+			if(icon_scale > 24)
+			    icon_scale = 24
             icon_size = [icon_scale,icon_scale];
 
-            html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.display_text + "<br />";
+            html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.display_text_html + "<br />";
             if(item.rating != null)
                 html += "Rating: <img src='"+icon+"'/> ("+item.rating+"%)";
             if(item.rating != null)
                 html += "<br />Wait time: "+ item.wait_time+" min";
+            if(item.location.location.address != null)
+                html += "<br />Location: "+ item.location.location.address+" min";
 
 			html += "</div>";
 			
@@ -160,6 +171,7 @@ for (var i = 0; i < features.length; i++) {
 				category : item.source_id, 
 				draggable : false, 
 				hover : false});
+			num_markers += 1;
 				break;
 			case "Polygon":
 				var points = [];
@@ -170,6 +182,6 @@ for (var i = 0; i < features.length; i++) {
 			}
 		}
 	}
-
+    return num_markers;
 }
 

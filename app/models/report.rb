@@ -1,5 +1,58 @@
 class Report < ActiveRecord::Base
   
+   US_STATES = { 	
+	'AL' 		=> 		'alabama', 
+	'AK' 		=> 		'alaska',
+	'AZ' 		=> 		'arizona',
+	'AR' 		=> 		'arkansas', 
+	'CA' 		=> 		'california', 
+	'CO' 		=> 		'colorado', 
+	'CT' 		=> 		'connecticut', 
+	'DE' 		=> 		'delaware', 
+	'DC' 		=> 		'washingtondc', 
+	'FL' 		=> 		'florida',
+	'GA' 		=> 		'georgia',
+	'HI' 		=> 		'hawaii', 
+	'ID' 		=> 		'idaho', 
+	'IL' 		=> 		'illinois', 
+	'IN' 		=> 		'indiana', 
+	'IA' 		=> 		'iowa', 
+	'KS' 		=> 		'kansas', 
+	'KY' 		=> 		'kentucky', 
+	'LA' 		=> 		'louisiana', 
+	'ME' 		=> 		'maine', 
+	'MD' 		=> 		'maryland', 
+	'MA' 		=> 		'massachusetts', 
+	'MI' 		=> 		'michigan', 
+	'MN' 		=> 		'minnesota',
+	'MS' 		=> 		'mississippi', 
+	'MO' 		=> 		'missouri', 
+	'MT' 		=> 		'montana', 
+	'NE' 		=> 		'nebraska', 
+	'NV' 		=> 		'nevada', 
+	'NH' 		=> 		'newhampshire', 
+	'NJ' 		=> 		'newjersey', 
+	'NM' 		=> 		'newmexico', 
+	'NY' 		=> 		'newyork', 
+	'NC' 		=> 		'northcarolina', 
+	'ND' 		=> 		'northdakota', 
+	'OH' 		=> 		'ohio', 
+	'OK' 		=> 		'oklahoma', 
+	'OR' 		=> 		'oregon', 
+	'PA' 		=> 		'pennsylvania', 
+	'RI' 		=> 		'rhodeisland', 
+	'SC' 		=> 		'southcarolina', 
+	'SD' 		=> 		'southdakota', 
+	'TN' 		=> 		'tennessee', 
+	'TX' 		=> 		'texas', 
+	'UT' 		=> 		'utah', 
+	'VT' 		=> 		'vermont', 
+	'VA' 		=> 		'virginia', 
+	'WA' 		=> 		'washington', 
+	'WV' 		=> 		'westvirginia', 
+	'WI' 		=> 		'wisconsin', 
+	'WY' =>  'wyoming'}
+	
   MAXIMUM_WAIT_TIME = 480 # we will ignore reports > this as they are likely bogus and will throw off our data
   
   validates_presence_of :reporter_id
@@ -100,7 +153,7 @@ class Report < ActiveRecord::Base
     end
     
     if filters.include?(:state)
-      Filter.find_by_state(filters[:state]).reports.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
+      Filter.find_by_name(Report::US_STATES[filters[:state]]).reports.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
                         :order => 'created_at DESC')
     else
       # TODO put in logic here for doing filtering by appropriate parameters
