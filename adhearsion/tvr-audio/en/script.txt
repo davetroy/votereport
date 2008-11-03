@@ -1,0 +1,39 @@
+thank-you-for-calling-votereport
+  Thank you for calling Twitter Vote Report, a non-partisan effort to monitor the 2008 election process.
+  You can watch our progress online at www.twittervotereport.com
+  We will now ask you four simple questions about the conditions at your polling place.
+  You will also have an opportunity to record a short message about your voting experience.
+
+enter-zipcode
+  Please enter the zipcode at your polling place location, then press pound.
+
+enter-waittime
+  Please enter the wait time at your polling place in minutes, then press pound.
+
+rate-your-polling-place
+  On a scale from 1 to 9, 1 being worst and 9 being best, please rate your experience at your polling place.
+
+special-conditions
+  If there were problems at your polling place, please select ONE of the following choices to describe the most important problem,
+    - press 1 if there were problems with voting machines,
+    - press 2 if there were problems with the registration process,
+    - press 3 if voters were being challenged over their eligibility to vote,
+    - press 4 if voters with disabilities were having trouble voting,
+    - press 5 if they were out or running out of paper ballots
+    - press 6 if there was another significant problem we have not named,
+    - or press 0 if there were no significant problems
+
+almost-done
+  Thanks, you're almost done.
+
+record-message
+  Now, after the beep, please say the full name of your polling place location.
+  You may optionally tell us about your overall experience at your polling place,
+  and your audio report will be made available on the web and to the media.
+
+thank-you-for-calling-goodbye
+  Your report has been submitted.
+  Thank you for calling Twitter Vote Report, and most importantly, thank
+  you for voting!  Please be sure to check out our results online at www.twittervotereport.com.
+  Goodbye.
+
