@@ -11,7 +11,7 @@ go back to the <%= link_to "#votereport homepage", reports_path %>
     <style type="text/css">
         #map {
             width: 100%;
-            height: 80%;
+            height: <%=params[:clean]==1 ? 100 : 80%>%;
             border: 1px solid gray;
         }
     </style>
