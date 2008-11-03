@@ -9,6 +9,6 @@ class PhoneReporter < Reporter
   
   private
   def initialize_location
-    self.location = Location.geocode(self.profile_location) if !self.profile_location[\d{10}]
+    self.location = Location.geocode(self.profile_location) if !self.profile_location[/\d{10}/]
   end
 end
