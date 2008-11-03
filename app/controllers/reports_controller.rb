@@ -128,7 +128,7 @@ class ReportsController < ApplicationController
         format.xml { head :ok }
         format.js {
           render :update do |page|
-            page["report_#{@report.id}"].fade
+            page["report_#{@report.id}"].fade( :duration => 0.3 )
           end
         }
       end
@@ -154,7 +154,7 @@ class ReportsController < ApplicationController
       format.xml { head :ok }
       format.js {
         render :update do |page|
-          page["report_#{@report.id}"].fade
+          page["report_#{@report.id}"].fade( :duration => 0.3 )
         end
       }
     end
