@@ -220,13 +220,13 @@ class ReportsController < ApplicationController
   end
   
   def auto_complete_responder_for_report_tag_s(value)
+    items = []
     unless value.blank?
-      items = []
       if value.starts_with? "#"
         value = value.gsub(/#/,"")
       end
-      items = Tag.find(:all).select{ |tag| tag.pattern.index(value.downcase) == 0 }.collect{ |t| t.pattern.gsub(/\?(.+)/,'mm') }
-      render :partial => 'autocomplete', :locals => { :items => items }
+      items = Tag.listing.select{ |tag| tag.pattern.index(value.downcase) == 0 }.collect{ |t| t.pattern.gsub(/\?(.+)/,'mm') }
     end
+    render :partial => 'autocomplete', :locals => { :items => items }
   end
 end
