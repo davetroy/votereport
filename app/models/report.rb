@@ -1,6 +1,6 @@
 class Report < ActiveRecord::Base
   
-  MAXIMUM_WAIT_TIME = 480 # we will ignore reports > this as they are likely bogus and will throw off our data
+  MAXIMUM_WAIT_TIME = 600 # we will ignore reports > this as they are likely bogus and will throw off our data
   
   validates_presence_of :reporter_id
   validates_uniqueness_of :uniqueid, :scope => :source, :allow_blank => true, :message => 'already processed'
@@ -198,7 +198,8 @@ class Report < ActiveRecord::Base
     end
     
     if self.wait_time && self.wait_time > MAXIMUM_WAIT_TIME
-      self.wait_time = MAXIMUM_WAIT_TIME
+      # TODO : flag this report for special review
+      self.wait_time = nil
     end
   end
   

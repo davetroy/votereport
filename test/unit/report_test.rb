@@ -59,12 +59,10 @@ class ReportTest < ActiveSupport::TestCase
   
   def test_excessive_wait_times
     # test 4-digit numbers
-    assert_equal Report::MAXIMUM_WAIT_TIME, 
-      create_report("insanely long waits of 5000 minutes").wait_time
+    assert_nil create_report("insanely long waits of 5000 minutes").wait_time
 
     # test numbers larger than the cap
-    assert_equal Report::MAXIMUM_WAIT_TIME, 
-      create_report("insanely long waits of #{Report::MAXIMUM_WAIT_TIME + 30} minutes").wait_time
+    assert_nil create_report("insanely long waits of #{Report::MAXIMUM_WAIT_TIME + 30} minutes").wait_time
   end
   
   def test_wait_tag_assignment
