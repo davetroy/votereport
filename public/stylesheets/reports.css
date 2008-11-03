@@ -1,14 +1,18 @@
 body { background-color: white; color: #333; }
 
 body, ol, ul {
-  font-family: 'Helvetica';
-  font-size:   13px;
-  line-height: 18px;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
+  font-size:   10pt;
+  line-height: 1.2em;
 }
 
 h1 {
 	text-decoration: underline;
 }
+
+a, a:visited {
+	color: #BE1E2D;	
+	}
 
 #reports {
 	text-align: left;
@@ -16,28 +20,33 @@ h1 {
 #syndication {
     float: right;
 }
+
 .report {
-	width: 500px;
-	background-color: #eee;
+	width: 530px;
 	padding: 5px;
 	margin: 3px 5px 3px 3px;
-	height: 75px;
+	clear: both;
+	border-bottom: 1px dashed #7A7A7A;
+	min-height: 50px;
 }
 
 #screen_name {
 	font-weight: bold;
+	color: #000A63;
 }
 
 img.profile {
 	width: 48px;
 	height: 48px;
 	float: left;
-	margin: 5 15 5 10;
+	margin: 0px 5px 5px 0px;
+	border: none;
 }
 
 span.whenwhere {
+	font-family: Georgia, 'Times New Roman', serif;
 	color: #444;
-	font-size: 10px;
+	font-size: 9pt;
 	font-style: italic;
 }
 
