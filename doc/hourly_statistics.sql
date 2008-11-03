@@ -206,26 +206,56 @@ WHERE
   r.location_id IS NULL;
   
 -- ----------------------------------------------------------
--- precentage reports dismissed
+-- reports reviewed total
 -- ----------------------------------------------------------
-INSERT INTO statistics (name, created_at, decimal_value)
+INSERT INTO statistics (name, created_at, integer_value)
 SELECT 
-  'reports-dismissed-percent', UTC_TIMESTAMP(), 
-  count(*) / (select count(*) from reports) * 100.0 
+  'reviewed-all', UTC_TIMESTAMP(), count(*) 
 FROM reports r
 WHERE 
-  r.dismissed_at IS NOT NULL;
+  r.reviewed_at IS NOT NULL;
+  
+-- ----------------------------------------------------------
+-- reports reviewed lasthour
+-- ----------------------------------------------------------
+INSERT INTO statistics (name, created_at, integer_value)
+SELECT 
+  'reviewed-lasthour', UTC_TIMESTAMP(), count(*) 
+FROM reports r
+WHERE 
+  r.reviewed_at > UTC_TIMESTAMP() - INTERVAL 1 DAY;
   
 -- ----------------------------------------------------------
 -- precentage reports reviewed
 -- ----------------------------------------------------------
 INSERT INTO statistics (name, created_at, decimal_value)
 SELECT 
-  'reports-reviewed-percent', UTC_TIMESTAMP(), 
+  'reviewed-percent', UTC_TIMESTAMP(), 
   count(*) / (select count(*) from reports) * 100.0 
 FROM reports r
 WHERE 
-  r.reviewed_at IS NOT NULL;
+  r.reviewed_at IS NOT NULL;  
+
+-- ----------------------------------------------------------
+-- precentage reports dismissed
+-- ----------------------------------------------------------
+INSERT INTO statistics (name, created_at, decimal_value)
+SELECT 
+  'reviewed-dismissed-percent', UTC_TIMESTAMP(), 
+  count(*) / (select count(*) from reports) * 100.0 
+FROM reports r
+WHERE 
+  r.dismissed_at IS NOT NULL AND r.reviewed_at IS NOT NULL;
+  
+-- ----------------------------------------------------------
+-- precentage reports confirmed
+-- ----------------------------------------------------------
+INSERT INTO statistics (name, created_at, decimal_value)
+SELECT 
+  'reviewed-confirmed-percent', UTC_TIMESTAMP(), 
+  count(*) / (select count(*) from reports) * 100.0 
+FROM reports r
+WHERE r.dismissed_at IS NULL AND r.reviewed_at IS NOT NULL;
   
 -- ----------------------------------------------------------
 -- total leader board
