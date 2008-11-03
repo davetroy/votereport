@@ -199,7 +199,7 @@ class Report < ActiveRecord::Base
     
     if self.wait_time && self.wait_time > MAXIMUM_WAIT_TIME
       # TODO : flag this report for special review
-      self.wait_time = nil
+      self.wait_time = MAXIMUM_WAIT_TIME
     end
   end
   
