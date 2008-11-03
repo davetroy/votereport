@@ -12,7 +12,9 @@
 
 <!-- either (a) paginate, or (b) auto-update -->
 <% if !@live_feed -%>
+	<div class="digg_pagination">
   <%= will_paginate @reports %>
+ 	 </div>
 <% else -%>
   <% content_for(:head) do %>
     <%= javascript_include_tag("jquery.min.js") %>

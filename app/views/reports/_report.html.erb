@@ -4,9 +4,12 @@
 	<% else %>
   <img src="<%=report.reporter.icon%>" class="profile">
 	<% end %>
-  <span class="vcard author" id="screen_name"><%=report.reporter.name%></span>: <span class="entry-title"><%=report.display_text%></span><br/>
-  <span class="whenwhere">
+  <span class="vcard author" id="screen_name"><%=report.reporter.name%></span>: <span class="entry-title"><%=report.display_text%></span> 
+  <span class="whenwhere"><% if report.reporter.class == TwitterReporter %>
+  	<a href="http://twitter.com/<%=report.reporter.screen_name%>/statuses/<%=report.uniqueid%>"><%=time_ago_in_words(report.created_at)%> ago</a> 
+	<% else %>  	
     <abbr class="published" title="<%= report.created_at.iso8601 %>"><%=time_ago_in_words(report.created_at)%></abbr> ago
+	<% end %>  	
     <%="in <span class=\"adr\">#{report.location.address}</span>" if report.location%>
     via <%=report.reporter.source_name%><br/>
     <%=audio_link(report)%>
