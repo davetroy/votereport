@@ -36,6 +36,7 @@ class ReportsController < ApplicationController
   
   # GET /reports/reload (AJAX)
   def reload
+    @filters[:per_page] = params[:per_page] || 50
     @reports = Report.find_with_filters(@filters)
     render :partial => @reports
   end
