@@ -139,22 +139,23 @@ class Report < ActiveRecord::Base
     
   def self.find_with_filters(filters = {})
     conditions = ["",filters]
-    if filters.include?(:dtstart)
+    if filters.include?(:dtstart) && !filters[:dtstart].blank?
       conditions[0] << "created_at >= :dtstart"
     end
-    if filters.include?(:dtend)
+    if filters.include?(:dtend) && !filters[:dtend].blank?
       conditions[0] << "created_at <= :dtend"
     end
-    if filters.include?(:wait_time)
+    if filters.include?(:wait_time) && !filters[:wait_time].blank?
       conditions[0] << "wait_time IS NOT NULL AND wait_time >= :wait_time"
     end
-    if filters.include?(:rating)
+    if filters.include?(:rating) && !filters[:rating].blank?
       conditions[0] << "rating IS NOT NULL AND rating <= :rating"
     end
     
-    if filters.include?(:state)
-      Filter.find_by_name(Report::US_STATES[filters[:state]]).reports.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
-                        :order => 'created_at DESC')
+    if filters.include?(:state) && !filters[:state].blank?
+      filtered = Filter.find_by_name(Report::US_STATES[filters[:state]])
+      filtered.reports.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
+                        :order => 'created_at DESC') if filtered
     else
       # TODO put in logic here for doing filtering by appropriate parameters
       Report.paginate( :page => filters[:page] || 1, :per_page => filters[:per_page] || 10, 

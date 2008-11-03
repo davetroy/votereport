@@ -148,7 +148,7 @@ for (var i = 0; i < features.length; i++) {
 			    icon_scale = 24
             icon_size = [icon_scale,icon_scale];
 
-            html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.display_text_html + "<br />";
+            html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.display_text + "<br />";
             if(item.rating != null)
                 html += "Rating: <img src='"+icon+"'/> ("+item.rating+"%)";
             if(item.rating != null)
