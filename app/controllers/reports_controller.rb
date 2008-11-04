@@ -159,6 +159,7 @@ class ReportsController < ApplicationController
   # POST /reports/:id/dismiss
   def dismiss
     @report = Report.find(params[:id])
+    @report.update_attributes!(params[:report])
     @report.dismiss!(current_user)
     respond_to do |format|
       format.xml { head :ok }
@@ -167,6 +168,10 @@ class ReportsController < ApplicationController
           page["report_#{@report.id}"].fade( :duration => 0.3 )
         end
       }
+    end
+  rescue ActiveRecord::InvalidRecord => e
+    respond_to do |format|
+      format.xml  { render :xml => @report.errors, :status => :unprocessable_entity }
     end
   end
   

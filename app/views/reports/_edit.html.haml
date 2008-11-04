@@ -25,7 +25,6 @@
             %label Tags
             = text_field_with_auto_complete( :report, :tag_s, {:size => 32}, { :indicator => "report_#{report.id}_tag_s_spinner", :frequency => 0.4, :tokens => [' ',','] }, report.id)
             = image_tag 'spinner.gif', :id => "report_#{report.id}_tag_s_spinner", :style => 'display:none;'
-
           %div
             %label Location
             = text_field_tag 'location', (report.location.nil?) ? '' : report.location.address, :size => 40

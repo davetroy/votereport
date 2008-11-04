@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081104035507) do
+ActiveRecord::Schema.define(:version => 20081104063853) do
 
   create_table "alert_viewings", :force => true do |t|
     t.column "user_id", :integer
@@ -129,6 +129,7 @@ ActiveRecord::Schema.define(:version => 20081104035507) do
     t.column "rating", :integer
     t.column "location_accuracy", :integer
     t.column "has_audio", :boolean
+    t.column "is_chatter", :boolean, :default => false
   end
 
   add_index "reports", ["created_at"], :name => "index_reports_on_created_at"
