@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081102220820) do
+ActiveRecord::Schema.define(:version => 20081104035507) do
 
   create_table "alert_viewings", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "user_id", :integer
@@ -121,14 +121,14 @@ ActiveRecord::Schema.define(:version => 20081102220820) do
     t.column "polling_place_id", :integer
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
+    t.column "rating", :integer
+    t.column "location_accuracy", :integer
+    t.column "has_audio", :boolean
     t.column "assigned_at", :datetime
     t.column "reviewed_at", :datetime
     t.column "reviewer_id", :integer
     t.column "dismissed_at", :datetime
     t.column "tag_s", :string
-    t.column "rating", :integer
-    t.column "location_accuracy", :integer
-    t.column "has_audio", :boolean
   end
 
   add_index "reports", ["created_at"], :name => "index_reports_on_created_at"
@@ -183,6 +183,7 @@ ActiveRecord::Schema.define(:version => 20081102220820) do
     t.column "activated_at", :datetime
     t.column "is_admin", :boolean, :default => false
     t.column "is_terminated", :boolean, :default => false
+    t.column "reports_count", :integer, :default => 0
   end
 
   add_index "users", ["api_key"], :name => "index_users_on_api_key", :unique => true

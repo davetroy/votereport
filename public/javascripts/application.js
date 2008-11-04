@@ -58,7 +58,8 @@ function startReviewerClock() {
 function reviewer_time_limit_reached() {
   alert("You have been looking at these reports " +
         "for more than 10 minutes. They have been " +
-        "released.  Please reload this page if your " +
+        "released for another reviewer.  Please reload " + 
+        "this page if your " +
         "browser doesn't do it automatically.");
   window.location.reload();
 }

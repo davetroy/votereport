@@ -1,13 +1,22 @@
 class UsersController < ApplicationController
   layout "admin"
 
-  before_filter :admin_required, :only => [:index, :edit_admin, :edit_terminate]
+  before_filter :admin_required, 
+    :only => [:index, :edit_admin, :edit_terminate, :reviewed_reports]
 
   def index
     @users = User.paginate( 
           :page => params[:page] || 1,
           :per_page => 30,
           :order => "last_name DESC")
+  end
+  
+  def reviewed_reports
+    @user = User.find(params[:id])
+    @reports = @user.reviewed_reports.paginate(
+              :page => params[:page] || 1,
+              :per_page => 30,
+              :order => "reviewed_at DESC")
   end
   
   # render new.rhtml

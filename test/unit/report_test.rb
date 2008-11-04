@@ -90,6 +90,12 @@ class ReportTest < ActiveSupport::TestCase
       noun = (number == 1) ? "minute" : "minutes"
       assert_equal number, create_report("no problems, but a wait of #{number} #{noun}").wait_time
     end
+    
+    # #wait:NUM is parsed
+    minutes.each do |number|
+      assert_equal number, create_report("L:city hall san francisco ca #wait:#{number} #early #good No problems. Saw pollworkers help 2 disabled people.").wait_time
+    end
+    
 
     # NUM-minutes is parsed
     minutes.each do |number|

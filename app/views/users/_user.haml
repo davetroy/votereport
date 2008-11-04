@@ -1,4 +1,4 @@
-%td= h user.name
+%td= link_to(h(user.name), reviewed_reports_user_path(user))
 %td= h user.email
 %td= user.is_admin? ? "Yes" : ""
 %td= user.is_terminated? ? "Yes" : ""

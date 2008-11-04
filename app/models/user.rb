@@ -39,7 +39,10 @@ class User < ActiveRecord::Base
   has_many :alert_viewings,
            :dependent => :destroy
            
-  has_many :reviewed_reports, :class_name => "Report", :foreign_key => "reviewer_id"
+  has_many :reviewed_reports, 
+    :class_name => "Report", 
+    :foreign_key => "reviewer_id", 
+    :conditions => "reviewed_at IS NOT NULL"
 
   ##########################################################################
   ###########                       METHODS                      ###########
