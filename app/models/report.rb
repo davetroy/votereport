@@ -36,7 +36,7 @@ class Report < ActiveRecord::Base
   named_scope( :unassigned, 
     :limit => 10, 
     :order => 'created_at DESC',
-    :conditions => 'reviewed_at IS NULL AND reviewer_id IS NULL OR assigned_at < UTC_TIMESTAMP - INTERVAL 10 MINUTE' 
+    :conditions => 'reviewed_at IS NULL AND (reviewer_id IS NULL OR assigned_at < UTC_TIMESTAMP - INTERVAL 10 MINUTE)' 
   ) do
     def assign(reviewer)
       # FIXME: can't we do this more efficiently? a la p-code:

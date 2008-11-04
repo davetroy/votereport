@@ -34,6 +34,11 @@ class ReportTest < ActiveSupport::TestCase
     assert_equal 12, goodreport.wait_time
     assert_equal 0, goodreport.score
     assert_equal 2, goodreport.tags.size
+    epreport = @twitter_reporter.reports.create(:text => 'being #challenges here #EPOH l:cincinnati oh')
+    epreport.reload
+    assert_equal 2, epreport.tags.size
+    # FIXM - figure out how to get EPXX back into the tag_s, all we have is the pattern here
+    #assert epreport.tag_s.split(' ').include?('EPOH'), "has tag_s: #{epreport.tag_s}"
   end
   
   def test_reviewed_arent_reassigned
@@ -157,6 +162,23 @@ class ReportTest < ActiveSupport::TestCase
     end
     assert_equal reports.size, Report.assigned(users(:quentin)).size
   end
+  
+  def test_reviewed_arent_reassigned
+    report = reports(:reports_022)
+    report.confirm! # confirms without user_id
+    report.reload
+    assert report.is_confirmed?
+    assert_not_nil report.reviewed_at
+    assert !Report.unassigned.include?(report)
+
+    report = reports(:reports_001)
+    report.confirm!(users(:quentin))
+    report.reload
+    assert report.is_confirmed?
+    assert_not_nil report.reviewed_at
+    assert !Report.unassigned.include?(report)
+  end
+  
   
   def test_auto_review
     new_report = @twitter_reporter.reports.create(:text => 'i got #early #reg #challenges #wait:10 some tags 11222')
