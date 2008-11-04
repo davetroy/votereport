@@ -63,7 +63,7 @@ function initMapJS(map_filters){
         updateState(state);
     });
     // display the map centered on a latitude and longitude (Google zoom levels)
-    var myPoint = new LatLonPoint(38, -90);
+    var myPoint = new LatLonPoint(38, -100);
     mapstraction.setCenterAndZoom(myPoint, 4);
     mapstraction.addControls({zoom: 'small'});
 
@@ -73,20 +73,28 @@ function initMapJS(map_filters){
     // setInterval("updateMap();",60000);
 
 }
-
+var current_page = 1;
 function updateState(state, page) {
     var current_filter = "";
     if(page == null)
         page = 1;
-    hideMessage();
+    else {
+        $("#page_" + current_page).removeClass("current");
+        $("#page_" + page).addClass("current");        
+    }
 
+    hideMessage();
+    current_page = page;
     mapstraction.removeAllMarkers();
     fadeMap();
     gmarkers = [];
     filters = current_filter = "state=" + state;
         
     $("#update_status").show();
-    $.getJSON("/feeds/state/"+state+"/" + page +".json", "");
+    if(state == null)
+        $.getJSON("/feeds/" + page +".json", "");    
+    else
+        $.getJSON("/feeds/state/"+state+"/" + page +".json", "");
     return false;
 }
 function updateMap(map_filter) {

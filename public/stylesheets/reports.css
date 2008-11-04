@@ -208,7 +208,7 @@ margin-right: 1px; }
 color: #999;
 border: 1px solid #DDD; }
 
-.digg_pagination span.current {
+.digg_pagination span.current, .digg_pagination .current {
 font-weight: bold;
 background: #2E6AB1;
 color: white;

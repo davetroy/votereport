@@ -213,7 +213,7 @@ class Report < ActiveRecord::Base
 
 
   def self.hourly_usage
-    ActiveRecord::Base.connection.select_all(%Q{select count(*) as count, HOUR(created_at) as hour from reports WHERE created_at > "2008-11-04" group by HOUR(created_at)})    
+    ActiveRecord::Base.connection.select_all(%Q{select count(*) as count, HOUR(created_at)-4 as hour from reports WHERE created_at > "2008-11-04" group by HOUR(created_at)})    
   end
   
   private

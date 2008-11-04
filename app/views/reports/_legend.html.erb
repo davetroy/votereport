@@ -1,4 +1,9 @@
 <div class="container">
+	<div class="digg_pagination">	
+			<div class="pagination">
+				<span class="disabled prev_page">page</span>
+			<%= (1..10).collect {|page| link_to(page, "#", :class => (page == 1 ? "current" : ""), :id => "page_#{page}", :onclick => "return updateState(null, #{page})")}.join(" ") %>
+			</div></div>	
 	<div class="filters">
 	<h2>Available filters:</h2>
 	<ul class="nobullets">
