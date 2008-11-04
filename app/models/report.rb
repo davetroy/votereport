@@ -4,7 +4,9 @@ class Report < ActiveRecord::Base
   
   validates_presence_of :reporter_id
   validates_uniqueness_of :uniqueid, :scope => :source, :allow_blank => true, :message => 'already processed'
-  validates_numericality_of :wait_time, :allow_nil => true, :less_than_or_equal_to => MAXIMUM_WAIT_TIME
+
+  # This doesn't work if it's a string, which anything coming from the web would be
+  #validates_numericality_of :wait_time, :allow_nil => true, :less_than_or_equal_to => MAXIMUM_WAIT_TIME
   
   attr_accessor :latlon, :tag_string   # virtual field supplied by iphone/android
   

@@ -204,7 +204,6 @@ class ReportsController < ApplicationController
     reporter = IphoneReporter.update_or_create(info[:reporter])
     polling_place = PollingPlace.match_or_create(info[:polling_place][:name], reporter.location)
     report = reporter.reports.create(info[:report].merge(:polling_place => polling_place, :latlon => info[:reporter][:latlon]))
-    report.reload
     if audiofile = params[:uploaded]
       fn = "#{AUDIO_UPLOAD_PATH}/#{report.uniqueid}.caf"
       File.open(fn, 'w') { |f| f.write audiofile.read }
@@ -212,9 +211,9 @@ class ReportsController < ApplicationController
       report.update_attribute(:has_audio, true)
     end
     "OK"
-  rescue => e
-    logger.info "*** IPHONE ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"
-    "ERROR"
+  # rescue => e
+  #   logger.info "*** IPHONE ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"
+  #   "ERROR"
   end
   
   # Store an Android-generated report given a hash of parameters

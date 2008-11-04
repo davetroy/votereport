@@ -18,6 +18,7 @@ Signal.trap("TERM") do
 end
 
 while($running) do
-  `#{CURL} #{URL} > #{PATH_TO_CACHED_FILE}`
+  `#{CURL} #{URL} > #{PATH_TO_CACHED_FILE}.tmp`
+  File.rename("#{PATH_TO_CACHED_FILE}.tmp", PATH_TO_CACHED_FILE)
   sleep 30
 end
