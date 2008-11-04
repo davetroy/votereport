@@ -60,7 +60,7 @@ function initMapJS(map_filters){
 
     $("#filter_state").change(function () { 
         state = $("#filter_state").val();
-        updateMap("state/"+state);
+        updateState(state);
     });
     // display the map centered on a latitude and longitude (Google zoom levels)
     var myPoint = new LatLonPoint(38, -90);
@@ -74,6 +74,21 @@ function initMapJS(map_filters){
 
 }
 
+function updateState(state, page) {
+    var current_filter = "";
+    if(page == null)
+        page = 1;
+    hideMessage();
+
+    mapstraction.removeAllMarkers();
+    fadeMap();
+    gmarkers = [];
+    filters = current_filter = "state=" + state;
+        
+    $("#update_status").show();
+    $.getJSON("/feeds/state/"+state+"/" + page +".json", "");
+    return false;
+}
 function updateMap(map_filter) {
     var current_filter = "";
     hideMessage();
@@ -88,7 +103,7 @@ function updateMap(map_filter) {
     }
         
     $("#update_status").show();
-    $.getJSON("/feeds/json/"+current_filter+"/1/200/0.json", "");
+    $.getJSON("/reports.json?"+current_filter+"&page=1&count=200&callback=updateJSON", "");
     return false;
 }
 function showMessage(message) {
