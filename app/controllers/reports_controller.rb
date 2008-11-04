@@ -1,7 +1,7 @@
 class ReportsController < ApplicationController
   protect_from_forgery :except => [:create, :auto_complete_for_report_tag_s]
   before_filter :filter_from_params, :only => [ :index, :reload, :map, :chart ]
-  before_filter :login_required, :except => [:index, :chart, :map, :reload]
+  before_filter :login_required, :except => [:create, :index, :chart, :map, :reload]
   
   auto_complete_for :report, :tag_s
   
