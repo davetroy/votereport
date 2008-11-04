@@ -28,6 +28,7 @@
   
   <% if logged_in? && current_user.is_admin? %>
      | <%= link_to "Manage Reviewer Alerts", reviewer_alerts_path %>
+     | <%= link_to "Manage Users", users_path %>
   <% end %>
 </div>
 <div class='notice'><%= flash[:notice] %></div>

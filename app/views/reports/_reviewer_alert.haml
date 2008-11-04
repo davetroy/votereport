@@ -1,4 +1,4 @@
-%div.reviewer_alert{:id => "reviewer_alert_#{reviewer_alert.id}"}
+%div.reviewer_alert_notice{:id => "reviewer_alert_#{reviewer_alert.id}"}
   %p
     = h(reviewer_alert.text)
     %span.date= reviewer_alert.created_at.utc.strftime("%m/%d at %I:%M%p")

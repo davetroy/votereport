@@ -1,5 +1,14 @@
 class UsersController < ApplicationController
   layout "admin"
+
+  before_filter :admin_required, :only => [:index, :edit_admin, :edit_terminate]
+
+  def index
+    @users = User.paginate( 
+          :page => params[:page] || 1,
+          :per_page => 30,
+          :order => "last_name DESC")
+  end
   
   # render new.rhtml
   def new
@@ -23,7 +32,7 @@ class UsersController < ApplicationController
       @user.activate! # auto-activate
       self.current_user = @user # login
       
-      redirect_back_or_default('/')
+      redirect_back_or_default('/reports/review')
       flash[:notice] = "Thanks for signing up!"
     else
       flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
@@ -51,6 +60,46 @@ class UsersController < ApplicationController
       redirect_back_or_default('/')
     end
   end
+
+  # AJAX actions below:
+  
+  # POST /users/:id/edit_admin
+  def edit_admin
+    user = User.find(params[:id])
+    if user.is_admin?
+      user.is_admin = false
+    else
+      user.is_admin = true
+    end
+    user.save!
+    respond_to do |format|
+      format.js {
+        render :update do |page|
+          page["user_#{user.id}"].replace_html :partial => 'user', :locals => { :user => user }
+          page["user_#{user.id}"].visual_effect :highlight
+        end
+      }
+    end
+  end
+  
+  # POST /users/:id/edit_terminate
+  def edit_terminate
+    user = User.find(params[:id])
+    if user.is_terminated?
+      user.unterminate!
+    else
+      user.terminate!
+    end
+    respond_to do |format|
+      format.js {
+        render :update do |page|
+          page["user_#{user.id}"].replace_html :partial => 'user', :locals => { :user => user }
+          page["user_#{user.id}"].visual_effect :highlight
+        end
+      }
+    end
+  end
+  
   
   private
   
