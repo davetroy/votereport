@@ -204,6 +204,7 @@ class ReportsController < ApplicationController
     reporter = IphoneReporter.update_or_create(info[:reporter])
     polling_place = PollingPlace.match_or_create(info[:polling_place][:name], reporter.location)
     report = reporter.reports.create(info[:report].merge(:polling_place => polling_place, :latlon => info[:reporter][:latlon]))
+    report.reload
     if audiofile = params[:uploaded]
       fn = "#{AUDIO_UPLOAD_PATH}/#{report.uniqueid}.caf"
       File.open(fn, 'w') { |f| f.write audiofile.read }
