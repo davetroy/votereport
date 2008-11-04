@@ -11,7 +11,7 @@ my @abbr = ("AL","AK","AS","AZ","AR","CA","CO","CT","DE","DC","FM","FL","GA","GU
 while (1)
 {
 	print "Beginning fetching run.\n";
-	my $res = $ua->get("http://localhost:3000/reports.kml?live=1&count=4000");
+	my $res = $ua->get("http://votereport.us/reports.kml?live=1&count=4000");
 	my $content = $res->content;
 	open(KML, ">reports.kml");
 	print KML $content;
@@ -35,7 +35,7 @@ sub state
 	for (my $i=1;$i<=3;$i++)
 	{
 		open (STATE, ">$i.json");
-		my $res = $ua->get("http://localhost:3000/reports.json?state=$state&wait_time=0&per_page=200&callback=updateJSON&page=$i");
+		my $res = $ua->get("http://votereport.us/reports.json?state=$state&wait_time=0&per_page=200&callback=updateJSON&page=$i");
 		print STATE $res->content;
 		close STATE;
 		move("$i.json", "public/feeds/json/$state/$i.json");
@@ -47,7 +47,7 @@ sub homepage
 	my $ua = shift;
 	for (my $i=1;$i<=20;$i++)
 	{
-		my $res = $ua->get("http://localhost:3000/reports.json?wait_time=0&per_page=200&callback=updateJSON&page=$i");
+		my $res = $ua->get("http://votereport.us/reports.json?wait_time=0&per_page=200&callback=updateJSON&page=$i");
 		my $content = $res->content;
 		open(JSON, ">$i.json");
 		print JSON $content;
