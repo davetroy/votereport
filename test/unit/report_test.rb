@@ -141,6 +141,13 @@ class ReportTest < ActiveSupport::TestCase
     assert_equal reports.size, Report.assigned(users(:quentin)).size
   end
   
+  def test_auto_review
+    new_report = @twitter_reporter.reports.create(:text => 'i got #early #reg #challenges #wait:10 some tags 11222')
+    assert_not_nil new_report.reviewed_at
+    reports = Report.unassigned
+    assert !reports.include?(new_report)
+  end
+  
   ##########################
   
   def create_report(text)
