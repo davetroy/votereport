@@ -23,14 +23,14 @@ table.report {
   table.report .record-form {
     background-color: white; }
 
-.reviewer_alert {
+.reviewer_alert_notice {
   background: url(/images/icons/exclamation.png) no-repeat center left;
   padding-left: 25px;
   border: 1px solid red;
   background-color: #EEE;
 }
 
-.reviewer_alert p {
+.reviewer_alert_notice p {
   padding: 5px;
 }
 
