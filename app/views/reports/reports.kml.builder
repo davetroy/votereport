@@ -17,7 +17,7 @@ xml.kml("xmlns" => "http://earth.google.com/kml/2.2",
         xml.tag! "Style" do
           xml.tag! "IconStyle" do
             xml.tag! "Icon" do
-              xml.href report.icon
+              xml.href rating_icon(report.rating)
             end
           end unless report.reporter.nil?
           xml.tag! "LabelStyle" do
@@ -25,8 +25,9 @@ xml.kml("xmlns" => "http://earth.google.com/kml/2.2",
           end
           xml.tag! "BalloonStyle" do
             # this is ugly, but faster than calling a partial a lot
-              balloonText = "$[description] by $[screen_name]"
-              balloonText << "<br />Rating: #{rating_icon(report.rating)}" unless report.rating.nil?
+            balloonText = render(:partial => "balloon.html.erb", :locals => {:report => report})
+              # balloonText = "$[description] by $[screen_name]"
+              # balloonText << "<br />Rating: <img src='#{rating_icon(report.rating)}' /> (#{report.rating}%)" unless report.rating.nil?
             xml.text balloonText
             xml.textColor "ff084156"
             xml.color "ffffffff"

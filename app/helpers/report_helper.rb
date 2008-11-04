@@ -78,14 +78,16 @@ module ReportHelper
   end
 
   def rating_icon(rating)
-    if rating <= 30
-      image = "rating_bad.png"
-    elsif rating <= 70
-      image = "rating_medium.png"
+    if(rating.nil?)
+      rating_icon = "rating_none.png"
+    elsif(rating <= 30)
+      rating_icon = "rating_bad.png"
+    elsif (rating <= 70)
+      rating_icon = "rating_medium.png"
     else
-      image = "rating_good.png"
-    end
-    %Q{<img src="http://votereport.us/images/#{image}"> (#{rating}%)}
+      rating_icon = "rating_good.png"
+    end    
+    "http://votereport.us/images/#{rating_icon}"
   end
   
   def bumpspark2( results )
