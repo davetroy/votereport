@@ -14,7 +14,7 @@
     
 %table
   %tr
-    %td{:style => "width: 800px"}
+    %td{:style => "width: 800px", :valign => "top"}
       #reports
     %td{:style => "width: 250px", :valign => "top"}
-      = # instructions for reviewers
+      = render :partial => "reviewer_sidebar"
