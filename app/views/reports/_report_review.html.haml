@@ -16,6 +16,9 @@
       %td.text
         %p
           = auto_link(h(report.text))
+          - if report.has_audio?
+            Listen to this audio report:
+            = audio_link(report)
         %p
           %label Wait
           = display( report.wait_time )
