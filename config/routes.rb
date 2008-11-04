@@ -11,7 +11,11 @@ ActionController::Routing::Routes.draw do |map|
                 :action => 'activate', 
                 :activation_code => nil 
 
-  map.resources :users
+  map.resources :users, 
+    :member => {
+      :edit_terminate => :post,
+      :edit_admin => :post
+    }
   map.resource :session
   
   map.root :controller => "reports"

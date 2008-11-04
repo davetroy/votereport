@@ -1,5 +1,52 @@
 class UsersController < ApplicationController
   layout "admin"
+
+  before_filter :admin_required, :only => [:index, :edit_admin, :edit_terminate]
+
+  def index
+    @users = User.paginate( 
+          :page => params[:page] || 1,
+          :per_page => 30,
+          :order => "last_name DESC")
+  end
+  
+  # POST /users/:id/edit_admin
+  def edit_admin
+    user = User.find(params[:id])
+    if user.is_admin?
+      user.is_admin = false
+    else
+      user.is_admin = true
+    end
+    user.save!
+    respond_to do |format|
+      format.js {
+        render :update do |page|
+          page["user_#{user.id}"].replace_html :partial => 'user', :locals => { :user => user }
+          page["user_#{user.id}"].visual_effect :highlight
+        end
+      }
+    end
+  end
+  
+  # POST /users/:id/edit_terminate
+  def edit_terminate
+    user = User.find(params[:id])
+    if user.is_terminated?
+      user.unterminate!
+    else
+      user.terminate!
+    end
+    respond_to do |format|
+      format.js {
+        render :update do |page|
+          page["user_#{user.id}"].replace_html :partial => 'user', :locals => { :user => user }
+          page["user_#{user.id}"].visual_effect :highlight
+        end
+      }
+    end
+  end
+  
   
   # render new.rhtml
   def new
