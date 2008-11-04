@@ -38,7 +38,7 @@ sub state
 		my $res = $ua->get("http://localhost:3000/reports.json?state=$state&wait_time=0&per_page=200&callback=updateJSON&page=$i");
 		print STATE $res->content;
 		close STATE;
-		move("$i.json", "public/feeds/json/$state/$i.json");
+		move("$i.json", "public/feeds/$state/$i.json");
 	}
 }
 
