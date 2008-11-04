@@ -17,12 +17,14 @@ class ReporterTest < ActiveSupport::TestCase
     assert_match /Arnold/, reporter.profile_location
     assert_nil reporter.followers_count
     assert_equal "VoteReport iPhone App", reporter.source_name
-    report = reporter.reports.create(:uniqueid => '829388202.292', :text => 'all is well in l:New York', :rating => '62', :tag_string => '#machine #registration', :latlon => '39.024,-76.511:2192')
+    report = reporter.reports.create(:text => 'all is well in l:New York', :rating => '62', :tag_string => '#machine #registration', :latlon => '39.024,-76.511:2192',
+                                      :polling_place => PollingPlace.create(:name => 'Elem School') )
     assert_equal 1, reporter.reports.size
     assert_equal "New York, NY, USA", report.location.address
     assert_equal 62, report.rating
     assert_equal 2, report.tags.size
     assert_equal 2192, report.location_accuracy.to_i
+    assert report.uniqueid.ends_with?(report.id)
   end
 
   def test_android_reporter_creation
@@ -35,7 +37,7 @@ class ReporterTest < ActiveSupport::TestCase
     assert_equal "Birmingham, AL, USA", report.location.address
     assert_equal 78, report.rating
     assert_equal 0, report.tags.size
-    assert report.uniqueid
+    assert report.uniqueid.ends_with?(report.id)
     # assert_equal 1400, report.location_accuracy
   end
   
