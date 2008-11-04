@@ -21,9 +21,9 @@ class Report < ActiveRecord::Base
   has_many :filters, :through => :report_filters
 
   before_validation :set_source
-  before_create :detect_location, :append_tags
+  before_create :detect_location, :append_tags, :assign_wait_time
   # check uniqueid must be AFTER create because otherwise it doesn't have an ID
-  after_create :check_uniqueid, :assign_tags, :assign_wait_time, :assign_filters, :auto_review
+  after_create :check_uniqueid, :assign_filters, :assign_tags, :auto_review
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
   named_scope :with_wait_time, :conditions => 'wait_time IS NOT NULL'
@@ -247,6 +247,7 @@ class Report < ActiveRecord::Base
   def assign_tags
     if self.text
       self.tag_s = self.text.scan(/\s+\#\S+/).join(' ')
+      save
     end
     true
   end
@@ -285,7 +286,7 @@ class Report < ActiveRecord::Base
   
   def auto_review
     if self.wait_time && self.location
-      self.reviewed_at = Time.now.utc
+      update_attribute(:reviewed_at, Time.now.utc)
     end
     true
   end

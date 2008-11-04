@@ -30,9 +30,26 @@ class ReportTest < ActiveSupport::TestCase
     assert_equal 2, @twitter_reporter.reports.create(:text => 'my #machine is #good').tags.size
     assert_equal 7, @twitter_reporter.reports.create(:text => 'many #challenges here, #bad').score
     goodreport = @twitter_reporter.reports.create(:text => 'no problems #good overall, #wait12')
+    goodreport.reload
     assert_equal 12, goodreport.wait_time
     assert_equal 0, goodreport.score
     assert_equal 2, goodreport.tags.size
+  end
+  
+  def test_reviewed_arent_reassigned
+    report = reports(:reports_022)
+    report.confirm! # confirms without user_id
+    report.reload
+    assert report.is_confirmed?
+    assert_not_nil report.reviewed_at
+    assert !Report.unassigned.include?(report)
+
+    report = reports(:reports_001)
+    report.confirm!(users(:quentin))
+    report.reload
+    assert report.is_confirmed?
+    assert_not_nil report.reviewed_at
+    assert !Report.unassigned.include?(report)
   end
   
   def test_tag_assignment_by_string
@@ -143,9 +160,9 @@ class ReportTest < ActiveSupport::TestCase
   
   def test_auto_review
     new_report = @twitter_reporter.reports.create(:text => 'i got #early #reg #challenges #wait:10 some tags 11222')
+    new_report.reload # check that the value is actually saved to the model
     assert_not_nil new_report.reviewed_at
-    reports = Report.unassigned
-    assert !reports.include?(new_report)
+    assert !Report.unassigned.include?(new_report)
   end
   
   ##########################
