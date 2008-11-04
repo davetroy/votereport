@@ -1,30 +1,42 @@
 #!/usr/bin/perl
 
 use strict;
+use warnings;
+
 use LWP::UserAgent;
 use File::Copy;
 
-my $ua = LWP::UserAgent->new;
+my $pid = fork();
+exit 0 if ($pid != 0);
 
 my @abbr = ("AL","AK","AS","AZ","AR","CA","CO","CT","DE","DC","FM","FL","GA","GU","HI","ID","IL","IN","IA","KS","KY","LA","ME","MH","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","MP","OH","OK","OR","PW","PA","PR","RI","SC","SD","TN","TX","UT","VT","VI","VA","WA","WV","WI","WY");
 
+my $ua = LWP::UserAgent->new;
+
 while (1)
 {
-	print "Beginning fetching run.\n";
-	my $res = $ua->get("http://localhost:3000/reports.kml?live=1&count=4000");
+	#print "Beginning fetching run.\n";
+	my $res = $ua->get("http://votereport.us/reports.kml?live=1&count=4000");
 	my $content = $res->content;
 	open(KML, ">reports.kml");
 	print KML $content;
 	close(KML);
-	
 	move("reports.kml", "public/feeds/4000.kml");
-	
+	$res = $ua->get("http://votereport.us/reports.atom");
+	$content = $res->content;
+	open(ATOM, ">reports.atom");
+	print ATOM $content;
+	close(ATOM);
+	move("reports.atom", "public/feeds/reports.atom");
+	#print "KML and Atom fetched.\n";
 	for (my $i=0;$i<scalar @abbr;$i++)
 	{
 		state($abbr[$i],$ua);
 	}
+	#print "States fetched.\n";
 	homepage($ua);
-	
+	#print "Homepages fetched.\n";
+	#print "Ending fetching run. Now going to sleep.\n";
 	sleep(60);
 }
 
@@ -35,7 +47,7 @@ sub state
 	for (my $i=1;$i<=3;$i++)
 	{
 		open (STATE, ">$i.json");
-		my $res = $ua->get("http://localhost:3000/reports.json?state=$state&wait_time=0&per_page=200&callback=updateJSON&page=$i");
+		my $res = $ua->get("http://votereport.us/reports.json?state=$state&wait_time=0&per_page=200&callback=updateJSON&page=$i");
 		print STATE $res->content;
 		close STATE;
 		move("$i.json", "public/feeds/json/$state/$i.json");
@@ -47,7 +59,7 @@ sub homepage
 	my $ua = shift;
 	for (my $i=1;$i<=20;$i++)
 	{
-		my $res = $ua->get("http://localhost:3000/reports.json?wait_time=0&per_page=200&callback=updateJSON&page=$i");
+		my $res = $ua->get("http://votereport.us/reports.json?wait_time=0&per_page=200&callback=updateJSON&page=$i");
 		my $content = $res->content;
 		open(JSON, ">$i.json");
 		print JSON $content;
