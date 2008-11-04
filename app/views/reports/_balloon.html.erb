@@ -1,8 +1,8 @@
 <div id="<%= dom_id(report) %>" class="balloon">
 	<% if report.reporter.class == TwitterReporter %>
-	<%= link_to image_tag(report.reporter.icon, :class => "profile", :target=>"new"), report.reporter.profile %>
+	<%= link_to image_tag(report.icon, :class => "profile", :target=>"new"), report.reporter.profile %>
 	<% else %>
-  <img src="<%=report.reporter.icon%>" class="profile">
+  <img src="<%=report.icon%>" class="profile">
 	<% end %>
   <span class="vcard author" id="screen_name"><%=report.reporter.name%></span>: <span class="entry-title"><%=report.display_text%></span> 
   <span class="whenwhere"><% if report.reporter.class == TwitterReporter %>

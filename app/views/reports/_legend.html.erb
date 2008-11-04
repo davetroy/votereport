@@ -2,10 +2,10 @@
 	<div class="filters">
 	<h2>Available filters:</h2>
 	<ul class="nobullets">
+		<li>View state-by-state: <%= state_select %></li>
 		<li><a href="#" onclick="return updateMap('count=100')">Show last 100 reports</a></li>
 		<li><a href="#" onclick="return updateMap('wait_time=90')">Show wait time > 90 minutes</a></li>
 		<li><a href="#" onclick="return updateMap('rating=30')">Show only bad ratings</a></li>
-		<li>View state-by-state: <%= state_select %></li>
 	</ul>
 	</div>
 	
@@ -14,9 +14,10 @@
 		<div class="leftcolumn">
 			<ul class="nobullets">
 				<li><strong>Quality of experience:</strong></li>
-				<li><%= image_tag "rating_bad.png" %> Bad rating (0-30%)</li>
-				<li><%= image_tag "rating_medium.png" %> Medium rating (31-70%)</li>
-				<li><%= image_tag "rating_good.png" %> Good rating (71-100%)</li>		
+				<li><%= image_tag "rating_none.png" %> No rating given</li>		
+				<li><%= image_tag "rating_bad.png" %> Bad (0-30%)</li>
+				<li><%= image_tag "rating_medium.png" %> Medium (31-70%)</li>
+				<li><%= image_tag "rating_good.png" %> Good (71-100%)</li>		
 			</ul>
 		</div>
 		<div class="rightcolumn">
@@ -31,6 +32,6 @@
 </div>
 <div class="clear"></div>
 
-<div id="update_status" style="display:none">updating...</div>
+<!-- <div id="update_status" style="display:none">updating...</div>
 <a href="#" onclick="updateMap('last_updated='+last_updated +'&'+filters); return false">Update Map</a><br />
-This map was last updated on: <span id="last_updated"> </span>GMT
+This map was last updated on: <span id="last_updated"> </span>GMT -->

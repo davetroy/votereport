@@ -121,14 +121,14 @@ ActiveRecord::Schema.define(:version => 20081104063853) do
     t.column "polling_place_id", :integer
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
+    t.column "rating", :integer
+    t.column "location_accuracy", :integer
+    t.column "has_audio", :boolean
     t.column "assigned_at", :datetime
     t.column "reviewed_at", :datetime
     t.column "reviewer_id", :integer
     t.column "dismissed_at", :datetime
     t.column "tag_s", :string
-    t.column "rating", :integer
-    t.column "location_accuracy", :integer
-    t.column "has_audio", :boolean
     t.column "is_chatter", :boolean, :default => false
   end
 
@@ -182,8 +182,8 @@ ActiveRecord::Schema.define(:version => 20081104063853) do
     t.column "remember_token_expires_at", :datetime
     t.column "activation_code", :string, :limit => 40
     t.column "activated_at", :datetime
-    t.column "is_terminated", :boolean, :default => false
     t.column "is_admin", :boolean, :default => false
+    t.column "is_terminated", :boolean, :default => false
     t.column "reports_count", :integer, :default => 0
   end
 

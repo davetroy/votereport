@@ -1,7 +1,7 @@
 class ReportsController < ApplicationController
   protect_from_forgery :except => [:create, :auto_complete_for_report_tag_s]
-  before_filter :filter_from_params, :only => [ :index, :reload, :map, :chart ]
-  before_filter :login_required, :except => [:create, :index, :chart, :map, :reload]
+  before_filter :filter_from_params, :only => [ :index, :reload, :map, :chart, :stats ]
+  before_filter :login_required, :except => [:create, :index, :chart, :stats, :map, :reload]
   
   auto_complete_for :report, :tag_s
   
@@ -9,7 +9,6 @@ class ReportsController < ApplicationController
   def index
     respond_to do |format|
       format.kml do
-        @per_page = params[:count] || 20
         @reports = Report.with_location.find_with_filters(@filters)
         case params[:live]
         when /1/
@@ -175,6 +174,12 @@ class ReportsController < ApplicationController
     end
   end
   
+  def stats
+    @hourly_usage = Report.hourly_usage
+    @number_reports = Report.count
+    @election_reports = Report.count(:all, :conditions => ["created_at > '2008-11-04'"])
+  end
+  
   def map  
   end
   
@@ -216,9 +221,9 @@ class ReportsController < ApplicationController
       report.update_attribute(:has_audio, true)
     end
     "OK"
-  rescue => e
-    logger.info "*** IPHONE ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"
-    "ERROR"
+  # rescue => e
+  #   logger.info "*** IPHONE ERROR: #{e.class}: #{e.message}\n\t#{e.backtrace.first}"
+  #   "ERROR"
   end
   
   # Store an Android-generated report given a hash of parameters

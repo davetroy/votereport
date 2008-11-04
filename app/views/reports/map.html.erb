@@ -22,6 +22,11 @@
 			initMapJS();
 			filters = "<%= @filters.collect{|k,v| "#{k}=#{v}"}.join("&") %>";
 			state = "<%= @filters[:state] || '' %>";
-			remoteLoad("/reports.json?per_page=200&" + filters, "updateJSON")
+			// remoteLoad("/reports.json?wait_time=0&per_page=200&" + filters, "updateJSON")
+			<%- if @filters[:state].blank?  -%>
+			remoteLoad("<%= json_feed_url(:wait_time => 0, :page => 1, :per_page => 200, :callback => 'updateJSON') %>","")
+			<%- else -%>
+			remoteLoad("<%= json_state_feed_url(:state => @filters[:state], :wait_time => 0, :page => 1, :per_page => 200, :callback => 'updateJSON') %>","")
+			<%- end -%>
 		 });
 </script>

@@ -43,7 +43,7 @@ img.profile {
 	border: none;
 }
 
-span.whenwhere {
+.balloon .whenwhere {
 	font-family: Georgia, 'Times New Roman', serif;
 	color: #444;
 	font-size: 9pt;
@@ -91,8 +91,8 @@ span.whenwhere {
     width: 39px;
     }
 .barGraph {
-    background: url(images/horizontal_grid_line_50_pixel.png) bottom left;
-    border-bottom: 3px solid #333;
+    background: url(../images/horizontal_grid_line_50_pixel.png) bottom left;
+    border-bottom: 3px solid black;
     font: 9px Helvetica, Geneva, sans-serif;
     height: 200px;
     margin: 1em 0;
@@ -101,7 +101,7 @@ span.whenwhere {
     }
     
 .barGraph li {
-    background: #666 url(images/bar_50_percent_highlight.png) repeat-y top right;
+    background: #666 url(../images/bar_50_percent_highlight.png) repeat-y top right;
     border: 1px solid #555;
     border-bottom: none;
     bottom: 0; 
@@ -127,6 +127,9 @@ ul#syndication {
 li#rss_link { margin-left:47px; }
 
 ul#syndication img { border:medium none; margin: 0 4px;}
+
+.balloon_body {margin-left:52px;}
+.entry-title {margin-bottom: 4px;}
 
 #message {width: 100%; margin: 5px 0; padding: 5px 0; text-align: center; border: 1px solid #555555; background-color: #BBBBBB;}
 

@@ -1,63 +1,12 @@
 class Report < ActiveRecord::Base
-  
-   US_STATES = { 	
-	'AL' 		=> 		'alabama', 
-	'AK' 		=> 		'alaska',
-	'AZ' 		=> 		'arizona',
-	'AR' 		=> 		'arkansas', 
-	'CA' 		=> 		'california', 
-	'CO' 		=> 		'colorado', 
-	'CT' 		=> 		'connecticut', 
-	'DE' 		=> 		'delaware', 
-	'DC' 		=> 		'washingtondc', 
-	'FL' 		=> 		'florida',
-	'GA' 		=> 		'georgia',
-	'HI' 		=> 		'hawaii', 
-	'ID' 		=> 		'idaho', 
-	'IL' 		=> 		'illinois', 
-	'IN' 		=> 		'indiana', 
-	'IA' 		=> 		'iowa', 
-	'KS' 		=> 		'kansas', 
-	'KY' 		=> 		'kentucky', 
-	'LA' 		=> 		'louisiana', 
-	'ME' 		=> 		'maine', 
-	'MD' 		=> 		'maryland', 
-	'MA' 		=> 		'massachusetts', 
-	'MI' 		=> 		'michigan', 
-	'MN' 		=> 		'minnesota',
-	'MS' 		=> 		'mississippi', 
-	'MO' 		=> 		'missouri', 
-	'MT' 		=> 		'montana', 
-	'NE' 		=> 		'nebraska', 
-	'NV' 		=> 		'nevada', 
-	'NH' 		=> 		'newhampshire', 
-	'NJ' 		=> 		'newjersey', 
-	'NM' 		=> 		'newmexico', 
-	'NY' 		=> 		'newyork', 
-	'NC' 		=> 		'northcarolina', 
-	'ND' 		=> 		'northdakota', 
-	'OH' 		=> 		'ohio', 
-	'OK' 		=> 		'oklahoma', 
-	'OR' 		=> 		'oregon', 
-	'PA' 		=> 		'pennsylvania', 
-	'RI' 		=> 		'rhodeisland', 
-	'SC' 		=> 		'southcarolina', 
-	'SD' 		=> 		'southdakota', 
-	'TN' 		=> 		'tennessee', 
-	'TX' 		=> 		'texas', 
-	'UT' 		=> 		'utah', 
-	'VT' 		=> 		'vermont', 
-	'VA' 		=> 		'virginia', 
-	'WA' 		=> 		'washington', 
-	'WV' 		=> 		'westvirginia', 
-	'WI' 		=> 		'wisconsin', 
-	'WY' =>  'wyoming'}
 	
   MAXIMUM_WAIT_TIME = 600 # we will ignore reports > this as they are likely bogus and will throw off our data
   
   validates_presence_of :reporter_id
   validates_uniqueness_of :uniqueid, :scope => :source, :allow_blank => true, :message => 'already processed'
-  validates_numericality_of :wait_time, :allow_nil => true, :less_than_or_equal_to => MAXIMUM_WAIT_TIME
+
+  # This doesn't work if it's a string, which anything coming from the web would be
+  #validates_numericality_of :wait_time, :allow_nil => true, :less_than_or_equal_to => MAXIMUM_WAIT_TIME
   
   attr_accessor :latlon, :tag_string   # virtual field supplied by iphone/android
   
@@ -73,8 +22,8 @@ class Report < ActiveRecord::Base
 
   before_validation :set_source
   before_create :detect_location, :append_tags
-  after_save :check_uniqueid
-  after_create :assign_tags, :assign_wait_time, :assign_filters, :auto_review
+  # check uniqueid must be AFTER create because otherwise it doesn't have an ID
+  after_create :check_uniqueid, :assign_tags, :assign_wait_time, :assign_filters, :auto_review
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
   named_scope :with_wait_time, :conditions => 'wait_time IS NOT NULL'
@@ -140,12 +89,16 @@ class Report < ActiveRecord::Base
     options[:only] = @@public_fields
     # options[:include] = [ :reporter, :polling_place ]
     # options[:except] = [ ]
-    options[:methods] = [ :display_text, :rating, :name, :icon, :reporter, :polling_place, :location ].concat(options[:methods]||[]) #lets us include current_items from feeds_controller#show
+    options[:methods] = [ :display_text, :display_html, :rating, :name, :icon, :reporter, :polling_place, :location ].concat(options[:methods]||[]) #lets us include current_items from feeds_controller#show
     # options[:additional] = {:page => options[:page] }
     ar_to_json(options)
   end    
 
-    
+  # Beginning to get pie chart visualizations based on wait time and report averages
+  # def self.get_averages
+  #   r = ActiveRecord::Base.connection.select_all("select avg(wait_time) AS avg_wait, avg(rating) AS avg_rating from reports, locations,filters where reports.wait_time IS NOT NULL AND reports.location_id = locations.id AND locations.id = filters.center_location_id GROUP BY filters.state")
+  # end
+  
   def self.find_with_filters(filters = {})
     conditions = ["",filters]
     if filters.include?(:dtstart) && !filters[:dtstart].blank?
@@ -162,7 +115,7 @@ class Report < ActiveRecord::Base
     end
     
     if filters.include?(:state) && !filters[:state].blank?
-      filtered = Filter.find_by_name(Report::US_STATES[filters[:state]])
+      filtered = Filter.find_by_name(US_STATES[filters[:state]])
       filtered.reports.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
                         :order => 'created_at DESC') if filtered
     else
@@ -209,17 +162,66 @@ class Report < ActiveRecord::Base
      polling_place ? "polling place: #{polling_place.name}" : nil].compact.join(', ')    
   end
   
+
+  include ActionView::Helpers::DateHelper
+  include ActionView::Helpers::TextHelper
+  include ActionView::Helpers::TagHelper
+  def display_html
+    html = '<div class="balloon">'
+
+    if self.reporter.class == TwitterReporter
+      html << %Q{<a href="#{self.reporter.profile}"><img src=#{self.reporter.icon} class="profile" target="_new"/></a>}
+    else
+      html << %Q{<br /><img src="#{self.reporter.icon}" class="profile" />}
+    end
+    if(self.rating.nil?)
+      rating_icon = "/images/rating_none.png"
+    elsif(self.rating <= 30)
+      rating_icon = "/images/rating_bad.png"
+    elsif (self.rating <= 70)
+      rating_icon = "/images/rating_medium.png"
+    else
+      rating_icon = "/images/rating_good.png"
+    end
+    
+    html << %Q{<img class="rating_icon" style="clear:left;" src="#{rating_icon}" />}
+    html << %Q{<div class="balloon_body"><span class="author" id="screen_name">#{self.reporter.name}</span>: }
+    linked_text = auto_link_urls(self.text, :target => '_new') { |linktext| truncate(linktext, 30) }
+    html << %Q{<span class="entry-title">#{linked_text}</span><br />}
+    html << [wait_time     ? "#{wait_time} minute wait time" : nil,
+     rating        ? "Rating: #{rating}" : nil,
+     polling_place ? "Polling place: #{polling_place.name}" : nil].compact.join('<br />')    
+
+    html << "<br /><div class='whenwhere'>"
+    if self.reporter.class == TwitterReporter
+      html << %Q{reported <a href="http://twitter.com/#{self.reporter.screen_name}/statuses/#{self.uniqueid}">#{ time_ago_in_words(self.created_at)} ago</a> }
+    else
+      html << "reported #{time_ago_in_words(self.created_at)} ago"
+    end
+    html << "<br />from #{self.location.address.gsub(/, USA/,'')}"
+    html << "<br />via #{self.reporter.source_name}</div></div></div>"
+
+    html
+  end
+  
   def audio_file
     "#{uniqueid}." + (self.source=='IPH' ? 'caf' : 'gsm')
   end
 
+
+  def self.hourly_usage
+    ActiveRecord::Base.connection.select_all(%Q{select count(*) as count, HOUR(created_at) as hour from reports WHERE created_at > "2008-11-04" group by HOUR(created_at)})    
+  end
+  
   private
   def set_source
     self.source = self.reporter.source
+    true
   end
 
   def check_uniqueid
     update_attribute(:uniqueid, "#{Time.now.to_i}.#{self.id}") if self.uniqueid.nil?
+    true
   end
   
   # Detect and geocode any location information present in the report text
@@ -253,7 +255,7 @@ class Report < ActiveRecord::Base
   end
   
   def assign_wait_time
-    return unless self.text
+    return true unless self.text
     
     case self.text
     when /wait(\d{1,4})/     # waitNUM
@@ -272,6 +274,7 @@ class Report < ActiveRecord::Base
       # TODO : flag this report for special review
       self.wait_time = MAXIMUM_WAIT_TIME
     end
+    true
   end
   
   # What location filters apply to this report?  US, MD, etc?

@@ -1,8 +1,8 @@
 
 var REPORT_REGEXP  = /^report_(\d+)$/;
-var AJAX_INTERVAL  = 30000; // 30 seconds
-var QUEUE_INTERVAL = 2000;  // 2 seconds
-var ITEMS_TO_POP   = 2;     // pop off 2 items from the queue every two seconds.
+var AJAX_INTERVAL  = 10000; // 15 seconds
+var QUEUE_INTERVAL = 1000;  // 1 seconds
+var ITEMS_TO_POP   = 1;     // pop off 1 items from the queue every 1 seconds.
 
 // There is no code to handle a queue that is growing completely out of control
 

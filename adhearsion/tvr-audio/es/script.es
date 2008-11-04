@@ -3,7 +3,17 @@ gracias-por-llamar-a-votereport
 
   Thank you for calling Twitter Vote Report, a non-partisan effort to monitor the 2008 election process.
   Gracias por llamar a Twitter Vote Report, un esfuerzo no partidiario para monitorear el processo electoral durante el 2008.
-  
+New ones:
+"Press 1 to confirm, or press 2 to try again"
+    "Oprima 1 para confirmar, o oprima 2 para intentarlo de nuevo" 
+"Please review your recording"
+   "Por favor revise su grabacion"
+"I'm sorry, that selection is invalid, please try again"
+   "Disculpe, pero esa opcion es invalida, por favor intentetelo nuevamente" 
+"You entered"
+"Usted introdujo"
+--
+
 You can watch our progress online at www.twittervotereport.com
 Usted puede ver el progreso en el internet en www.twittervotereport.com
 
