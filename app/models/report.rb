@@ -250,7 +250,7 @@ class Report < ActiveRecord::Base
   end
   
   def assign_wait_time
-    return unless self.text
+    return true unless self.text
     
     case self.text
     when /wait(\d{1,4})/     # waitNUM
@@ -269,6 +269,7 @@ class Report < ActiveRecord::Base
       # TODO : flag this report for special review
       self.wait_time = MAXIMUM_WAIT_TIME
     end
+    true
   end
   
   # What location filters apply to this report?  US, MD, etc?
