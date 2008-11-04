@@ -107,6 +107,7 @@ class ReportsController < ApplicationController
   def update
     @report = Report.find(params[:id])
     @report.location = Location.geocode(params[:location])
+    @report.text += " trans: #{params[:transcription]}" if params[:transcription]
     
     if @report.update_attributes(params[:report])
       respond_to do |format|

@@ -34,6 +34,11 @@ class ReportTest < ActiveSupport::TestCase
     assert_equal 12, goodreport.wait_time
     assert_equal 0, goodreport.score
     assert_equal 2, goodreport.tags.size
+    epreport = @twitter_reporter.reports.create(:text => 'being #challenges here #EPOH l:cincinnati oh')
+    epreport.reload
+    assert_equal 2, epreport.tags.size
+    # FIXM - figure out how to get EPXX back into the tag_s, all we have is the pattern here
+    #assert epreport.tag_s.split(' ').include?('EPOH'), "has tag_s: #{epreport.tag_s}"
   end
   
   def test_tag_assignment_by_string
