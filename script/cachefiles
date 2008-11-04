@@ -21,7 +21,7 @@ while (1)
 	open(KML, ">reports.kml");
 	print KML $content;
 	close(KML);
-	move("reports.kml", "public/feeds/4000.kml");
+	move("reports.kml", "/home/votereport/current/public/feeds/4000.kml");
 	$res = $ua->get("http://votereport.us/reports.atom");
 	$content = $res->content;
 	open(ATOM, ">reports.atom");
@@ -50,7 +50,7 @@ sub state
 		my $res = $ua->get("http://votereport.us/reports.json?state=$state&wait_time=0&per_page=200&callback=updateJSON&page=$i");
 		print STATE $res->content;
 		close STATE;
-		move("$i.json", "public/feeds/json/$state/$i.json");
+		move("$i.json", "/home/votereport/current/public/feeds/json/$state/$i.json");
 	}
 }
 
@@ -64,6 +64,6 @@ sub homepage
 		open(JSON, ">$i.json");
 		print JSON $content;
 		close(JSON);
-		move("$i.json", "public/feeds/$i.json");
+		move("$i.json", "/home/votereport/current/public/feeds/$i.json");
 	}
 }
