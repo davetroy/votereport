@@ -11,7 +11,7 @@ class Report < ActiveRecord::Base
   belongs_to :location
   belongs_to :reporter
   belongs_to :polling_place
-  belongs_to :reviewer
+  belongs_to :reviewer, :class_name => "User"
   
   has_many :report_tags, :dependent => :destroy
   has_many :tags, :through => :report_tags
