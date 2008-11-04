@@ -1,3 +1,4 @@
+<<<<<<< HEAD:app/views/reports/_legend.html.erb
 <ul class="controls">
 	<li><em>Filter:</em></li>
 	<li><a href="#" onclick="return updateMap('rating=0&count=200')">Recent with rating</a></li>
@@ -13,6 +14,41 @@
 	<li><%= image_tag "rating_good.png" %> - Good rating (71-100)</li>		
 	<li>Wait Time: 0-15 <%= image_tag "rating_none.png", :style => "width: 12px; height: 12px;" %> | 16-60 <%= image_tag "rating_none.png", :style => "width: 20px; height: 20px;" %> | 61+ <%= image_tag "rating_none.png", :style => "width: 26px; height: 26px;" %> mins</li>
 </ul>
+=======
+<div class="container">
+	<div class="filters">
+	<h2>Available filters:</h2>
+	<ul class="nobullets">
+		<li><a href="#" onclick="return updateMap('count=100')">Show last 100 reports</a></li>
+		<li><a href="#" onclick="return updateMap('wait_time=90')">Show wait time > 90 minutes</a></li>
+		<li><a href="#" onclick="return updateMap('rating=30')">Show only bad ratings</a></li>
+		<li>View state-by-state: <%= state_select %></li>
+	</ul>
+	</div>
+	
+	<div class="legend">
+	<h2>How to read this map:</h2>
+		<div class="leftcolumn">
+			<ul class="nobullets">
+				<li><strong>Quality of experience:</strong></li>
+				<li><%= image_tag "rating_bad.png" %> Bad rating (0-30%)</li>
+				<li><%= image_tag "rating_medium.png" %> Medium rating (31-70%)</li>
+				<li><%= image_tag "rating_good.png" %> Good rating (71-100%)</li>		
+			</ul>
+		</div>
+		<div class="rightcolumn">
+			<ul class="nobullets">
+				<li><strong>Wait time:</strong></li> 
+				<li><%= image_tag "rating_none.png", :style => "width: 10px; height: 10px;" %> 0-15 mins</li>
+				<li><%= image_tag "rating_none.png", :style => "width: 14px; height: 14px;" %> 16-60 mins</li>
+				<li><%= image_tag "rating_none.png", :style => "width: 18px; height: 18px;" %> 61+ mins</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="clear"></div>
+
+>>>>>>> 31f16fe6b8d457aeb3041646f56ce2ff261bc1d9:app/views/reports/_legend.html.erb
 <div id="update_status" style="display:none">updating...</div>
-<a href="#" onclick="updateMap('last_updated='+last_updated +'&'+filters); return false">Update Map</a>
-updated: <span id="last_updated"></span>
+<a href="#" onclick="updateMap('last_updated='+last_updated +'&'+filters); return false">Update Map</a><br />
+This map was last updated on: <span id="last_updated"> </span>GMT

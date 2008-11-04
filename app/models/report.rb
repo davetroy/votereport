@@ -203,7 +203,7 @@ class Report < ActiveRecord::Base
 
   include ActionView::Helpers::DateHelper
   def display_html
-    html = "<div>"
+    html = '<div class="balloon">'
 
     if self.reporter.class == TwitterReporter
       html << %Q{<a href="#{self.reporter.profile}"><img src=#{self.reporter.icon} class="profile" target="_new"/></a>}
