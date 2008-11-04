@@ -74,7 +74,7 @@ class Report < ActiveRecord::Base
   before_validation :set_source
   before_create :detect_location, :append_tags
   after_save :check_uniqueid
-  after_create :assign_tags, :assign_wait_time, :assign_filters
+  after_create :assign_tags, :assign_wait_time, :assign_filters, :auto_review
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
   named_scope :with_wait_time, :conditions => 'wait_time IS NOT NULL'
@@ -87,7 +87,7 @@ class Report < ActiveRecord::Base
   named_scope( :unassigned, 
     :limit => 10, 
     :order => 'created_at DESC',
-    :conditions => 'reviewer_id IS NULL OR (assigned_at < UTC_TIMESTAMP - INTERVAL 10 MINUTE AND reviewed_at IS NULL)' 
+    :conditions => 'reviewed_at IS NULL AND reviewer_id IS NULL OR assigned_at < UTC_TIMESTAMP - INTERVAL 10 MINUTE' 
   ) do
     def assign(reviewer)
       # FIXME: can't we do this more efficiently? a la p-code:
@@ -281,5 +281,12 @@ class Report < ActiveRecord::Base
       self.connection.execute("INSERT DELAYED INTO report_filters (filter_id,report_id) VALUES #{values}") if !values.blank?
 		end
 		true
+  end
+  
+  def auto_review
+    if self.wait_time && self.location
+      self.reviewed_at = Time.now.utc
+    end
+    true
   end
 end

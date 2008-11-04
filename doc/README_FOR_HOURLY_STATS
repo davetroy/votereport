@@ -22,4 +22,4 @@ Looks like:
 
 Run hourly via cron and mail via:
 
-0 * * * * mysql --table -u <USER> votereport_development < doc/hourly_statistics.sql | /bin/mail -s "TVR Hours Stats" monitors@twitter.votereport.com
+0 * * * * mysql --table -u <USER> votereport_production < doc/hourly_statistics.sql | /bin/mail -s "TVR Hours Stats" <SOME LIST@twittervotereport.com>
