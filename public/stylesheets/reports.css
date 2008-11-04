@@ -43,7 +43,7 @@ img.profile {
 	border: none;
 }
 
-span.whenwhere {
+.balloon .whenwhere {
 	font-family: Georgia, 'Times New Roman', serif;
 	color: #444;
 	font-size: 9pt;

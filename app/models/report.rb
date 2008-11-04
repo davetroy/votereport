@@ -202,20 +202,24 @@ class Report < ActiveRecord::Base
   
 
   include ActionView::Helpers::DateHelper
+  include ActionView::Helpers::TextHelper
+  include ActionView::Helpers::TagHelper
   def display_html
     html = '<div class="balloon">'
 
     if self.reporter.class == TwitterReporter
       html << %Q{<a href="#{self.reporter.profile}"><img src=#{self.reporter.icon} class="profile" target="_new"/></a>}
     else
-      html << %Q{<img src="#{self.reporter.icon}" class="profile" />}
+      html << %Q{<br /><img src="#{self.reporter.icon}" class="profile" />}
     end
 
-    html << %Q{<div class="balloon_body"><span class="author" id="screen_name">#{self.reporter.name}</span>: <span class="entry-title">#{self.text}</span><br />}
+    html << %Q{<img class="rating_icon" style="clear:left;" src="/images/rating_good.png" />}
+    html << %Q{<div class="balloon_body"><span class="author" id="screen_name">#{self.reporter.name}</span>: }
+    linked_text = auto_link_urls(self.text, :target => '_new') { |linktext| truncate(linktext, 30) }
+    html << %Q{<span class="entry-title">#{linked_text}</span><br />}
     html << [wait_time     ? "#{wait_time} minute wait time" : nil,
      rating        ? "Rating: #{rating}" : nil,
      polling_place ? "Polling place: #{polling_place.name}" : nil].compact.join('<br />')    
-
 
     # <!--TODO: make name a link to twitter profile like icon is-->
     # <a href="http://twitter.com/randomdeanna" class="author">Deanna Zandt</a>: <span class="entry-title">made some more changes to 
@@ -223,13 +227,14 @@ class Report < ActiveRecord::Base
     # <!--TODO: make URLs autolink! -->
     # <a href="http://twittervotereport.com">http://twittervotereport.com</a>: added big map, made the tweets look nicer. pretty things! #votereport</span><br /> 
     #   <!--<span class="vcard author" id="screen_name"><%=report.reporter.name%></span>: <span class="entry-title"><%=report.display_text%></span><br /> --> 
-
+    html << "<br /><div class='whenwhere'>"
     if self.reporter.class == TwitterReporter
-      html << %Q{<br />reported <a href="http://twitter.com/#{self.reporter.screen_name}/statuses/#{self.uniqueid}">#{ time_ago_in_words(self.created_at)} ago</a> }
+      html << %Q{reported <a href="http://twitter.com/#{self.reporter.screen_name}/statuses/#{self.uniqueid}">#{ time_ago_in_words(self.created_at)} ago</a> }
     else
-      html << "<br />reported #{time_ago_in_words(self.created_at)} ago"
+      html << "reported #{time_ago_in_words(self.created_at)} ago"
     end
-    html << "<br />via #{self.reporter.source_name}</div></div>"
+    html << "<br />from #{self.location.address.gsub(/, USA/,'')}"
+    html << "<br />via #{self.reporter.source_name}</div></div></div>"
 
     html
   end
