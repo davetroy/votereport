@@ -59,7 +59,7 @@ class ReportTest < ActiveSupport::TestCase
   
   def test_excessive_wait_times
     # test 4-digit numbers
-    assert_equal Report::MAXIMUM_WAIT_TIME, 
+    assert_equal Report::MAXIMUM_WAIT_TIME,
       create_report("insanely long waits of 5000 minutes").wait_time
 
     # test numbers larger than the cap
@@ -95,6 +95,11 @@ class ReportTest < ActiveSupport::TestCase
     minutes.each do |number|
       noun = (number == 1) ? "minute" : "minutes"
       assert_equal number, create_report("no problems, but a #{number}-#{noun} wait. ouch").wait_time
+    end
+    
+    # *wait NUM* is parsed
+    minutes.each do |number|
+      assert_equal number, create_report("in #11211 #votereport #good *wait #{number}* pass it on").wait_time
     end
     
     # NUM hour(s) is parsed

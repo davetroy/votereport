@@ -38,6 +38,8 @@ class User < ActiveRecord::Base
            :dependent => :nullify
   has_many :alert_viewings,
            :dependent => :destroy
+           
+  has_many :reviewed_reports, :class_name => "Report", :foreign_key => "reviewer_id"
 
   ##########################################################################
   ###########                       METHODS                      ###########

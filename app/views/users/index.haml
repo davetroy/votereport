@@ -1,0 +1,16 @@
+- if @users.empty?
+  %h2 No users found
+- else
+  %table{:cellspacing => "2px"}
+    %tr
+      %th Name
+      %th Email
+      %th Admin?
+      %th Terminated?
+      %th Edit admin?
+      %th Edit terminate?
+    - for user in @users
+      %tr[user]{:class => cycle("even","odd")}
+        = render :partial => "user", :locals => {:user => user}
+
+= will_paginate(@users)

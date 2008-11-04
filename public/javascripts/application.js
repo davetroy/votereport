@@ -1,4 +1,3 @@
-
 Date.prototype.toISO8601String = function (format, offset) {
     /* accepted values for the format [1-6]:
      1 Year:
@@ -45,4 +44,21 @@ Date.prototype.toISO8601String = function (format, offset) {
 
     if (format > 3) { str += offset; }
     return str;
+}
+
+/* reload the reviewer page if the reviewer has been looking at the
+   reports for > 10 minutes */
+function startReviewerClock() {
+  if (reviewer_timeout) {
+   clearTimeout(reviewer_timeout);
+  }
+  reviewer_timeout = setTimeout('reviewer_time_limit_reached()', 600000);
+}
+
+function reviewer_time_limit_reached() {
+  alert("You have been looking at these reports " +
+        "for more than 10 minutes. They have been " +
+        "released.  Please reload this page if your " +
+        "browser doesn't do it automatically.");
+  window.location.reload();
 }
