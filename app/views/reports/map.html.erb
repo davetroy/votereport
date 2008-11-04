@@ -25,6 +25,6 @@ go back to the <%= link_to "#votereport homepage", reports_path %>
 			initMapJS();
 			filters = "<%= @filters.collect{|k,v| "#{k}=#{v}"}.join("&") %>";
 			state = "<%= @filters[:state] || '' %>";
-			remoteLoad("/reports.json?per_page=200&" + filters, "updateJSON")
+			remoteLoad("/reports.json?wait_time=0&per_page=200&" + filters, "updateJSON")
 		 });
 </script>

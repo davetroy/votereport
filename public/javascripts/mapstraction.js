@@ -3605,7 +3605,7 @@ Marker.prototype.toGoogle = function() {
 			event_action = "click";
 		}
 		GEvent.addListener(gmarker, event_action, function() {
-			gmarker.openInfoWindowHtml(theInfo, {maxWidth: 100});
+			gmarker.openInfoWindowHtml(theInfo);
 		});
 	}
 

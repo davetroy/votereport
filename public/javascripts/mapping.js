@@ -148,15 +148,17 @@ for (var i = 0; i < features.length; i++) {
 			    icon_scale = 24
             icon_size = [icon_scale,icon_scale];
 
-            html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.display_text + "<br />";
-            if(item.rating != null)
-                html += "Rating: <img src='"+icon+"'/> ("+item.rating+"%)";
-            if(item.rating != null)
-                html += "<br />Wait time: "+ item.wait_time+" min";
-            if(item.location.location.address != null)
-                html += "<br />Location: "+ item.location.location.address+" min";
+            // html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.display_text + "<br />";
+            html = item.display_html;
 
-			html += "</div>";
+            //             if(item.rating != null)
+            //                 html += "Rating: <img src='"+icon+"'/> ("+item.rating+"%)";
+            //             if(item.rating != null)
+            //                 html += "<br />Wait time: "+ item.wait_time+" min";
+            //             if(item.location.location.address != null)
+            //                 html += "<br />Location: "+ item.location.location.address+" min";
+            // 
+            // html += "</div>";
 			
 			this.addMarkerWithData(new Marker(new LatLonPoint(item.location.location.point.coordinates[1],item.location.location.point.coordinates[0])),{
 				infoBubble : html, 

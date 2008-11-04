@@ -131,7 +131,7 @@ class Report < ActiveRecord::Base
     options[:only] = @@public_fields
     # options[:include] = [ :reporter, :polling_place ]
     # options[:except] = [ ]
-    options[:methods] = [ :display_text, :rating, :name, :icon, :reporter, :polling_place, :location ].concat(options[:methods]||[]) #lets us include current_items from feeds_controller#show
+    options[:methods] = [ :display_text, :display_html, :rating, :name, :icon, :reporter, :polling_place, :location ].concat(options[:methods]||[]) #lets us include current_items from feeds_controller#show
     # options[:additional] = {:page => options[:page] }
     ar_to_json(options)
   end    
@@ -198,6 +198,40 @@ class Report < ActiveRecord::Base
     [wait_time     ? "#{wait_time} minute wait time" : nil,
      rating        ? "rating #{rating}" : nil,
      polling_place ? "polling place: #{polling_place.name}" : nil].compact.join(', ')    
+  end
+  
+
+  include ActionView::Helpers::DateHelper
+  def display_html
+    html = "<div>"
+
+    if self.reporter.class == TwitterReporter
+      html << %Q{<a href="#{self.reporter.profile}"><img src=#{self.reporter.icon} class="profile" target="_new"/></a>}
+    else
+      html << %Q{<img src="#{self.reporter.icon}" class="profile" />}
+    end
+
+    html << %Q{<div class="balloon_body"><span class="author" id="screen_name">#{self.reporter.name}</span>: <span class="entry-title">#{self.text}</span><br />}
+    html << [wait_time     ? "#{wait_time} minute wait time" : nil,
+     rating        ? "Rating: #{rating}" : nil,
+     polling_place ? "Polling place: #{polling_place.name}" : nil].compact.join('<br />')    
+
+
+    # <!--TODO: make name a link to twitter profile like icon is-->
+    # <a href="http://twitter.com/randomdeanna" class="author">Deanna Zandt</a>: <span class="entry-title">made some more changes to 
+    # 
+    # <!--TODO: make URLs autolink! -->
+    # <a href="http://twittervotereport.com">http://twittervotereport.com</a>: added big map, made the tweets look nicer. pretty things! #votereport</span><br /> 
+    #   <!--<span class="vcard author" id="screen_name"><%=report.reporter.name%></span>: <span class="entry-title"><%=report.display_text%></span><br /> --> 
+
+    if self.reporter.class == TwitterReporter
+      html << %Q{<br />reported <a href="http://twitter.com/#{self.reporter.screen_name}/statuses/#{self.uniqueid}">#{ time_ago_in_words(self.created_at)} ago</a> }
+    else
+      html << "<br />reported #{time_ago_in_words(self.created_at)} ago"
+    end
+    html << "<br />via #{self.reporter.source_name}</div></div>"
+
+    html
   end
   
   def audio_file

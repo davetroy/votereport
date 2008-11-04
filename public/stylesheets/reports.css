@@ -110,6 +110,9 @@ ul.legend {    list-style-image:none;    list-style-position:outside;    list-st
 ul.controls {    list-style-image:none;    list-style-position:outside;    list-style-type:none;}
 ul.controls li  { list-style: none;  	display: inline;}
 
+.balloon_body {margin-left:52px;}
+.entry-title {margin-bottom: 4px;}
+
 #message {width: 100%; margin: 5px 0; padding: 5px 0; text-align: center; border: 1px solid #555555; background-color: #BBBBBB;}
 
 .digg_pagination {
