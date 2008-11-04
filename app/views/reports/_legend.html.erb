@@ -1,4 +1,9 @@
 <div class="container">
+	<div class="digg_pagination">	
+			<div class="pagination">
+				<span class="disabled prev_page">page</span>
+			<%= (1..10).collect {|page| link_to(page, "#", :class => (page == 1 ? "current" : ""), :id => "page_#{page}", :onclick => "return updateState(null, #{page})")}.join(" ") %>
+			</div></div>	
 	<div class="filters">
 	<h2>Available filters:</h2>
 	<ul class="nobullets">
@@ -14,9 +19,10 @@
 		<div class="leftcolumn">
 			<ul class="nobullets">
 				<li><strong>Quality of experience:</strong></li>
-				<li><%= image_tag "rating_bad.png" %> Bad rating (0-30%)</li>
-				<li><%= image_tag "rating_medium.png" %> Medium rating (31-70%)</li>
-				<li><%= image_tag "rating_good.png" %> Good rating (71-100%)</li>		
+				<li><%= image_tag "rating_none.png" %> No rating given</li>		
+				<li><%= image_tag "rating_bad.png" %> Bad (0-30%)</li>
+				<li><%= image_tag "rating_medium.png" %> Medium (31-70%)</li>
+				<li><%= image_tag "rating_good.png" %> Good (71-100%)</li>		
 			</ul>
 		</div>
 		<div class="rightcolumn">

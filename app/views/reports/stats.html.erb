@@ -1,0 +1,13 @@
+<ul>
+	<li>Total Reports on election day: <%= @election_reports %></li>
+	<li>Total Reports (early voting and advocacy): <%= @number_reports %></li>
+	
+</ul>
+<ul class="barGraph" style="position:absolute;bottom: 0px;">
+	<%- @hourly_usage.each_with_index do |hour, i| -%>
+	<li style="height: <%= (hour["count"].to_i*0.6).ceil %>px; left:<%= 40*i %>px;"><%= hour["count"] %> @ <%= hour["hour"] %></li>
+	<%- end -%>
+</ul>
+<em>Number of reports per hour (Eastern Standard Time)</em><br />
+
+Go back to <%= link_to "homepage", reports_path %> or <%= link_to "map", map_reports_path %>

@@ -33,6 +33,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :reports, 
     :collection => {
       :map => :get, 
+      :stats => :get, 
       :chart => :get, 
       :review => :get,
       :reload => :get, 

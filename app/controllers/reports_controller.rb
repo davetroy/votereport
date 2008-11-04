@@ -1,7 +1,7 @@
 class ReportsController < ApplicationController
   protect_from_forgery :except => [:create, :auto_complete_for_report_tag_s]
-  before_filter :filter_from_params, :only => [ :index, :reload, :map, :chart ]
-  before_filter :login_required, :except => [:create, :index, :chart, :map, :reload]
+  before_filter :filter_from_params, :only => [ :index, :reload, :map, :chart, :stats ]
+  before_filter :login_required, :except => [:create, :index, :show, :chart, :stats, :map, :reload]
   
   auto_complete_for :report, :tag_s
   
@@ -9,7 +9,6 @@ class ReportsController < ApplicationController
   def index
     respond_to do |format|
       format.kml do
-        @per_page = params[:count] || 20
         @reports = Report.with_location.find_with_filters(@filters)
         case params[:live]
         when /1/
@@ -81,6 +80,9 @@ class ReportsController < ApplicationController
   def show 
     @report = Report.find(params[:id])
     respond_to do |format|
+      format.html {
+        render :partial => "report"
+      }
       format.js {
         render :update do |page|
           page["report_#{@report.id}"].replace :partial => 'report_review', :locals => { :report => @report }
@@ -168,6 +170,12 @@ class ReportsController < ApplicationController
         end
       }
     end
+  end
+  
+  def stats
+    @hourly_usage = Report.hourly_usage
+    @number_reports = Report.count
+    @election_reports = Report.count(:all, :conditions => ["created_at > '2008-11-04'"])
   end
   
   def map  

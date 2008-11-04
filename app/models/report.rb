@@ -89,12 +89,19 @@ class Report < ActiveRecord::Base
     options[:only] = @@public_fields
     # options[:include] = [ :reporter, :polling_place ]
     # options[:except] = [ ]
-    options[:methods] = [ :display_text, :display_html, :rating, :name, :icon, :reporter, :polling_place, :location ].concat(options[:methods]||[]) #lets us include current_items from feeds_controller#show
+    options[:methods] = [ :audio_link, :display_text, :display_html, :rating, :name, :icon, :reporter, :polling_place, :location ].concat(options[:methods]||[]) #lets us include current_items from feeds_controller#show
     # options[:additional] = {:page => options[:page] }
     ar_to_json(options)
   end    
 
-    
+  def audio_link
+    "#{self.reporter.audio_path}/#{self.audio_file}" if self.has_audio
+  end
+  # Beginning to get pie chart visualizations based on wait time and report averages
+  # def self.get_averages
+  #   r = ActiveRecord::Base.connection.select_all("select avg(wait_time) AS avg_wait, avg(rating) AS avg_rating from reports, locations,filters where reports.wait_time IS NOT NULL AND reports.location_id = locations.id AND locations.id = filters.center_location_id GROUP BY filters.state")
+  # end
+  
   def self.find_with_filters(filters = {})
     conditions = ["",filters]
     if filters.include?(:dtstart) && !filters[:dtstart].blank?
@@ -188,12 +195,6 @@ class Report < ActiveRecord::Base
      rating        ? "Rating: #{rating}" : nil,
      polling_place ? "Polling place: #{polling_place.name}" : nil].compact.join('<br />')    
 
-    # <!--TODO: make name a link to twitter profile like icon is-->
-    # <a href="http://twitter.com/randomdeanna" class="author">Deanna Zandt</a>: <span class="entry-title">made some more changes to 
-    # 
-    # <!--TODO: make URLs autolink! -->
-    # <a href="http://twittervotereport.com">http://twittervotereport.com</a>: added big map, made the tweets look nicer. pretty things! #votereport</span><br /> 
-    #   <!--<span class="vcard author" id="screen_name"><%=report.reporter.name%></span>: <span class="entry-title"><%=report.display_text%></span><br /> --> 
     html << "<br /><div class='whenwhere'>"
     if self.reporter.class == TwitterReporter
       html << %Q{reported <a href="http://twitter.com/#{self.reporter.screen_name}/statuses/#{self.uniqueid}">#{ time_ago_in_words(self.created_at)} ago</a> }
@@ -210,6 +211,11 @@ class Report < ActiveRecord::Base
     "#{uniqueid}." + (self.source=='IPH' ? 'caf' : 'gsm')
   end
 
+
+  def self.hourly_usage
+    ActiveRecord::Base.connection.select_all(%Q{select count(*) as count, HOUR(created_at)-4 as hour from reports WHERE created_at > "2008-11-04" group by HOUR(created_at)})    
+  end
+  
   private
   def set_source
     self.source = self.reporter.source

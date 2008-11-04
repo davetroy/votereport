@@ -91,8 +91,8 @@ img.profile {
     width: 39px;
     }
 .barGraph {
-    background: url(images/horizontal_grid_line_50_pixel.png) bottom left;
-    border-bottom: 3px solid #333;
+    background: url(../images/horizontal_grid_line_50_pixel.png) bottom left;
+    border-bottom: 3px solid black;
     font: 9px Helvetica, Geneva, sans-serif;
     height: 200px;
     margin: 1em 0;
@@ -101,7 +101,7 @@ img.profile {
     }
     
 .barGraph li {
-    background: #666 url(images/bar_50_percent_highlight.png) repeat-y top right;
+    background: #666 url(../images/bar_50_percent_highlight.png) repeat-y top right;
     border: 1px solid #555;
     border-bottom: none;
     bottom: 0; 
@@ -208,7 +208,7 @@ margin-right: 1px; }
 color: #999;
 border: 1px solid #DDD; }
 
-.digg_pagination span.current {
+.digg_pagination span.current, .digg_pagination .current {
 font-weight: bold;
 background: #2E6AB1;
 color: white;
