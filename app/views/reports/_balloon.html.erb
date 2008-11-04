@@ -1,4 +1,4 @@
-<div id="<%= dom_id(report) %>" class="hentry report">
+<div id="<%= dom_id(report) %>" class="balloon">
 	<% if report.reporter.class == TwitterReporter %>
 	<%= link_to image_tag(report.reporter.icon, :class => "profile", :target=>"new"), report.reporter.profile %>
 	<% else %>
