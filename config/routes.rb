@@ -26,6 +26,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect 'local/:filter', :controller => "reports", :action => "index"
 
+  map.kml_feed 'feeds/:count.kml', :controller => "reports", :action => "index", :format => :kml
+  map.json_feed 'feeds/:page.json', :controller => "reports", :action => "index"
+  map.json_state_feed 'feeds/:state/:page.json', :controller => "reports", :action => "index"
+
   map.resources :reports, 
     :collection => {
       :map => :get, 

@@ -60,7 +60,7 @@ function initMapJS(map_filters){
 
     $("#filter_state").change(function () { 
         state = $("#filter_state").val();
-        updateMap("state="+state);
+        updateMap("state/"+state);
     });
     // display the map centered on a latitude and longitude (Google zoom levels)
     var myPoint = new LatLonPoint(38, -90);
@@ -88,7 +88,7 @@ function updateMap(map_filter) {
     }
         
     $("#update_status").show();
-    $.getJSON("/reports.json?"+current_filter, updateJSON);
+    $.getJSON("/feeds/json/"+current_filter+"/1/200/0.json", "");
     return false;
 }
 function showMessage(message) {
@@ -148,15 +148,17 @@ for (var i = 0; i < features.length; i++) {
 			    icon_scale = 24
             icon_size = [icon_scale,icon_scale];
 
-            html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.display_text + "<br />";
-            if(item.rating != null)
-                html += "Rating: <img src='"+icon+"'/> ("+item.rating+"%)";
-            if(item.rating != null)
-                html += "<br />Wait time: "+ item.wait_time+" min";
-            if(item.location.location.address != null)
-                html += "<br />Location: "+ item.location.location.address+" min";
+            // html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.display_text + "<br />";
+            html = item.display_html;
 
-			html += "</div>";
+            //             if(item.rating != null)
+            //                 html += "Rating: <img src='"+icon+"'/> ("+item.rating+"%)";
+            //             if(item.rating != null)
+            //                 html += "<br />Wait time: "+ item.wait_time+" min";
+            //             if(item.location.location.address != null)
+            //                 html += "<br />Location: "+ item.location.location.address+" min";
+            // 
+            // html += "</div>";
 			
 			this.addMarkerWithData(new Marker(new LatLonPoint(item.location.location.point.coordinates[1],item.location.location.point.coordinates[0])),{
 				infoBubble : html, 

@@ -43,7 +43,7 @@ img.profile {
 	border: none;
 }
 
-span.whenwhere {
+.balloon .whenwhere {
 	font-family: Georgia, 'Times New Roman', serif;
 	color: #444;
 	font-size: 9pt;
@@ -127,6 +127,9 @@ ul#syndication {
 li#rss_link { margin-left:47px; }
 
 ul#syndication img { border:medium none; margin: 0 4px;}
+
+.balloon_body {margin-left:52px;}
+.entry-title {margin-bottom: 4px;}
 
 #message {width: 100%; margin: 5px 0; padding: 5px 0; text-align: center; border: 1px solid #555555; background-color: #BBBBBB;}
 
