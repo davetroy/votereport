@@ -89,11 +89,14 @@ class Report < ActiveRecord::Base
     options[:only] = @@public_fields
     # options[:include] = [ :reporter, :polling_place ]
     # options[:except] = [ ]
-    options[:methods] = [ :display_text, :display_html, :rating, :name, :icon, :reporter, :polling_place, :location ].concat(options[:methods]||[]) #lets us include current_items from feeds_controller#show
+    options[:methods] = [ :audio_link, :display_text, :display_html, :rating, :name, :icon, :reporter, :polling_place, :location ].concat(options[:methods]||[]) #lets us include current_items from feeds_controller#show
     # options[:additional] = {:page => options[:page] }
     ar_to_json(options)
   end    
 
+  def audio_link
+    "#{self.reporter.audio_path}/#{self.audio_file}" if self.has_audio
+  end
   # Beginning to get pie chart visualizations based on wait time and report averages
   # def self.get_averages
   #   r = ActiveRecord::Base.connection.select_all("select avg(wait_time) AS avg_wait, avg(rating) AS avg_rating from reports, locations,filters where reports.wait_time IS NOT NULL AND reports.location_id = locations.id AND locations.id = filters.center_location_id GROUP BY filters.state")

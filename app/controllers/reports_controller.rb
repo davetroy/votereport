@@ -1,7 +1,7 @@
 class ReportsController < ApplicationController
   protect_from_forgery :except => [:create, :auto_complete_for_report_tag_s]
   before_filter :filter_from_params, :only => [ :index, :reload, :map, :chart, :stats ]
-  before_filter :login_required, :except => [:create, :index, :chart, :stats, :map, :reload]
+  before_filter :login_required, :except => [:create, :index, :show, :chart, :stats, :map, :reload]
   
   auto_complete_for :report, :tag_s
   
@@ -80,6 +80,9 @@ class ReportsController < ApplicationController
   def show 
     @report = Report.find(params[:id])
     respond_to do |format|
+      format.html {
+        render :partial => "report"
+      }
       format.js {
         render :update do |page|
           page["report_#{@report.id}"].replace :partial => 'report_review', :locals => { :report => @report }
