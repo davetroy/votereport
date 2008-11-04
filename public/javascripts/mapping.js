@@ -49,7 +49,7 @@ function jsonp(url,callback, query)
 function fadeMap() {
     // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,0),new GLatLng(85,0),new GLatLng(85,90),new GLatLng(-85,90)],null,0,0,"#BBBBBB",0.4));
     // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,90),new GLatLng(85,90),new GLatLng(85,180),new GLatLng(-85,180)],null,0,0,"#BBBBBB",0.4));
-    mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(20,180.000001),new GLatLng(70,180.000001),new GLatLng(70,330),new GLatLng(-20,330)],null,0,0,"#BBBBBB",0.4));
+    mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(20,180.000001),new GLatLng(70,180.000001),new GLatLng(70,330),new GLatLng(-20,330)],null,0,0,"#d0d0d0",0.4));
     // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,270),new GLatLng(85,270),new GLatLng(85,360),new GLatLng(-85,360)],null,0,0,"#BBBBBB",0.4));
 
 }
