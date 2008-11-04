@@ -27,7 +27,15 @@ while (1)
 	open(ATOM, ">reports.atom");
 	print ATOM $content;
 	close(ATOM);
-	move("reports.atom", "public/feeds/reports.atom");
+	move("reports.atom", "/home/votereport/current/public/reports.atom");
+
+	$res = $ua->get("http://votereport.us/reports.kml");
+	$content = $res->content;
+	open(ATOM, ">reports.kml");
+	print ATOM $content;
+	close(ATOM);
+	move("reports.atom", "/home/votereport/current/public/reports.kml");
+
 	#print "KML and Atom fetched.\n";
 	for (my $i=0;$i<scalar @abbr;$i++)
 	{
@@ -50,7 +58,7 @@ sub state
 		my $res = $ua->get("http://votereport.us/reports.json?state=$state&wait_time=0&per_page=200&callback=updateJSON&page=$i");
 		print STATE $res->content;
 		close STATE;
-		my $fdir = "/home/votereport/current/public/feeds/json";
+		my $fdir = "/home/votereport/current/public/feeds/state";
 		mkdir($fdir) unless (-d $fdir);
 		mkdir("$fdir/$state") unless (-d "$fdir/$state");
 		move("$i.json", "$fdir/$state/$i.json");

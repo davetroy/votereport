@@ -168,11 +168,11 @@ class Report < ActiveRecord::Base
     else
       html << %Q{<br /><img src="#{self.reporter.icon}" class="profile" />}
     end
-    if(item.rating.nil?)
+    if(self.rating.nil?)
       rating_icon = "/images/rating_none.png"
-    elsif(item.rating <= 30)
+    elsif(self.rating <= 30)
       rating_icon = "/images/rating_bad.png"
-    elsif (item.rating <= 70)
+    elsif (self.rating <= 70)
       rating_icon = "/images/rating_medium.png"
     else
       rating_icon = "/images/rating_good.png"
