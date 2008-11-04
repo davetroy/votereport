@@ -20,8 +20,8 @@ class Report < ActiveRecord::Base
 
   before_validation :set_source
   before_create :detect_location, :append_tags
-  after_save :check_uniqueid
-  after_create :assign_tags, :assign_wait_time, :assign_filters, :auto_review
+  # check uniqueid must be AFTER create because otherwise it doesn't have an ID
+  after_create :check_uniqueid, :assign_tags, :assign_wait_time, :assign_filters, :auto_review
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
   named_scope :with_wait_time, :conditions => 'wait_time IS NOT NULL'
