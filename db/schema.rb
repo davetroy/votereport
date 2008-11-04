@@ -11,7 +11,7 @@
 
 ActiveRecord::Schema.define(:version => 20081102220820) do
 
-  create_table "alert_viewings", :force => true do |t|
+  create_table "alert_viewings", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "user_id", :integer
     t.column "reviewer_alert_id", :integer
     t.column "created_at", :datetime
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(:version => 20081102220820) do
 
   add_index "locations", ["point"], :name => "index_locations_on_point", :spatial=> true 
 
-  create_table "polling_places", :force => true do |t|
+  create_table "polling_places", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "location_id", :integer
     t.column "name", :string, :limit => 80
     t.column "address", :string, :limit => 80
@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(:version => 20081102220820) do
   add_index "report_filters", ["report_id"], :name => "index_report_filters_on_report_id"
   add_index "report_filters", ["filter_id"], :name => "index_report_filters_on_filter_id"
 
-  create_table "report_tags", :force => true do |t|
+  create_table "report_tags", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "report_id", :integer
     t.column "tag_id", :integer
   end
@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(:version => 20081102220820) do
   add_index "report_tags", ["report_id"], :name => "index_report_tags_on_report_id"
   add_index "report_tags", ["tag_id"], :name => "index_report_tags_on_tag_id"
 
-  create_table "reporters", :force => true do |t|
+  create_table "reporters", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "location_id", :integer
     t.column "type", :string, :limit => 30
     t.column "uniqueid", :string, :limit => 80
@@ -109,7 +109,7 @@ ActiveRecord::Schema.define(:version => 20081102220820) do
 
   add_index "reporters", ["uniqueid", "type"], :name => "index_reports_on_uniqueid_and_type", :unique => true
 
-  create_table "reports", :force => true do |t|
+  create_table "reports", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "source", :string, :limit => 3
     t.column "reporter_id", :integer
     t.column "location_id", :integer
@@ -121,20 +121,20 @@ ActiveRecord::Schema.define(:version => 20081102220820) do
     t.column "polling_place_id", :integer
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
-    t.column "rating", :integer
-    t.column "location_accuracy", :integer
-    t.column "has_audio", :boolean
     t.column "assigned_at", :datetime
     t.column "reviewed_at", :datetime
     t.column "reviewer_id", :integer
     t.column "dismissed_at", :datetime
     t.column "tag_s", :string
+    t.column "rating", :integer
+    t.column "location_accuracy", :integer
+    t.column "has_audio", :boolean
   end
 
   add_index "reports", ["created_at"], :name => "index_reports_on_created_at"
   add_index "reports", ["reviewer_id"], :name => "index_reports_on_reviewer_id"
 
-  create_table "reviewer_alerts", :force => true do |t|
+  create_table "reviewer_alerts", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "text", :string
     t.column "user_id", :integer
     t.column "created_at", :datetime
@@ -150,7 +150,7 @@ ActiveRecord::Schema.define(:version => 20081102220820) do
     t.column "decimal_value", :integer, :limit => 10
   end
 
-  create_table "tags", :force => true do |t|
+  create_table "tags", :options=>'ENGINE=MyISAM', :force => true do |t|
     t.column "pattern", :string, :limit => 30
     t.column "description", :string, :limit => 80
     t.column "score", :integer

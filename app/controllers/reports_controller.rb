@@ -133,7 +133,7 @@ class ReportsController < ApplicationController
   # POST /reports/:id/confirm
   def confirm
     @report = Report.find(params[:id])
-    if @report.confirm!
+    if @report.confirm!(current_user)
       respond_to do |format|
         format.xml { head :ok }
         format.js {
@@ -159,7 +159,7 @@ class ReportsController < ApplicationController
   # POST /reports/:id/dismiss
   def dismiss
     @report = Report.find(params[:id])
-    @report.dismiss!
+    @report.dismiss!(current_user)
     respond_to do |format|
       format.xml { head :ok }
       format.js {

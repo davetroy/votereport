@@ -168,6 +168,10 @@ class User < ActiveRecord::Base
     self.save!
   end
   
+  def update_reports_count!
+    self.increment!(:reports_count)
+  end
+  
   def has_access?
     !self.is_terminated?
   end

@@ -12,3 +12,4 @@
     = link_to_remote "Unterminate", {:url => edit_terminate_user_path(user), :method => :post}
   - else
     = link_to_remote "Terminate", {:url => edit_terminate_user_path(user), :method => :post}
+%td= user.reports_count

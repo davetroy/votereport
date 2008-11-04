@@ -103,15 +103,21 @@ class Report < ActiveRecord::Base
     self.reporter.name
   end
   
-  def dismiss!
+  def dismiss!(user=nil)
     self.dismissed_at = Time.now.utc
     self.reviewed_at = Time.now.utc
+    user.update_reports_count! if user
     self.save_with_validation(false)
   end
   
-  def confirm!
+  def confirm!(user=nil)
     self.reviewed_at = Time.now.utc
-    self.save
+    if self.save
+      user.update_reports_count! if user
+      return true
+    else
+      return false
+    end
   end
   
   def is_confirmed?
