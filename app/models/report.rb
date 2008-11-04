@@ -212,8 +212,17 @@ class Report < ActiveRecord::Base
     else
       html << %Q{<br /><img src="#{self.reporter.icon}" class="profile" />}
     end
-
-    html << %Q{<img class="rating_icon" style="clear:left;" src="/images/rating_good.png" />}
+    if(item.rating.nil?)
+      rating_icon = "/images/rating_none.png"
+    elsif(item.rating <= 30)
+      rating_icon = "/images/rating_bad.png"
+    elsif (item.rating <= 70)
+      rating_icon = "/images/rating_medium.png"
+    else
+      rating_icon = "/images/rating_good.png"
+    end
+    
+    html << %Q{<img class="rating_icon" style="clear:left;" src="#{rating_icon}" />}
     html << %Q{<div class="balloon_body"><span class="author" id="screen_name">#{self.reporter.name}</span>: }
     linked_text = auto_link_urls(self.text, :target => '_new') { |linktext| truncate(linktext, 30) }
     html << %Q{<span class="entry-title">#{linked_text}</span><br />}
