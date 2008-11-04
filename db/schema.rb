@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081102220820) do
+ActiveRecord::Schema.define(:version => 20081104035507) do
 
   create_table "alert_viewings", :force => true do |t|
     t.column "user_id", :integer
@@ -183,10 +183,12 @@ ActiveRecord::Schema.define(:version => 20081102220820) do
     t.column "activated_at", :datetime
     t.column "is_admin", :boolean, :default => false
     t.column "is_terminated", :boolean, :default => false
+    t.column "reports_count", :integer, :default => 0
   end
 
   add_index "users", ["api_key"], :name => "index_users_on_api_key", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["type"], :name => "index_users_on_type"
+  add_index "users", ["reports_count"], :name => "index_users_on_reports_count"
 
 end

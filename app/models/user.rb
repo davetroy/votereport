@@ -39,7 +39,10 @@ class User < ActiveRecord::Base
   has_many :alert_viewings,
            :dependent => :destroy
            
-  has_many :reviewed_reports, :class_name => "Report", :foreign_key => "reviewer_id"
+  has_many :reviewed_reports, 
+    :class_name => "Report", 
+    :foreign_key => "reviewer_id", 
+    :conditions => "reviewed_at IS NOT NULL"
 
   ##########################################################################
   ###########                       METHODS                      ###########
@@ -166,6 +169,10 @@ class User < ActiveRecord::Base
     # 2. set is_terminated = false
     self.is_terminated = false
     self.save!
+  end
+  
+  def update_reports_count!
+    self.increment!(:reports_count)
   end
   
   def has_access?

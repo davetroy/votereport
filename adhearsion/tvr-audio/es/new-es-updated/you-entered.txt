@@ -1,0 +1,15 @@
+;
+; Message Information file
+;
+[message]
+origmailbox=6000
+context=inboundpots
+macrocontext=
+exten=4109741010
+priority=1
+callerchan=SIP/4106475812-099cb458
+callerid=5625775681
+origdate=Tue Nov  4 01:17:33 AM EST 2008
+origtime=1225779453
+category=
+duration=3

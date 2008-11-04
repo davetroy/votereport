@@ -133,7 +133,7 @@ class ReportsController < ApplicationController
   # POST /reports/:id/confirm
   def confirm
     @report = Report.find(params[:id])
-    if @report.confirm!
+    if @report.confirm!(current_user)
       respond_to do |format|
         format.xml { head :ok }
         format.js {
@@ -159,7 +159,7 @@ class ReportsController < ApplicationController
   # POST /reports/:id/dismiss
   def dismiss
     @report = Report.find(params[:id])
-    @report.dismiss!
+    @report.dismiss!(current_user)
     respond_to do |format|
       format.xml { head :ok }
       format.js {
@@ -204,6 +204,7 @@ class ReportsController < ApplicationController
     reporter = IphoneReporter.update_or_create(info[:reporter])
     polling_place = PollingPlace.match_or_create(info[:polling_place][:name], reporter.location)
     report = reporter.reports.create(info[:report].merge(:polling_place => polling_place, :latlon => info[:reporter][:latlon]))
+    report.reload
     if audiofile = params[:uploaded]
       fn = "#{AUDIO_UPLOAD_PATH}/#{report.uniqueid}.caf"
       File.open(fn, 'w') { |f| f.write audiofile.read }

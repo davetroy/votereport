@@ -1,57 +1,4 @@
 class Report < ActiveRecord::Base
-  
-   US_STATES = { 	
-	'AL' 		=> 		'alabama', 
-	'AK' 		=> 		'alaska',
-	'AZ' 		=> 		'arizona',
-	'AR' 		=> 		'arkansas', 
-	'CA' 		=> 		'california', 
-	'CO' 		=> 		'colorado', 
-	'CT' 		=> 		'connecticut', 
-	'DE' 		=> 		'delaware', 
-	'DC' 		=> 		'washingtondc', 
-	'FL' 		=> 		'florida',
-	'GA' 		=> 		'georgia',
-	'HI' 		=> 		'hawaii', 
-	'ID' 		=> 		'idaho', 
-	'IL' 		=> 		'illinois', 
-	'IN' 		=> 		'indiana', 
-	'IA' 		=> 		'iowa', 
-	'KS' 		=> 		'kansas', 
-	'KY' 		=> 		'kentucky', 
-	'LA' 		=> 		'louisiana', 
-	'ME' 		=> 		'maine', 
-	'MD' 		=> 		'maryland', 
-	'MA' 		=> 		'massachusetts', 
-	'MI' 		=> 		'michigan', 
-	'MN' 		=> 		'minnesota',
-	'MS' 		=> 		'mississippi', 
-	'MO' 		=> 		'missouri', 
-	'MT' 		=> 		'montana', 
-	'NE' 		=> 		'nebraska', 
-	'NV' 		=> 		'nevada', 
-	'NH' 		=> 		'newhampshire', 
-	'NJ' 		=> 		'newjersey', 
-	'NM' 		=> 		'newmexico', 
-	'NY' 		=> 		'newyork', 
-	'NC' 		=> 		'northcarolina', 
-	'ND' 		=> 		'northdakota', 
-	'OH' 		=> 		'ohio', 
-	'OK' 		=> 		'oklahoma', 
-	'OR' 		=> 		'oregon', 
-	'PA' 		=> 		'pennsylvania', 
-	'RI' 		=> 		'rhodeisland', 
-	'SC' 		=> 		'southcarolina', 
-	'SD' 		=> 		'southdakota', 
-	'TN' 		=> 		'tennessee', 
-	'TX' 		=> 		'texas', 
-	'UT' 		=> 		'utah', 
-	'VT' 		=> 		'vermont', 
-	'VA' 		=> 		'virginia', 
-	'WA' 		=> 		'washington', 
-	'WV' 		=> 		'westvirginia', 
-	'WI' 		=> 		'wisconsin', 
-	'WY' =>  'wyoming'}
 	
   MAXIMUM_WAIT_TIME = 600 # we will ignore reports > this as they are likely bogus and will throw off our data
   
@@ -73,8 +20,8 @@ class Report < ActiveRecord::Base
 
   before_validation :set_source
   before_create :detect_location, :append_tags
-  after_save :check_uniqueid
-  after_create :assign_tags, :assign_wait_time, :assign_filters
+  # check uniqueid must be AFTER create because otherwise it doesn't have an ID
+  after_create :check_uniqueid, :assign_tags, :assign_wait_time, :assign_filters, :auto_review
   
   named_scope :with_location, :conditions => 'location_id IS NOT NULL'
   named_scope :with_wait_time, :conditions => 'wait_time IS NOT NULL'
@@ -87,7 +34,7 @@ class Report < ActiveRecord::Base
   named_scope( :unassigned, 
     :limit => 10, 
     :order => 'created_at DESC',
-    :conditions => 'reviewer_id IS NULL OR (assigned_at < UTC_TIMESTAMP - INTERVAL 10 MINUTE AND reviewed_at IS NULL)' 
+    :conditions => 'reviewed_at IS NULL AND reviewer_id IS NULL OR assigned_at < UTC_TIMESTAMP - INTERVAL 10 MINUTE' 
   ) do
     def assign(reviewer)
       # FIXME: can't we do this more efficiently? a la p-code:
@@ -103,15 +50,24 @@ class Report < ActiveRecord::Base
     self.reporter.name
   end
   
-  def dismiss!
+  def dismiss!(user=nil)
     self.dismissed_at = Time.now.utc
+    self.reviewer = user if user
     self.reviewed_at = Time.now.utc
+    user.update_reports_count! if user
     self.save_with_validation(false)
   end
   
-  def confirm!
+  def confirm!(user=nil)
+    self.dismissed_at = nil
+    self.reviewer = user if user
     self.reviewed_at = Time.now.utc
-    self.save
+    if self.save
+      user.update_reports_count! if user
+      return true
+    else
+      return false
+    end
   end
   
   def is_confirmed?
@@ -153,7 +109,7 @@ class Report < ActiveRecord::Base
     end
     
     if filters.include?(:state) && !filters[:state].blank?
-      filtered = Filter.find_by_name(Report::US_STATES[filters[:state]])
+      filtered = Filter.find_by_name(US_STATES[filters[:state]])
       filtered.reports.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
                         :order => 'created_at DESC') if filtered
     else
@@ -255,10 +211,12 @@ class Report < ActiveRecord::Base
   private
   def set_source
     self.source = self.reporter.source
+    true
   end
 
   def check_uniqueid
     update_attribute(:uniqueid, "#{Time.now.to_i}.#{self.id}") if self.uniqueid.nil?
+    true
   end
   
   # Detect and geocode any location information present in the report text
@@ -320,5 +278,12 @@ class Report < ActiveRecord::Base
       self.connection.execute("INSERT DELAYED INTO report_filters (filter_id,report_id) VALUES #{values}") if !values.blank?
 		end
 		true
+  end
+  
+  def auto_review
+    if self.wait_time && self.location
+      self.reviewed_at = Time.now.utc
+    end
+    true
   end
 end

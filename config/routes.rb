@@ -16,6 +16,10 @@ ActionController::Routing::Routes.draw do |map|
       :edit_terminate => :post,
       :edit_admin => :post
     }
+  map.reviewed_reports_user '/users/:id/reviewed_reports', 
+    :controller => 'users', 
+    :action => 'reviewed_reports'
+
   map.resource :session
   
   map.root :controller => "reports"

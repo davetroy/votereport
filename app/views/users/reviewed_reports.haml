@@ -1,0 +1,51 @@
+%h2 
+  reports for 
+  = @user.name
+= link_to "Return", users_path
+to all users.
+
+- if @reports.empty?
+  %h2 No reviewed reports found.
+
+- for report in @reports
+  %table[report]
+    %tbody
+      %tr
+        %td.image= image_tag(report.reporter.icon, :class => "profile")
+        %td.author
+          %span{ :class => "author vcard"}
+            =h report.reporter.name
+            %br
+            =h report.uniqueid
+            %br
+            - if report.location
+              in
+              %span{ :class => "adr" }= report.location.address if report.location
+            via 
+            =report.reporter.source_name
+        %td.text
+          %p
+            = auto_link(h(report.text))
+            - if report.has_audio?
+              Listen to this audio report:
+              = audio_link(report)
+          %p
+            %label Wait
+            = display( report.wait_time )
+            %label Tags
+            = display( report.tag_s )
+            %label Location
+            = (report.location.nil?) ? 'Undefined' : report.location.address
+        %td.controls{:style => "width: 350px"}
+          = link_to_remote content_tag(:span, 'Adjust'), { :url => edit_report_path(report), :method => :get }, :class => "button"
+          = link_to_remote content_tag(:span, 'Dismiss'), { :url => dismiss_report_path(report), :method => :post }, :class => "button"
+          = link_to_remote content_tag(:span, 'Confirm'), { :url => confirm_report_path(report), :method => :post }, :class => "button"
+        %td
+          - if report.is_dismissed?
+            %h2 Dismissed
+          - elsif report.is_confirmed?
+            %h2 Confirmed
+          - else
+            %h2 Status Unknown
+            
+= will_paginate(@reports)

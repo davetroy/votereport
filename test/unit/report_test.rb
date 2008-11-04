@@ -90,6 +90,12 @@ class ReportTest < ActiveSupport::TestCase
       noun = (number == 1) ? "minute" : "minutes"
       assert_equal number, create_report("no problems, but a wait of #{number} #{noun}").wait_time
     end
+    
+    # #wait:NUM is parsed
+    minutes.each do |number|
+      assert_equal number, create_report("L:city hall san francisco ca #wait:#{number} #early #good No problems. Saw pollworkers help 2 disabled people.").wait_time
+    end
+    
 
     # NUM-minutes is parsed
     minutes.each do |number|
@@ -133,6 +139,13 @@ class ReportTest < ActiveSupport::TestCase
       assert_equal users(:quentin), r.reviewer
     end
     assert_equal reports.size, Report.assigned(users(:quentin)).size
+  end
+  
+  def test_auto_review
+    new_report = @twitter_reporter.reports.create(:text => 'i got #early #reg #challenges #wait:10 some tags 11222')
+    assert_not_nil new_report.reviewed_at
+    reports = Report.unassigned
+    assert !reports.include?(new_report)
   end
   
   ##########################

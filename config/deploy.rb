@@ -11,7 +11,7 @@ set :keep_releases, 3
 
 role :app, "votereport.us"
 role :daemons, "votereport.us"
-role :voip, "voip.votereport.us"
+#role :voip, "voip.votereport.us"
 role :db, "votereport.us", :primary=>true
 
 set :use_sudo, false

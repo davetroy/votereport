@@ -9,6 +9,7 @@
       %th Terminated?
       %th Edit admin?
       %th Edit terminate?
+      %th # of Reports Reviewed
     - for user in @users
       %tr[user]{:class => cycle("even","odd")}
         = render :partial => "user", :locals => {:user => user}
