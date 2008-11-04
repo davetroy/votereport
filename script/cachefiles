@@ -50,7 +50,10 @@ sub state
 		my $res = $ua->get("http://votereport.us/reports.json?state=$state&wait_time=0&per_page=200&callback=updateJSON&page=$i");
 		print STATE $res->content;
 		close STATE;
-		move("$i.json", "/home/votereport/current/public/feeds/json/$state/$i.json");
+		$dir = "/home/votereport/current/public/feeds/json";
+		mkdir($dir) unless (-d $dir);
+		mkdir("$dir/$state") unless (-d "$dir/$state");
+		move("$i.json", "$dir/$state/$i.json");
 	}
 }
 
