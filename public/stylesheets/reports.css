@@ -50,6 +50,26 @@ span.whenwhere {
 	font-style: italic;
 }
 
+.balloon {
+	background: #fff;
+	width: 215px;
+	min-height: 100px;
+	font-size: 8.5pt;
+	}
+	
+.balloon img {
+	width: 36px;
+	height: 36px;
+	float: left;
+	margin: 0px 5px 5px 0px;
+	border: none;
+	}
+	
+.balloon a.author {
+	font-weight: bold;
+	color: #651480;
+	}
+
 /* charts */
 .verticalBarGraph {
     border-bottom: 1px solid #FFF;
@@ -112,9 +132,12 @@ ul.controls li  { list-style: none;  	display: inline;}
 
 #message {width: 100%; margin: 5px 0; padding: 5px 0; text-align: center; border: 1px solid #555555; background-color: #BBBBBB;}
 
+/*pagination*/
+
 .digg_pagination {
 background: white;
 /* self-clearing method: */ }
+
 .digg_pagination a, .digg_pagination span {
 padding: .2em .5em;
 display: block;
