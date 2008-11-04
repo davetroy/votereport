@@ -16,6 +16,9 @@
       %td.text
         %p
           = auto_link(h(report.text))
+          - if report.has_audio?
+            Listen to this audio report:
+            = audio_link(report)
         %p
           %label Wait
           = display( report.wait_time )
@@ -23,7 +26,7 @@
           = display( report.tag_s )
           %label Location
           = (report.location.nil?) ? 'Undefined' : report.location.address
-      %td.controls
-        = link_to_remote 'Adjust', { :url => edit_report_path(report), :method => :get }
-        = link_to_remote 'Dismiss', { :url => dismiss_report_path(report), :method => :post }
-        = link_to_remote 'Confirm', { :url => confirm_report_path(report), :method => :post }
+      %td.controls{:style => "width: 350px"}
+        = link_to_remote content_tag(:span, 'Adjust'), { :url => edit_report_path(report), :method => :get }, :class => "button"
+        = link_to_remote content_tag(:span, 'Dismiss'), { :url => dismiss_report_path(report), :method => :post }, :class => "button"
+        = link_to_remote content_tag(:span, 'Confirm'), { :url => confirm_report_path(report), :method => :post }, :class => "button"
