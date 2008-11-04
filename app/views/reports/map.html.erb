@@ -1,4 +1,6 @@
+<% if !params[:clean] %>
 go back to the <%= link_to "#votereport homepage", reports_path %>
+<% end %>
 <div id="map"></div>
 
 	<!-- <script src="http://openlayers.org/api/2.6/OpenLayers.js"></script> -->
@@ -9,14 +11,13 @@ go back to the <%= link_to "#votereport homepage", reports_path %>
     <style type="text/css">
         #map {
             width: 100%;
-            height: 80%;
+            height: <%=params[:clean] ? 100 : 80%>%;
             border: 1px solid gray;
         }
     </style>
+<div id="message" style="display:none"></div>
 
-<div id="update_status" style="display:none">updating...</div>
-<a href="#" onclick="updateMap(); return false">Update Map</a>
-updated: <span id="last_updated"></span>
+<%= render :partial => 'legend' if !params[:clean]%>
 
 <script type="text/javascript" charset="utf-8">
 
@@ -24,6 +25,6 @@ updated: <span id="last_updated"></span>
 			initMapJS();
 			filters = "<%= @filters.collect{|k,v| "#{k}=#{v}"}.join("&") %>";
 			state = "<%= @filters[:state] || '' %>";
-			remoteLoad("/reports.json?callback=loadMarkers&per_page=200&" + filters)
+			remoteLoad("/reports.json?per_page=200&" + filters, "updateJSON")
 		 });
 </script>

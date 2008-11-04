@@ -45,38 +45,72 @@ function jsonp(url,callback, query)
     document.body.appendChild(script);
 }
 
+// Adds a semi-opaque gray overlay on the map to make the markers pop out more
+function fadeMap() {
+    // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,0),new GLatLng(85,0),new GLatLng(85,90),new GLatLng(-85,90)],null,0,0,"#BBBBBB",0.4));
+    // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,90),new GLatLng(85,90),new GLatLng(85,180),new GLatLng(-85,180)],null,0,0,"#BBBBBB",0.4));
+    mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(20,180.000001),new GLatLng(70,180.000001),new GLatLng(70,330),new GLatLng(-20,330)],null,0,0,"#d0d0d0",0.4));
+    // mapstraction.getMap().addOverlay(new GPolygon([new GLatLng(-85,270),new GLatLng(85,270),new GLatLng(85,360),new GLatLng(-85,360)],null,0,0,"#BBBBBB",0.4));
+
+}
 function initMapJS(map_filters){
     // initialise the map with your choice of API
     mapstraction = new Mapstraction('map','google');
     filters = map_filters;
 
+    $("#filter_state").change(function () { 
+        state = $("#filter_state").val();
+        updateMap("state="+state);
+    });
     // display the map centered on a latitude and longitude (Google zoom levels)
     var myPoint = new LatLonPoint(38, -90);
     mapstraction.setCenterAndZoom(myPoint, 4);
     mapstraction.addControls({zoom: 'small'});
-    
+
+    fadeMap();
     last_updated = new Date().toISO8601String();
     $("#last_updated").text(last_updated);
     // setInterval("updateMap();",60000);
 
 }
-function loadMarkers(response) {
-    mapstraction.addJSON(response);
-    if(state != "")
-        mapstraction.autoCenterAndZoom();
-    
-}
-function updateMap() {
+
+function updateMap(map_filter) {
+    var current_filter = "";
+    hideMessage();
+
+    if(map_filter != "" || map_filter != null) {
+        mapstraction.removeAllMarkers();
+        fadeMap();
+        gmarkers = [];
+        filters = current_filter = map_filter;
+    } else {
+        current_filter = "dtstart="+last_updated+"&" + filters;
+    }
+        
     $("#update_status").show();
-    loadJSON("/reports.json?count=200&dtstart="+last_updated+"&"+filters, updateJSON);
+    $.getJSON("/reports.json?"+current_filter, updateJSON);
     return false;
 }
+function showMessage(message) {
+    $("#message").text(message);
+    $("#message").show();
+}
+function hideMessage(message) {
+    $("#message").text("");
+    $("#message").hide();
+}
 function updateJSON(response) {
-    mapstraction.addJSON(eval(response));
+    var num_markers = mapstraction.addJSON(response);
+    if(num_markers <= 0)
+        showMessage("Sorry - no reports with this filter.");
+    else if(state != "")
+        mapstraction.autoCenterAndZoom();
+    
     last_updated = new Date().toISO8601String();
     $("#last_updated").text(last_updated);    
     $("#update_status").hide();
 }
+
 var gmarkers = []
 Mapstraction.prototype.addJSON = function(features) {
 // var features = eval('(' + json + ')');
@@ -85,7 +119,7 @@ var html = "";
 var polyline;
 var item;
 var asset_server = "http://assets0.mapufacture.com";
-
+var num_markers = 0;
 for (var i = 0; i < features.length; i++) {
 	item = features[i].report;
 	if(item.location != null && item.location.location.point != null) {
@@ -100,19 +134,28 @@ for (var i = 0; i < features.length; i++) {
                     icon = "/images/rating_medium.png"
                 else
                     icon = "/images/rating_good.png"
-                icon_size = [24,24];
             }
 			else if(item.icon == "" || item.icon == null){
 				icon = "/images/gmaps/pushpins/webhues/159.png" 
 				icon_size = [10,17];
 				
 			} else {
-				icon = item.icon;
-				icon_size = [24,24];
+                icon = "/images/rating_none.png"
+                // icon = item.icon;
 			}
-            html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.text + "<br />";
+			icon_scale = 0.18 * item.wait_time + 10;
+			if(icon_scale > 24)
+			    icon_scale = 24
+            icon_size = [icon_scale,icon_scale];
+
+            html = "<div class='balloon'><strong><img src='" + item.icon + "'>" + item.name + "</strong><br />" + item.display_text + "<br />";
             if(item.rating != null)
                 html += "Rating: <img src='"+icon+"'/> ("+item.rating+"%)";
+            if(item.rating != null)
+                html += "<br />Wait time: "+ item.wait_time+" min";
+            if(item.location.location.address != null)
+                html += "<br />Location: "+ item.location.location.address+" min";
+
 			html += "</div>";
 			
 			this.addMarkerWithData(new Marker(new LatLonPoint(item.location.location.point.coordinates[1],item.location.location.point.coordinates[0])),{
@@ -128,6 +171,7 @@ for (var i = 0; i < features.length; i++) {
 				category : item.source_id, 
 				draggable : false, 
 				hover : false});
+			num_markers += 1;
 				break;
 			case "Polygon":
 				var points = [];
@@ -138,6 +182,6 @@ for (var i = 0; i < features.length; i++) {
 			}
 		}
 	}
-
+    return num_markers;
 }
 

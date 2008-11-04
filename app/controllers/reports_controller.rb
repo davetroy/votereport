@@ -1,7 +1,7 @@
 class ReportsController < ApplicationController
   protect_from_forgery :except => [:create, :auto_complete_for_report_tag_s]
-  before_filter :filter_from_params, :only => [ :index, :map, :chart ]
-  before_filter :login_required, :except => [:index, :chart, :map]
+  before_filter :filter_from_params, :only => [ :index, :reload, :map, :chart ]
+  before_filter :login_required, :except => [:create, :index, :chart, :map, :reload]
   
   auto_complete_for :report, :tag_s
   
@@ -26,11 +26,21 @@ class ReportsController < ApplicationController
         @reports = Report.with_location.find_with_filters(@filters)
       end
       format.html do
-        @reports = Report.find_with_filters(@filters)
+        @live_feed = (params[:live] == "1")
+        if !@live_feed 
+          @reports = Report.find_with_filters(@filters)
+        end
       end
     end
   end
   
+  # GET /reports/reload (AJAX)
+  def reload
+    @filters[:per_page] = params[:per_page] || 50
+    @reports = Report.find_with_filters(@filters)
+    render :partial => @reports
+  end
+
   # GET /reports/review
   def review
     # fetches basic review layout

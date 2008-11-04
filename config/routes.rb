@@ -21,11 +21,13 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => "reports"
 
   map.connect 'local/:filter', :controller => "reports", :action => "index"
+
   map.resources :reports, 
     :collection => {
       :map => :get, 
       :chart => :get, 
-      :review => :get, 
+      :review => :get,
+      :reload => :get, 
       :assign => :post, 
       :release => :post
     },

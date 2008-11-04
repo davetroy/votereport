@@ -1,14 +1,18 @@
 body { background-color: white; color: #333; }
 
 body, ol, ul {
-  font-family: 'Helvetica';
-  font-size:   13px;
-  line-height: 18px;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
+  font-size:   10pt;
+  line-height: 1.2em;
 }
 
 h1 {
 	text-decoration: underline;
 }
+
+a, a:visited {
+	color: #BE1E2D;	
+	}
 
 #reports {
 	text-align: left;
@@ -16,28 +20,33 @@ h1 {
 #syndication {
     float: right;
 }
+
 .report {
-	width: 500px;
-	background-color: #eee;
+	width: 520px;
 	padding: 5px;
 	margin: 3px 5px 3px 3px;
-	height: 75px;
+	clear: both;
+	border-bottom: 1px dashed #7A7A7A;
+	min-height: 50px;
 }
 
 #screen_name {
 	font-weight: bold;
+	color: #000A63;
 }
 
 img.profile {
 	width: 48px;
 	height: 48px;
 	float: left;
-	margin: 5 15 5 10;
+	margin: 0px 5px 5px 0px;
+	border: none;
 }
 
 span.whenwhere {
+	font-family: Georgia, 'Times New Roman', serif;
 	color: #444;
-	font-size: 10px;
+	font-size: 9pt;
 	font-style: italic;
 }
 
@@ -97,3 +106,62 @@ ul#syndication {
 }
 li#rss_link { margin-left:47px; }
 ul#syndication img { border:medium none; margin: 0 4px;}
+ul.legend {    list-style-image:none;    list-style-position:outside;    list-style-type:none;}
+ul.controls {    list-style-image:none;    list-style-position:outside;    list-style-type:none;}
+ul.controls li  { list-style: none;  	display: inline;}
+
+#message {width: 100%; margin: 5px 0; padding: 5px 0; text-align: center; border: 1px solid #555555; background-color: #BBBBBB;}
+
+.digg_pagination {
+background: white;
+/* self-clearing method: */ }
+.digg_pagination a, .digg_pagination span {
+padding: .2em .5em;
+display: block;
+float: left;
+margin-right: 1px; }
+
+.digg_pagination span.disabled {
+color: #999;
+border: 1px solid #DDD; }
+
+.digg_pagination span.current {
+font-weight: bold;
+background: #2E6AB1;
+color: white;
+border: 1px solid #2E6AB1; }
+
+.digg_pagination a {
+text-decoration: none;
+color: #105CB6;
+border: 1px solid #9AAFE5; }
+
+.digg_pagination a:hover, .digg_pagination a:focus {
+color: #003;
+border-color: #003; }
+
+.digg_pagination .page_info {
+background: #2E6AB1;
+color: white;
+padding: .4em .6em;
+width: 22em;
+margin-bottom: .3em;
+text-align: center; }
+
+.digg_pagination .page_info b {
+color: #003;
+background: #6aa6ed;
+padding: .1em .25em; }
+
+.digg_pagination:after {
+content: ".";
+display: block;
+height: 0;
+clear: both;
+visibility: hidden; }
+
+* html .digg_pagination {
+height: 1%; }
+
+*:first-child+html .digg_pagination {
+overflow: hidden; }

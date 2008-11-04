@@ -1,5 +1,58 @@
 class Report < ActiveRecord::Base
   
+   US_STATES = { 	
+	'AL' 		=> 		'alabama', 
+	'AK' 		=> 		'alaska',
+	'AZ' 		=> 		'arizona',
+	'AR' 		=> 		'arkansas', 
+	'CA' 		=> 		'california', 
+	'CO' 		=> 		'colorado', 
+	'CT' 		=> 		'connecticut', 
+	'DE' 		=> 		'delaware', 
+	'DC' 		=> 		'washingtondc', 
+	'FL' 		=> 		'florida',
+	'GA' 		=> 		'georgia',
+	'HI' 		=> 		'hawaii', 
+	'ID' 		=> 		'idaho', 
+	'IL' 		=> 		'illinois', 
+	'IN' 		=> 		'indiana', 
+	'IA' 		=> 		'iowa', 
+	'KS' 		=> 		'kansas', 
+	'KY' 		=> 		'kentucky', 
+	'LA' 		=> 		'louisiana', 
+	'ME' 		=> 		'maine', 
+	'MD' 		=> 		'maryland', 
+	'MA' 		=> 		'massachusetts', 
+	'MI' 		=> 		'michigan', 
+	'MN' 		=> 		'minnesota',
+	'MS' 		=> 		'mississippi', 
+	'MO' 		=> 		'missouri', 
+	'MT' 		=> 		'montana', 
+	'NE' 		=> 		'nebraska', 
+	'NV' 		=> 		'nevada', 
+	'NH' 		=> 		'newhampshire', 
+	'NJ' 		=> 		'newjersey', 
+	'NM' 		=> 		'newmexico', 
+	'NY' 		=> 		'newyork', 
+	'NC' 		=> 		'northcarolina', 
+	'ND' 		=> 		'northdakota', 
+	'OH' 		=> 		'ohio', 
+	'OK' 		=> 		'oklahoma', 
+	'OR' 		=> 		'oregon', 
+	'PA' 		=> 		'pennsylvania', 
+	'RI' 		=> 		'rhodeisland', 
+	'SC' 		=> 		'southcarolina', 
+	'SD' 		=> 		'southdakota', 
+	'TN' 		=> 		'tennessee', 
+	'TX' 		=> 		'texas', 
+	'UT' 		=> 		'utah', 
+	'VT' 		=> 		'vermont', 
+	'VA' 		=> 		'virginia', 
+	'WA' 		=> 		'washington', 
+	'WV' 		=> 		'westvirginia', 
+	'WI' 		=> 		'wisconsin', 
+	'WY' =>  'wyoming'}
+	
   MAXIMUM_WAIT_TIME = 600 # we will ignore reports > this as they are likely bogus and will throw off our data
   
   validates_presence_of :reporter_id
@@ -78,7 +131,7 @@ class Report < ActiveRecord::Base
     options[:only] = @@public_fields
     # options[:include] = [ :reporter, :polling_place ]
     # options[:except] = [ ]
-    options[:methods] = [ :rating, :name, :icon, :reporter, :polling_place, :location ].concat(options[:methods]||[]) #lets us include current_items from feeds_controller#show
+    options[:methods] = [ :display_text, :rating, :name, :icon, :reporter, :polling_place, :location ].concat(options[:methods]||[]) #lets us include current_items from feeds_controller#show
     # options[:additional] = {:page => options[:page] }
     ar_to_json(options)
   end    
@@ -86,22 +139,30 @@ class Report < ActiveRecord::Base
     
   def self.find_with_filters(filters = {})
     conditions = ["",filters]
-    if filters.include?(:dtstart)
+    if filters.include?(:dtstart) && !filters[:dtstart].blank?
       conditions[0] << "created_at >= :dtstart"
     end
-    if filters.include?(:dtend)
+    if filters.include?(:dtend) && !filters[:dtend].blank?
       conditions[0] << "created_at <= :dtend"
     end
-    if filters.include?(:state)
-      Filter.find_by_state(filters[:state]).reports.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
-                        :order => 'created_at DESC')
+    if filters.include?(:wait_time) && !filters[:wait_time].blank?
+      conditions[0] << "wait_time IS NOT NULL AND wait_time >= :wait_time"
+    end
+    if filters.include?(:rating) && !filters[:rating].blank?
+      conditions[0] << "rating IS NOT NULL AND rating <= :rating"
+    end
+    
+    if filters.include?(:state) && !filters[:state].blank?
+      filtered = Filter.find_by_name(Report::US_STATES[filters[:state]])
+      filtered.reports.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
+                        :order => 'created_at DESC') if filtered
     else
       # TODO put in logic here for doing filtering by appropriate parameters
       Report.paginate( :page => filters[:page] || 1, :per_page => filters[:per_page] || 10, 
                         :order => 'created_at DESC',
                         :conditions => conditions,
                         :include => [:location, :reporter, :polling_place])
-      end
+    end
   end
   
   ## cached tags string
@@ -132,7 +193,8 @@ class Report < ActiveRecord::Base
   end
   
   # Subsititute text for reports that have none
-  def field_text
+  def display_text
+    return self.text unless self.text.blank?
     [wait_time     ? "#{wait_time} minute wait time" : nil,
      rating        ? "rating #{rating}" : nil,
      polling_place ? "polling place: #{polling_place.name}" : nil].compact.join(', ')    

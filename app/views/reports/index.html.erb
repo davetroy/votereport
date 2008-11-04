@@ -1,15 +1,29 @@
+
+
+
+
+<div id="reports" class="hfeed">
+  <% if !@live_feed -%>
+    <%= render :partial => @reports %>
+  <% else -%>
+    <%= render :file => 'public/cached_reports.html' %>
+  <% end -%>
+</div>
+
+<!-- either (a) paginate, or (b) auto-update -->
+<% if !@live_feed -%>
+	<div class="digg_pagination">
+  <%= will_paginate @reports %>
+ 	 </div>
+<% else -%>
+  <% content_for(:head) do %>
+    <%= javascript_include_tag("jquery.min.js") %>
+    <%= javascript_include_tag("report_autoupdate.js") %>
+    <div id="hdn_reports_container" style="display: none;"></div>
+  <% end -%>
+<% end -%>
+
 <ul id="syndication">
 	<li id="kml_link"><%= link_to "GoogleEarth"+image_tag("kml_icon.png", :alt => "KML")+"view", formatted_reports_url(:kml), :title => "Download the KML to view in GoogleEarth" %></li>
 	<li id="rss_link"><%= link_to "RSS"+image_tag("feed_icon.png", :alt => "RSS")+"subscribe", formatted_reports_url(:atom), :title => "Subscribe to #votereport GeoRSS-Atom feed" %></li>
 </ul>
-
-<h1>Vote Reports</h1>
-
-view the <%= link_to "#votereport map", map_reports_path %>
-
-<div id="reports" class="hfeed">
-  <%= render :partial => @reports %>
-</div>
-<%=will_paginate @reports%>
-
-
