@@ -7,15 +7,11 @@
   
 %h1 Review Interface
 
-%p
-  To get started, 
-  = link_to_remote 'click here', { :url => assign_reports_path, :method => :post }
-  to grab a fresh set of reports that need to be reviewed. They 
-  will be reserved just for you for the next 10 minutes.
-
-%p
-  If you have to leave these reports unreviewed, please
-  = link_to_remote 'click here', { :url => release_reports_path, :method => :post }
-  to release them to another reviewer. Thanks!
-  
-#reports
+%p.clear
+  = link_to_remote content_tag(:span,"Get More Reports"), { :url => assign_reports_path, :method => :post }, :class => "button"
+%table
+  %tr
+    %td{:style => "width: 800px"}
+      #reports
+    %td{:style => "width: 250px", :valign => "top"}
+      = # instructions for reviewers
