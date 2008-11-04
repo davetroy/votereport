@@ -202,10 +202,12 @@ class Report < ActiveRecord::Base
   private
   def set_source
     self.source = self.reporter.source
+    true
   end
 
   def check_uniqueid
     update_attribute(:uniqueid, "#{Time.now.to_i}.#{self.id}") if self.uniqueid.nil?
+    true
   end
   
   # Detect and geocode any location information present in the report text
