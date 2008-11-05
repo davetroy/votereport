@@ -1,6 +1,6 @@
 
 var REPORT_REGEXP  = /^report_(\d+)$/;
-var AJAX_INTERVAL  = 10000; // 15 seconds
+var AJAX_INTERVAL  = 30000; // 15 seconds
 var QUEUE_INTERVAL = 1000;  // 1 seconds
 var ITEMS_TO_POP   = 1;     // pop off 1 items from the queue every 1 seconds.
 

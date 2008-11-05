@@ -119,7 +119,7 @@ class Report < ActiveRecord::Base
     
     if filters.include?(:state) && !filters[:state].blank?
       filtered = Filter.find_by_name(US_STATES[filters[:state]])
-      filtered.reports.paginate( :page => filters[:page] || 1, :per_page => filters[per_page] || 10, 
+      filtered.reports.paginate( :page => filters[:page] || 1, :per_page => filters[:per_page] || 10, 
                         :order => 'created_at DESC') if filtered
     else
       # TODO put in logic here for doing filtering by appropriate parameters
