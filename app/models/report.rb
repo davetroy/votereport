@@ -116,11 +116,19 @@ class Report < ActiveRecord::Base
     if filters.include?(:rating) && !filters[:rating].blank?
       conditions[0] << "rating IS NOT NULL AND rating <= :rating"
     end
+    if filters.include?(:q) && !filters[:q].blank?
+      conditions[0] << "text LIKE :q"
+      filters[:q] = "%#{filters[:q]}%"
+    end
     
     if filters.include?(:state) && !filters[:state].blank?
       filtered = Filter.find_by_name(US_STATES[filters[:state]])
       filtered.reports.paginate( :page => filters[:page] || 1, :per_page => filters[:per_page] || 10, 
                         :order => 'created_at DESC') if filtered
+    elsif filters.include?(:name) && !filters[:name].blank?
+      reporter = Reporter.find_by_screen_name(filters[:name])
+      reporter.reports.paginate( :page => filters[:page] || 1, :per_page => filters[:per_page] || 10, 
+                        :order => 'created_at DESC') if reporter
     else
       # TODO put in logic here for doing filtering by appropriate parameters
       Report.paginate( :page => filters[:page] || 1, :per_page => filters[:per_page] || 10, 

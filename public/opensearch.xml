@@ -5,7 +5,7 @@
    <Tags>election voting votereport democracy</Tags>
    <Contact>robot@votereport.us</Contact>
    <Image width="16" height="16" type="image/x-icon">http://votereport.us/favicon.ico</Image>
-   <Url type="text/html" template="http://votereport.us/reports?count={count?}&amp;page={startPage?}"/>
-   <Url type="application/atom+xml" template="http://votereport.us/reports.atom?count={count?}&amp;page={startPage?}"/>
-   <Url type="application/vnd.google-earth.kml+xml" template="http://votereport.us/reports.kml?count={count?}&amp;page={startPage?}"/>
+   <Url type="text/html" template="http://votereport.us/reports?q={searchTerms?}&name={user?}&amp;state={location:state?}&amp;count={count?}&amp;page={startPage?}&amp;dtstart={time:start?}&amp;dtend={time:end?}"/>
+   <Url type="application/atom+xml" template="http://votereport.us/reports.atom?q={searchTerms?}&amp;name={user?}&amp;state={location:state?}&amp;count={count?}&amp;page={startPage?}&amp;dtstart={time:start?}&amp;dtend={time:end?}"/>
+   <Url type="application/vnd.google-earth.kml+xml" template="http://votereport.us/reports.kml?q={searchTerms?}&amp;name={user?}&amp;state={location:state?}&amp;count={count?}&amp;page={startPage?}&amp;dtstart={time:start?}&amp;dtend={time:end?}"/>
  </OpenSearchDescription>

@@ -8,6 +8,12 @@ class ReportsController < ApplicationController
   # GET /reports
   def index
     respond_to do |format|
+      format.html do
+        @live_feed = (params[:live] == "1")
+        if !@live_feed 
+          @reports = Report.find_with_filters(@filters)
+        end
+      end      
       format.kml do
         @reports = Report.with_location.find_with_filters(@filters)
         case params[:live]
@@ -23,12 +29,6 @@ class ReportsController < ApplicationController
       end      
       format.atom do
         @reports = Report.with_location.find_with_filters(@filters)
-      end
-      format.html do
-        @live_feed = (params[:live] == "1")
-        if !@live_feed 
-          @reports = Report.find_with_filters(@filters)
-        end
       end
     end
   end
