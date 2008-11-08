@@ -1,3 +1,7 @@
+# VoteReport call component
+# (c) 2008 David Troy and Jay Phillips
+# Made available under the MIT License
+
 class VoteReport
   add_call_context :as => :call
   

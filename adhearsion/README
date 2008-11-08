@@ -10,17 +10,17 @@ basic call flow:
 [DONE] collect zip --
   get and confirm a 5 digit zip, playing back name of zip as audio file
 
-[MUST TEST] enter wait time --
+[DONE] enter wait time --
   get and confirm a 2-3 digit wait time value
   
-[MUST TEST] enter polling place rating -- 1 = worst, 9 = best
+[DONE] enter polling place rating -- 1 = worst, 9 = best
   get and confirm single digit rating
 
-[TODO] enter special conditions -- 1 digit between 1 and 6 to indicate a specific type of problem
+[DONE] enter special conditions -- 1 digit between 1 and 6 to indicate a specific type of problem
     (1 for challenges, 2 for accessibility issues, 3 for problems with machines, 4 for problems with registration)
   get and confirm single digit special conditions code
 
-[TODO] record an audio message "please say the full name of your polling place along with a brief audio report about that site"
+[DONE] record an audio message "please say the full name of your polling place along with a brief audio report about that site"
   get, playback and confirm recording until user is satisfied
 
 ---
@@ -32,3 +32,4 @@ See PhoneReporter < Reporter models for this function:
 Terminate call and store audio file for access via web
 
 ---
+Made available under the MIT License; by David Troy and Jay Phillips.
