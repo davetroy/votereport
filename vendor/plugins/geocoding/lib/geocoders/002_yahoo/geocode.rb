@@ -12,6 +12,7 @@ module Geo
       pstring = params.map { |k,v| "#{k}=#{URI.encode(v)}" }.join('&')
       url = "http://api.local.yahoo.com/MapsService/V1/geocode?#{pstring}"
       loc = ExtractableHash.new.merge(Hash.from_xml(open(url).read))
+      return nil unless loc.extract('ResultSet City')
       
       point = Point.from_x_y(loc.extract('ResultSet Result Longitude').to_f, loc.extract('ResultSet Result Latitude').to_f)
       loc = loc.transform( :thoroughfare => 'ResultSet Result Address',

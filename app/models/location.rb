@@ -9,7 +9,9 @@ class Location < ActiveRecord::Base
 
   def self.geocode(location_text)
     return nil if location_text.blank?
-    LocationAlias.locate(location_text)
+    Timeout.timeout(20) { LocationAlias.locate(location_text) }
+  rescue Timeout::Error => e
+    return nil
   end
     
   def latitude

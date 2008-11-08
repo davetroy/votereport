@@ -31,10 +31,12 @@ module Geo
           country_code = r['country']=='United States' ? 'US' : nil
           { :locality => r['city'], :administrative_area => r['region'], :country_code => country_code }
         end.uniq
+        return nil if results.empty?
         loc = results.first
         point = latlon.split(',')
         loc.merge(:point => Point.from_x_y(point[1].to_f, point[0].to_f), :geo_source_id => 1)
-      rescue
+      rescue => e
+        logger.info "#{e.message}"
         tries += 1
         retry if tries<3
         loc = nil
